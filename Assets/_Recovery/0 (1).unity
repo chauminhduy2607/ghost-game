@@ -353,9 +353,8 @@ GameObject:
   - component: {fileID: 1173831012}
   - component: {fileID: 1173831016}
   - component: {fileID: 1173831017}
-  - component: {fileID: 1173831018}
   m_Layer: 0
-  m_Name: ghost
+  m_Name: images (1)_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -456,8 +455,8 @@ Transform:
   m_GameObject: {fileID: 1173831011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: -3.88, z: 0}
-  m_LocalScale: {x: 0.65228695, y: 0.7002, z: 1}
+  m_LocalPosition: {x: -0.06, y: -0.18, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -524,38 +523,6 @@ MonoBehaviour:
   maxSwipeForce: 50
   velocityDamping: 0.98
   screenPadding: 0.5
---- !u!114 &1173831018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64195d5383ad947c2acadf9ca3bd0148, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HeavyBalloonController
-  initialRiseForce: 20
-  targetHeightPercent: 0.6
-  riseSpeed: 3
-  mass: 0.5
-  linearDrag: 3.5
-  angularDrag: 5
-  gravityScale: 2
-  dragForceMultiplier: 15
-  maxDragForce: 25
-  upwardBoost: 1.5
-  dragDamping: 0.92
-  minDragDistance: 15
-  passiveDownwardForce: 2
-  maxFallSpeed: 8
-  maxRiseSpeed: 8
-  windStrength: 0.3
-  swayFrequency: 1
-  screenPadding: 0.3
-  enableBounce: 1
-  bounceForce: 0.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
