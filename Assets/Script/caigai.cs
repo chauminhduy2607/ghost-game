@@ -8,20 +8,28 @@ public class caigai : MonoBehaviour
 
     public float speedMultiplier = 1f; // tốc độ (1 = bình thường)
 
+    [Header("Extra Smooth")]
+    [Range(0.01f, 0.5f)]
+    public float smoothTime = 0.08f;   // ✅ càng nhỏ càng nhanh, càng lớn càng mượt
+    public float maxSpeed = 999f;      // giới hạn tốc độ (để lớn cho tự do)
+
     public enum MoveMode
     {
-        PingPong,   // qua lại trái phải (như cũ)
-        OnlyRight,  // chỉ chạy sang phải
-        OnlyLeft    // chỉ chạy sang trái
+        PingPong,
+        OnlyRight,
+        OnlyLeft
     }
 
     public MoveMode moveMode = MoveMode.PingPong;
 
     private Vector3 startPos;
+    private float xVel = 0f;
+    private float currentOffset = 0f;
 
     void Start()
     {
         startPos = transform.position;
+        currentOffset = 0f;
     }
 
     void Update()
@@ -30,27 +38,27 @@ public class caigai : MonoBehaviour
 
         float time = (Time.time * speedMultiplier) + phaseOffset;
 
+        // t = 0..1..0..1 (mượt)
         float t = (Mathf.Sin(time * (2f * Mathf.PI) / period) + 1f) * 0.5f;
-        t = Mathf.SmoothStep(0f, 1f, t);
 
-        float xOffset;
-
+        // target offset theo mode
+        float targetOffset;
         if (moveMode == MoveMode.PingPong)
         {
-            // như cũ: -distance -> +distance -> -distance ...
-            xOffset = Mathf.Lerp(-moveDistance, moveDistance, t);
+            targetOffset = Mathf.Lerp(-moveDistance, moveDistance, t);
         }
         else if (moveMode == MoveMode.OnlyRight)
         {
-            // chỉ chạy từ 0 -> +distance rồi quay về 0 -> +distance ...
-            xOffset = Mathf.Lerp(0f, moveDistance, t);
+            targetOffset = Mathf.Lerp(0f, moveDistance, t);
         }
         else // OnlyLeft
         {
-            // chỉ chạy từ 0 -> -distance rồi quay về 0 -> -distance ...
-            xOffset = Mathf.Lerp(0f, -moveDistance, t);
+            targetOffset = Mathf.Lerp(0f, -moveDistance, t);
         }
 
-        transform.position = new Vector3(startPos.x + xOffset, startPos.y, startPos.z);
+        // ✅ SmoothDamp cho offset X -> siêu mượt, không giật
+        currentOffset = Mathf.SmoothDamp(currentOffset, targetOffset, ref xVel, smoothTime, maxSpeed, Time.deltaTime);
+
+        transform.position = new Vector3(startPos.x + currentOffset, startPos.y, startPos.z);
     }
 }
