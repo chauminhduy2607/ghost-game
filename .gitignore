@@ -1,0 +1,9 @@
+.DS_Store
+[Ll]ibrary/
+[Tt]emp/
+[Ll]ogs/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+UserSettings/
+mono_crash*.json
