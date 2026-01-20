@@ -50,7 +50,9 @@
     <Compile Include="Assets\Script\caigai.cs" />
     <Compile Include="Assets\Script\RotateParent.cs" />
     <Compile Include="Assets\Script\fire.cs" />
+    <Compile Include="Assets\Script\ScoreCycle.cs" />
     <Compile Include="Assets\Script\RealisticBalloonController.cs" />
+    <Compile Include="Assets\Script\GameOverController.cs" />
     <Compile Include="Assets\Script\ScoreManager.cs" />
     <Compile Include="Assets\Script\CountdownTimer.cs" />
   </ItemGroup>

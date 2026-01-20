@@ -515,14 +515,11 @@ MonoBehaviour:
   gravityScale: 1
   passiveBuoyancy: 0
   maxFallSpeed: 5
-  dragForce: 30
-  dragSmoothness: 20
-  maxDragDistance: 0
   windStrength: 0.4
   swayFrequency: 1.2
-  turbulenceScale: 0.5
   swipeForceMultiplier: 0.15
   minSwipeSpeed: 500
+  minSwipeDistance: 50
   maxSwipeForce: 50
   velocityDamping: 0.98
   screenPadding: 0.5
