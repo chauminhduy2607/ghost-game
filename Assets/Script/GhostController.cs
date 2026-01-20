@@ -18,8 +18,8 @@ public class GhostController : MonoBehaviour
     [SerializeField] private float gravityScale = 0f;         // ⭐ TẮT TRỌNG LỰC: 0 (từ -0.15)
     
     [Header("=== TỰ BAY LÊN ===")]
-    [SerializeField] private float autoRiseForce = 0.3f;      // ⭐ LỰC TỰ BAY CỰC NHẸ: 0.3 (giảm từ 0.8)
-    [SerializeField] private float maxAutoRiseSpeed = 0.5f;   // ⭐ TỐC ĐỘ TỰ BAY TỐI ĐA: 0.5
+    [SerializeField] private float autoRiseForce = 0.03f;     // ⭐ LỰC TỰ BAY CỰC CHẬM: 0.03 (giảm 5 lần từ 0.15)
+    [SerializeField] private float maxAutoRiseSpeed = 0.06f;  // ⭐ TỐC ĐỘ TỰ BAY TỐI ĐA: 0.06 (giảm 5 lần từ 0.3)
     
     [Header("=== ĐIỀU KHIỂN VUỐT ===")]
     [SerializeField] private float swipeForceMultiplier = 100f; // ⭐ Hệ số lực vuốt: 100 (giảm từ 150)
@@ -75,7 +75,7 @@ public class GhostController : MonoBehaviour
         rb.mass = mass;
         rb.linearDamping = linearDrag;
         rb.angularDamping = angularDrag;
-        rb.gravityScale = gravityScale;  // ⭐ TRỌNG LỰC ÂM = đẩy nhẹ lên trên
+        rb.gravityScale = gravityScale;  // ⭐ TẮT TRỌNG LỰC
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         
@@ -107,7 +107,7 @@ public class GhostController : MonoBehaviour
         
         Debug.Log("👻 GhostController: VẬT LÝ THỰC TẾ!");
         Debug.Log($"📊 Lực tự bay: {autoRiseForce}");
-        Debug.Log($"📊 Trọng lực: {gravityScale} (âm = đẩy lên)");
+        Debug.Log($"📊 Trọng lực: {gravityScale}");
         Debug.Log($"📊 Kháng không khí: {linearDrag}");
         Debug.Log($"📊 Khối lượng: {mass}");
         Debug.Log($"📊 Hệ số lực vuốt: {swipeForceMultiplier}");
