@@ -7,23 +7,23 @@ public class HeavyBalloonController : MonoBehaviour
     [SerializeField] private float targetHeightPercent = 0.6f;
     [SerializeField] private float riseSpeed = 3f;
     
-    [Header("=== VẬT LÝ BÓNG BAY CỰC NHẸ ===")]
-    [SerializeField] private float mass = 0.000001f;
-    [SerializeField] private float linearDrag = 0.001f;
-    [SerializeField] private float angularDrag = 0.01f;
-    [SerializeField] private float gravityScale = 0.0001f;
+    [Header("=== VẬT LÝ BÓNG BAY (NẶNG + MA SÁT CAO) ===")]
+    [SerializeField] private float mass = 0.5f;                    
+    [SerializeField] private float linearDrag = 4f;                // TĂNG TỪ 2 → 4 (MA SÁT GẤP ĐÔI!)
+    [SerializeField] private float angularDrag = 1f;               
+    [SerializeField] private float gravityScale = 1.5f;
     
-    [Header("=== KÉO ĐỂ BAY LÊN ===")]
-    [SerializeField] private float dragForceMultiplier = 15000f;
-    [SerializeField] private float maxDragForce = 25000f;
-    [SerializeField] private float upwardBoost = 300f;
-    [SerializeField] private float dragDamping = 0.9995f;
+    [Header("=== KÉO ĐỂ BAY LÊN (GIỚI HẠN 1/3 MÀN HÌNH) ===")]
+    [SerializeField] private float dragForceMultiplier = 50f;      // Tăng lại lên 50
+    [SerializeField] private float maxDragForce = 80f;             // Tăng lại lên 80
+    [SerializeField] private float upwardBoost = 1.2f;             // Tăng lại lên 1.2
+    [SerializeField] private float dragDamping = 0.85f;            // TĂNG damping mạnh (0.96 → 0.85)
     [SerializeField] private float minDragDistance = 0.1f;
     
-    [Header("=== RƠI XUỐNG SIÊU SIÊU CHẬM ===")]
-    [SerializeField] private float passiveDownwardForce = 0.00001f;
-    [SerializeField] private float maxFallSpeed = 0.005f;
-    [SerializeField] private float maxRiseSpeed = 100f;
+    [Header("=== RƠI XUỐNG (ĐÃ TĂNG LỰC) ===")]
+    [SerializeField] private float passiveDownwardForce = 0.5f;    
+    [SerializeField] private float maxFallSpeed = 3f;              
+    [SerializeField] private float maxRiseSpeed = 1.5f;            // GIẢM TỪ 3 → 1.5 (CHỈ LÊN CHẬM THÔI!)
     
     [Header("=== GIÓ NHẸ ===")]
     [SerializeField] private float windStrength = 0.3f;

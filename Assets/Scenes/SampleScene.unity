@@ -354,6 +354,8 @@ GameObject:
   - component: {fileID: 1173831016}
   - component: {fileID: 1173831017}
   - component: {fileID: 1173831018}
+  - component: {fileID: 1173831020}
+  - component: {fileID: 1173831019}
   m_Layer: 0
   m_Name: ghost
   m_TagString: Untagged
@@ -374,9 +376,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 2
+  m_LinearDamping: 0.3
   m_AngularDamping: 1
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -435,9 +437,9 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8957324059118975939, guid: c3e4db7a43d524026bbd5da505039ebe, type: 3}
+  m_Sprite: {fileID: -6186269352035542334, guid: 7d50a66f478d249b4aab508818b51e66, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -456,8 +458,8 @@ Transform:
   m_GameObject: {fileID: 1173831011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: -3.88, z: 0}
-  m_LocalScale: {x: 0.65228695, y: 0.7002, z: 1}
+  m_LocalPosition: {x: 0.02, y: -4.0162, z: 0}
+  m_LocalScale: {x: 0.1227604, y: 0.10650267, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -505,7 +507,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d586c51a156b643e4b7f89ddd413ac15, type: 3}
   m_Name: 
@@ -531,7 +533,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64195d5383ad947c2acadf9ca3bd0148, type: 3}
   m_Name: 
@@ -543,19 +545,71 @@ MonoBehaviour:
   linearDrag: 3.5
   angularDrag: 5
   gravityScale: 2
-  dragForceMultiplier: 15
-  maxDragForce: 25
+  dragForceMultiplier: 15000
+  maxDragForce: 25000
   upwardBoost: 1.5
   dragDamping: 0.92
-  minDragDistance: 15
-  passiveDownwardForce: 2
+  minDragDistance: 0.1
+  passiveDownwardForce: 0.00001
   maxFallSpeed: 8
-  maxRiseSpeed: 8
+  maxRiseSpeed: 100
   windStrength: 0.3
   swayFrequency: 1
   screenPadding: 0.3
   enableBounce: 1
   bounceForce: 0.4
+  squashAmount: 0.15
+  squashSpeed: 8
+  minVelocityForSquash: 2
+  fallStretchAmount: 0.25
+  minFallVelocity: 3
+  groundSquashAmount: 0.4
+  groundSquashDuration: 0.2
+--- !u!114 &1173831019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58cc454d5db8e4668b54cc8e93d3cead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostController
+  mass: 0.1
+  linearDrag: 0.33
+  angularDrag: 1
+  gravityScale: -0.5
+  autoRiseForce: 0.01
+  swipeForceMultiplier: 150
+  maxSwipeForce: 20
+  maxRiseSpeed: 5
+  enableSquashStretch: 1
+  squashAmount: 0.15
+  squashSpeed: 8
+  minVelocityForSquash: 2
+  groundSquashAmount: 0.6
+  groundSquashDuration: 0.35
+  enableTrail: 0
+  enableColorChange: 0
+--- !u!114 &1173831020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acabb8080911a4b0fa36193228c04460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameEnvironment
+  ghost: {fileID: 0}
+  screenPadding: 0.3
+  constrainX: 1
+  showDebugUI: 1
+  fontSize: 22
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
