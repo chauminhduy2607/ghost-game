@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: f178ae535070049098e9015ce6e5ff37
+guid: 7f609b2dbbf454fee8b30efcf259ccb0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8420485207997377320
-    second: images (2)_0
+      213: -2700581942271956110
+    second: ghost-02_0
+  - first:
+      213: 1852240816088645133
+    second: ghost-02_1
+  - first:
+      213: 8868748774487899498
+    second: ghost-02_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +145,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: images (2)_0
+      name: ghost-02_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 160
-        height: 316
+        x: 553
+        y: 1976
+        width: 150
+        height: 157
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +160,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 82b6d1bdea29bd470800000000000000
-      internalID: 8420485207997377320
+      spriteID: 27bab04280b958ad0800000000000000
+      internalID: -2700581942271956110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ghost-02_1
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 1910
+        width: 241
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0e7179653b74b910800000000000000
+      internalID: 1852240816088645133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ghost-02_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1111
+        height: 1898
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6d38819500241b70800000000000000
+      internalID: 8868748774487899498
       vertices: []
       indices: 
       edges: []
@@ -174,7 +224,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      images (2)_0: 8420485207997377320
+      ghost-02_0: -2700581942271956110
+      ghost-02_1: 1852240816088645133
+      ghost-02_2: 8868748774487899498
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
