@@ -1,15 +1,17 @@
 using UnityEngine;
 
 /// <summary>
-/// ⭐ ĐƠN GIẢN HÓA: Chỉ giới hạn màn hình, không can thiệp vào physics
+/// ⭐ BỎ GIỚI HẠN TRẦN - MA BAY LÊN VÔ HẠN!
+/// - Chỉ giữ giới hạn đáy (không cho rơi xuống)
+/// - Camera sẽ theo ma lên trên
 /// </summary>
 public class GameEnvironment : MonoBehaviour
 {
     [Header("=== REFERENCE ===")]
     [SerializeField] private GhostController ghost;
     
-    [Header("=== GIỚI HẠN MÀN HÌNH ===")]
-    [SerializeField] private float screenPadding = 0.3f;
+    [Header("=== GIỚI HẠN ĐÁY (Chỉ Dưới) ===")]
+    [SerializeField] private float groundY = -4f;  // Vị trí mặt đất
     [SerializeField] private bool constrainX = true;
     
     [Header("=== UI ===")]
@@ -18,9 +20,9 @@ public class GameEnvironment : MonoBehaviour
     
     // Private variables
     private Camera mainCamera;
-    private Vector2 screenBounds;
-    private float objectWidth, objectHeight;
-    
+    private float objectHeight;
+    private float maxHeightReached = 0f;  // Độ cao tối đa ma đã đạt được
+
     void Start()
     {
         mainCamera = Camera.main;
@@ -37,70 +39,67 @@ public class GameEnvironment : MonoBehaviour
             }
         }
         
-        // Tính toán bounds
+        // Tính chiều cao của ma
         SpriteRenderer spriteRenderer = ghost.GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
-            objectWidth = spriteRenderer.bounds.extents.x;
             objectHeight = spriteRenderer.bounds.extents.y;
         }
         
-        screenBounds = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        
-        // Constraint X
+        // Constraint X (không cho di chuyển ngang)
         if (constrainX)
         {
             ghost.Rigidbody.constraints = RigidbodyConstraints2D.FreezePositionX;
         }
         
-        Debug.Log("🌍 GameEnvironment: Sẵn sàng!");
-        Debug.Log($"📐 Screen: {screenBounds.x:F1}, {screenBounds.y:F1}");
+        Debug.Log("🌍 GameEnvironment: BỎ GIỚI HẠN TRẦN!");
+        Debug.Log($"📐 Mặt đất: Y = {groundY}");
+        Debug.Log("⬆️ Ma có thể bay lên vô hạn!");
     }
     
     void FixedUpdate()
     {
-        ClampToScreen();
+        CheckGround();
+        TrackMaxHeight();
     }
     
-    // ==================== GIỚI HẠN MÀN HÌNH ====================
-    void ClampToScreen()
+    // ==================== CHỈ GIỚI HẠN ĐÁY ====================
+    void CheckGround()
     {
         Vector3 pos = ghost.transform.position;
         Vector2 vel = ghost.Velocity;
-        bool changed = false;
         
-        float minY = -screenBounds.y + objectHeight + screenPadding;
-        float maxY = screenBounds.y - objectHeight - screenPadding;
+        // Tính vị trí mặt đất (có tính chiều cao của ma)
+        float minY = groundY + objectHeight;
         
-        // Chạm đất
+        // ⭐ CHỈ GIỚI HẠN DƯỚI - Không giới hạn trên!
         if (pos.y <= minY)
         {
             pos.y = minY;
             
+            // Trigger hiệu ứng móp khi chạm đất
             if (vel.y < -0.1f && !ghost.IsGroundSquashing)
             {
                 ghost.TriggerGroundSquash();
                 Debug.Log("💥 CHẠM ĐẤT!");
             }
             
-            vel.y = Mathf.Max(vel.y, 0);  // Không cho velocity âm
-            changed = true;
-        }
-        
-        // Chạm trần
-        if (pos.y >= maxY)
-        {
-            pos.y = maxY;
-            vel.y = Mathf.Min(vel.y, 0);  // Không cho velocity dương
-            changed = true;
-            Debug.Log("⚠️ CHẠM TRẦN!");
-        }
-        
-        ghost.transform.position = pos;
-        
-        if (changed)
-        {
+            // Dừng velocity âm (không cho rơi xuống nữa)
+            vel.y = Mathf.Max(vel.y, 0);
+            
+            ghost.transform.position = pos;
             ghost.SetVelocity(vel);
+        }
+    }
+    
+    // ==================== THEO DÕI ĐỘ CAO ====================
+    void TrackMaxHeight()
+    {
+        float currentHeight = ghost.transform.position.y;
+        
+        if (currentHeight > maxHeightReached)
+        {
+            maxHeightReached = currentHeight;
         }
     }
     
@@ -118,7 +117,12 @@ public class GameEnvironment : MonoBehaviour
         Vector2 vel = ghost.Velocity;
         string status = "⬆️ TỰ BAY CHẬM";
         
-        if (ghost.IsDragging)
+        if (ghost.IsFalling)
+        {
+            status = "⬇️ ĐANG RỚT!";
+            style.normal.textColor = Color.red;
+        }
+        else if (ghost.IsDragging)
         {
             status = "🚀 ĐANG VUỐT - BAY NHANH!";
             style.normal.textColor = Color.cyan;
@@ -128,19 +132,20 @@ public class GameEnvironment : MonoBehaviour
             status = "⬆️⬆️ BAY SIÊU NHANH!";
             style.normal.textColor = Color.green;
         }
-        else if (ghost.transform.position.y < -screenBounds.y + 2f)
+        else if (ghost.transform.position.y < groundY + 2f)
         {
             status = "⚠️ GẦN ĐẤT!";
-            style.normal.textColor = Color.red;
+            style.normal.textColor = Color.yellow;
         }
         
         string info = $"{status}\n";
         info += $"━━━━━━━━━━━━━━━━━━━━\n";
         info += $"Velocity Y: {vel.y:F2}\n";
         info += $"Height: {ghost.transform.position.y:F1}\n";
+        info += $"Max Height: {maxHeightReached:F1} 🏆\n";
         info += $"Position: ({ghost.transform.position.x:F1}, {ghost.transform.position.y:F1})";
         
-        GUI.Label(new Rect(10, 10, 400, 250), info, style);
+        GUI.Label(new Rect(10, 10, 400, 280), info, style);
         
         // Hướng dẫn
         GUIStyle tipStyle = new GUIStyle();
@@ -149,9 +154,38 @@ public class GameEnvironment : MonoBehaviour
         tipStyle.alignment = TextAnchor.LowerCenter;
         tipStyle.fontStyle = FontStyle.Bold;
         
-        string tip = "👻 GHOST TỰ BAY LÊN CỰC CHẬM (0.2)\n";
-        tip += "🖐️ VUỐT LÊN = BAY SIÊU NHANH (x40)!";
+        string tip = "👻 GHOST TỰ BAY LÊN CỰC CHẬM\n";
+        tip += "🖐️ VUỐT LÊN = BAY SIÊU NHANH!\n";
+        tip += "⬆️ KHÔNG GIỚI HẠN ĐỘ CAO! 🚀";
         
-        GUI.Label(new Rect(0, Screen.height - 80, Screen.width, 80), tip, tipStyle);
+        GUI.Label(new Rect(0, Screen.height - 100, Screen.width, 100), tip, tipStyle);
+    }
+    
+    // ==================== PUBLIC METHODS ====================
+    
+    /// <summary>
+    /// Đặt vị trí mặt đất mới
+    /// </summary>
+    public void SetGroundY(float newGroundY)
+    {
+        groundY = newGroundY;
+        Debug.Log($"🌍 Đổi mặt đất: Y = {groundY}");
+    }
+    
+    /// <summary>
+    /// Reset độ cao tối đa
+    /// </summary>
+    public void ResetMaxHeight()
+    {
+        maxHeightReached = ghost.transform.position.y;
+        Debug.Log("🔄 Reset độ cao tối đa!");
+    }
+    
+    /// <summary>
+    /// Lấy độ cao tối đa
+    /// </summary>
+    public float GetMaxHeight()
+    {
+        return maxHeightReached;
     }
 }
