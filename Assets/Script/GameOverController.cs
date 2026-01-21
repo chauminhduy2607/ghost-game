@@ -1,46 +1,115 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
+/// <summary>
+/// ⭐ XỬ LÝ VA CHẠM VÀ GAME OVER
+/// - Gắn vào Ghost
+/// - Khi chạm vật cản có tag "Obstacle" → Game Over
+/// </summary>
 public class GameOverController : MonoBehaviour
 {
-    public TextMeshProUGUI tryAgainText;
-    public GameObject player;
-    public GameObject obstacles;
-    public TextMeshProUGUI scoreText; // Nếu bạn muốn hiển thị điểm ở phần game over
-
-    private bool gameOver = false;
-
+    [Header("=== UI GAME OVER ===")]
+    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private TMP_Text finalScoreText;
+    
+    [Header("=== REFERENCE ===")]
+    [SerializeField] private GhostController ghostController;
+    [SerializeField] private ScoreCycle scoreCycle;
+    [SerializeField] private FireLineManager fireLineManager; // ⭐ THÊM
+    
+    private bool isGameOver = false;
+    
     void Start()
     {
-        tryAgainText.gameObject.SetActive(false); // Khi bắt đầu, ẩn nút "Try Again"
+        // Tự động tìm nếu chưa gắn
+        if (ghostController == null)
+            ghostController = GetComponent<GhostController>();
+        
+        if (scoreCycle == null)
+            scoreCycle = FindObjectOfType<ScoreCycle>();
+        
+        // ⭐ THÊM: Tự động tìm FireLineManager
+        if (fireLineManager == null)
+            fireLineManager = FindObjectOfType<FireLineManager>();
+        
+        // Ẩn UI Game Over
+        if (gameOverUI != null)
+            gameOverUI.SetActive(false);
     }
-
-    void Update()
+    
+    // ==================== VA CHẠM ====================
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (gameOver && Input.GetMouseButtonDown(0)) // Kiểm tra khi người chơi bấm nút
+        // Kiểm tra tag "Obstacle"
+        if (collision.CompareTag("Obstacle") && !isGameOver)
         {
-            RestartGame();
+            TriggerGameOver();
         }
     }
-
-    // Gọi khi game over
-    public void GameOver()
+    
+    // ==================== GAME OVER ====================
+    void TriggerGameOver()
     {
-        gameOver = true;
-        tryAgainText.gameObject.SetActive(true); // Hiển thị nút "Try Again"
-        obstacles.SetActive(false); // Ẩn vật cản khi game over
-        player.SetActive(false); // Ẩn người chơi khi game over
-        scoreText.text = "Game Over!"; // Hiển thị thông báo game over
+        if (isGameOver) return;
+        
+        isGameOver = true;
+        
+        Debug.Log("💀 GAME OVER!");
+        
+        // Dừng Ghost
+        if (ghostController != null)
+        {
+            ghostController.EnablePhysics(false); // Dừng vật lý
+            ghostController.ResetVelocity();
+        }
+        
+        // Dừng điểm
+        if (scoreCycle != null)
+        {
+            scoreCycle.StopScore();
+        }
+        
+        // ⭐ THÊM: Dừng vật cản di chuyển
+        if (fireLineManager != null)
+        {
+            fireLineManager.enabled = false; // Tắt script FireLineManager
+        }
+        
+        // ⭐ THÊM: Dừng tất cả animation
+        Animator[] allAnimators = FindObjectsOfType<Animator>();
+        foreach (Animator anim in allAnimators)
+        {
+            anim.enabled = false;
+        }
+        
+        // Hiển thị UI Game Over
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(true);
+            
+            // Hiển thị điểm cuối cùng
+            if (finalScoreText != null && scoreCycle != null)
+            {
+                finalScoreText.text = "Final Score: " + scoreCycle.GetScore();
+            }
+        }
+        
+        // Dừng thời gian (tùy chọn)
+        Time.timeScale = 0f; // ⭐ BẬT LÊN: Đóng băng mọi thứ!
     }
-
-    // Chức năng restart game khi bấm vào "Try Again"
-    void RestartGame()
+    
+    // ==================== NÚT CHƠI LẠI ====================
+    public void RestartGame()
     {
-        gameOver = false;
-        tryAgainText.gameObject.SetActive(false); // Ẩn nút "Try Again"
-        player.SetActive(true); // Kích hoạt người chơi lại
-        obstacles.SetActive(true); // Kích hoạt vật cản lại
-        scoreText.text = "Score: 0"; // Reset điểm
-        // Thêm reset lại những giá trị khác nếu cần thiết, ví dụ như timer, score...
+        Time.timeScale = 1f; // Reset time scale
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    
+    // ==================== NÚT THOÁT ====================
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("Quit Game!");
     }
 }
