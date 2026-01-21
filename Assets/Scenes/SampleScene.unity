@@ -619,7 +619,6 @@ GameObject:
   - component: {fileID: 228254057}
   - component: {fileID: 228254060}
   - component: {fileID: 228254061}
-  - component: {fileID: 228254062}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Untagged
@@ -755,7 +754,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228254056}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38277f982ab3eed4bba708b8fa4d419a, type: 3}
   m_Name: 
@@ -789,49 +788,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &228254062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 228254056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b501f3316c04e17928bc976abbed3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmartObstacle
-  ghost: {fileID: 0}
-  moveSpeed: 2
-  smoothTime: 0.15
-  screenPadding: 0.5
-  detectionRange: 4
-  avoidDistance: 2.5
-  moveToLeft: 1
-  randomMoveRange: 1.5
-  randomChangeInterval: 2
-  showGizmos: 1
-  normalColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  avoidColor:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
-  mainCamera: {fileID: 0}
-  startPos: {x: 0, y: 0, z: 0}
-  targetPos: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  minX: 0
-  maxX: 0
-  objectWidth: 0
-  randomTimer: 0
-  randomTargetX: 0
-  isAvoidingGhost: 0
 --- !u!1 &254619136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,6 +1459,7 @@ MonoBehaviour:
   smoothSpeed: 3
   deadZoneHeight: 2
   yOffset: 0
+  snapToTargetOnStart: 1
   useMinY: 0
   minY: -10
   useMaxY: 0
@@ -1667,7 +1624,6 @@ GameObject:
   - component: {fileID: 643778458}
   - component: {fileID: 643778457}
   - component: {fileID: 643778456}
-  - component: {fileID: 643778461}
   m_Layer: 0
   m_Name: Obstacle (3)
   m_TagString: Untagged
@@ -1704,7 +1660,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643778455}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38277f982ab3eed4bba708b8fa4d419a, type: 3}
   m_Name: 
@@ -1837,49 +1793,6 @@ Transform:
   - {fileID: 594726369}
   m_Father: {fileID: 1730702269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &643778461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643778455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b501f3316c04e17928bc976abbed3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmartObstacle
-  ghost: {fileID: 0}
-  moveSpeed: 2
-  smoothTime: 0.15
-  screenPadding: 0.5
-  detectionRange: 4
-  avoidDistance: 2.5
-  moveToLeft: 1
-  randomMoveRange: 1.5
-  randomChangeInterval: 2
-  showGizmos: 1
-  normalColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  avoidColor:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
-  mainCamera: {fileID: 0}
-  startPos: {x: 0, y: 0, z: 0}
-  targetPos: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  minX: 0
-  maxX: 0
-  objectWidth: 0
-  randomTimer: 0
-  randomTargetX: 0
-  isAvoidingGhost: 0
 --- !u!1 &701283066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2166,7 +2079,6 @@ GameObject:
   - component: {fileID: 777380555}
   - component: {fileID: 777380554}
   - component: {fileID: 777380553}
-  - component: {fileID: 777380558}
   m_Layer: 0
   m_Name: Obstacle (1)
   m_TagString: Untagged
@@ -2203,7 +2115,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777380552}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38277f982ab3eed4bba708b8fa4d419a, type: 3}
   m_Name: 
@@ -2336,49 +2248,6 @@ Transform:
   - {fileID: 942844318}
   m_Father: {fileID: 1730702269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &777380558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777380552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b501f3316c04e17928bc976abbed3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmartObstacle
-  ghost: {fileID: 0}
-  moveSpeed: 2
-  smoothTime: 0.15
-  screenPadding: 0.5
-  detectionRange: 4
-  avoidDistance: 2.5
-  moveToLeft: 1
-  randomMoveRange: 1.5
-  randomChangeInterval: 2
-  showGizmos: 1
-  normalColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  avoidColor:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
-  mainCamera: {fileID: 0}
-  startPos: {x: 0, y: 0, z: 0}
-  targetPos: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  minX: 0
-  maxX: 0
-  objectWidth: 0
-  randomTimer: 0
-  randomTargetX: 0
-  isAvoidingGhost: 0
 --- !u!1 &899192660
 GameObject:
   m_ObjectHideFlags: 0
@@ -3050,7 +2919,7 @@ MonoBehaviour:
   autoRiseForce: 0.3
   maxAutoRiseSpeed: 0.6
   fallForceMultiplier: 3
-  tapThreshold: 0.001
+  swipeThreshold: 0.5
   enableRotation: 1
   rotationSpeed: 8
   swipeForceMultiplier: 100
@@ -3550,7 +3419,6 @@ GameObject:
   - component: {fileID: 1377041882}
   - component: {fileID: 1377041881}
   - component: {fileID: 1377041880}
-  - component: {fileID: 1377041885}
   m_Layer: 0
   m_Name: Obstacle (2)
   m_TagString: Untagged
@@ -3587,7 +3455,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1377041879}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38277f982ab3eed4bba708b8fa4d419a, type: 3}
   m_Name: 
@@ -3720,49 +3588,6 @@ Transform:
   - {fileID: 449156403}
   m_Father: {fileID: 1730702269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1377041885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1377041879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b501f3316c04e17928bc976abbed3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmartObstacle
-  ghost: {fileID: 0}
-  moveSpeed: 2
-  smoothTime: 0.15
-  screenPadding: 0.5
-  detectionRange: 4
-  avoidDistance: 2.5
-  moveToLeft: 1
-  randomMoveRange: 1.5
-  randomChangeInterval: 2
-  showGizmos: 1
-  normalColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  avoidColor:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
-  mainCamera: {fileID: 0}
-  startPos: {x: 0, y: 0, z: 0}
-  targetPos: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  minX: 0
-  maxX: 0
-  objectWidth: 0
-  randomTimer: 0
-  randomTargetX: 0
-  isAvoidingGhost: 0
 --- !u!1 &1491950083
 GameObject:
   m_ObjectHideFlags: 0
@@ -4308,6 +4133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1730702269}
+  - component: {fileID: 1730702270}
   m_Layer: 0
   m_Name: Fire&Line
   m_TagString: Untagged
@@ -4334,6 +4160,28 @@ Transform:
   - {fileID: 643778460}
   m_Father: {fileID: 140615573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1730702270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730702268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 155d34d9c39c84919b6d94ff16efa7f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireLineManager
+  mainCamera: {fileID: 0}
+  player: {fileID: 0}
+  spacingY: 5
+  autoAddControllers: 1
+  parallaxSpeed: 0.8
+  moveSpeed: 2
+  minSpeed: 1
+  maxSpeed: 4
+  screenPadding: 0.5
+  showDebugInfo: 1
 --- !u!1 &1777135012
 GameObject:
   m_ObjectHideFlags: 0

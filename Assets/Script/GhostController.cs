@@ -10,34 +10,35 @@ using UnityEngine;
 /// - Có quán tính, gia tốc, giảm tốc tự nhiên
 /// 
 /// ⭐ MỚI: Nhấn 1 cái (không vuốt) = rớt xuống!
+/// ⭐ CẬP NHẬT: Nhẹ nhàng, thanh thoát hơn!
 /// </summary>
 public class GhostController : MonoBehaviour
 {
     [Header("=== VẬT LÝ GHOST ===")]
-    [SerializeField] private float mass = 0.1f;               // ⭐ CỰC NHẸ: 0.1
-    [SerializeField] private float linearDrag = 5.0f;         // ⭐ KHÁNG KHÍ RẤT CAO: 5.0 (tăng từ 3.5)
+    [SerializeField] private float mass = 0.05f;              // ⭐ SIÊU NHẸ: 0.05
+    [SerializeField] private float linearDrag = 3.0f;         // ⭐ KHÁNG KHÍ VỪA: 3.0 (giảm để ít cản hơn)
     [SerializeField] private float angularDrag = 1f;
-    [SerializeField] private float gravityScale = 0f;         // ⭐ TẮT TRỌNG LỰC: 0 (từ -0.15)
+    [SerializeField] private float gravityScale = 0f;         // ⭐ TẮT TRỌNG LỰC: 0
     
     [Header("=== TỰ BAY LÊN ===")]
-    [SerializeField] private float autoRiseForce = 0.03f;     // ⭐ LỰC TỰ BAY CỰC CHẬM: 0.03 (giảm 5 lần từ 0.15)
-    [SerializeField] private float maxAutoRiseSpeed = 0.06f;  // ⭐ TỐC ĐỘ TỰ BAY TỐI ĐA: 0.06 (giảm 5 lần từ 0.3)
+    [SerializeField] private float autoRiseForce = 0.03f;     // ⭐ LỰC TỰ BAY CỰC CHẬM: 0.03
+    [SerializeField] private float maxAutoRiseSpeed = 0.06f;  // ⭐ TỐC ĐỘ TỰ BAY TỐI ĐA: 0.06
     
     [Header("=== RỚT XUỐNG KHI NHẤN (KHÔNG VUỐT) ===")]
-    [SerializeField] private float fallForceMultiplier = 6.0f; // ⭐ HỆ SỐ RỚT: 6.0 × autoRiseForce (x4 từ 1.5)
-    [SerializeField] private float tapThreshold = 0.001f;      // ⭐ NGƯỠNG: < 0.001 = tap, > 0.001 = swipe
+    [SerializeField] private float fallForceMultiplier = 6.0f; // ⭐ HỆ SỐ RỚT: 6.0 × autoRiseForce
+    [SerializeField] private float swipeThreshold = 0.5f;      // ⭐ NGƯỠNG VUỐT: >= 0.5 = swipe, < 0.5 = tap
     
     [Header("=== XOAY ĐẦU KHI RỚT ===")]
     [SerializeField] private bool enableRotation = true;       // ⭐ Bật/tắt xoay
-    [SerializeField] private float rotationSpeed = 4f;         // ⭐ Tốc độ xoay MƯỢT (giảm từ 8 → 4)
+    [SerializeField] private float rotationSpeed = 4f;         // ⭐ Tốc độ xoay MƯỢT
     
     [Header("=== ĐIỀU KHIỂN VUỐT ===")]
-    [SerializeField] private float swipeForceMultiplier = 50f; // ⭐ Hệ số lực vuốt IMPULSE: 50 (tăng từ 20)
-    [SerializeField] private float maxSwipeForce = 25f;        // ⭐ GIỚI HẠN: lực vuốt tối đa 25 (tăng từ 8)
+    [SerializeField] private float swipeForceMultiplier = 80f; // ⭐ Hệ số lực vuốt: 80 (THANH THOÁT!)
+    [SerializeField] private float maxSwipeForce = 35f;        // ⭐ GIỚI HẠN: lực vuốt tối đa 35
     [SerializeField] private float minSwipeDistance = 0.01f;   // ⭐ Khoảng cách tối thiểu để tính là vuốt
     
     [Header("=== TỐC ĐỘ ===")]
-    [SerializeField] private float maxRiseSpeed = 5f;         // ⭐ Giới hạn tốc độ tối đa: 5 (giảm từ 8)
+    [SerializeField] private float maxRiseSpeed = 8f;         // ⭐ Giới hạn tốc độ tối đa: 8
     
     [Header("=== HIỆU ỨNG MÓP ===")]
     [SerializeField] private bool enableSquashStretch = true;
@@ -127,13 +128,9 @@ public class GhostController : MonoBehaviour
         }
         
         Debug.Log("👻 GhostController: VẬT LÝ THỰC TẾ + NHẤN = RỚT!");
-        Debug.Log($"📊 Lực tự bay: {autoRiseForce}");
-        Debug.Log($"📊 Lực rớt: {autoRiseForce * fallForceMultiplier} (x6 SIÊU NHANH!)");
-        Debug.Log($"📊 Tốc độ xoay: {rotationSpeed} (MƯỢT)");
-        Debug.Log($"📊 Trọng lực: {gravityScale}");
-        Debug.Log($"📊 Kháng không khí: {linearDrag}");
-        Debug.Log($"📊 Khối lượng: {mass}");
-        Debug.Log($"📊 Hệ số lực vuốt: {swipeForceMultiplier}");
+        Debug.Log($"📊 Mass: {mass} (SIÊU NHẸ!)");
+        Debug.Log($"📊 Linear Drag: {linearDrag} (LƠ LỬNG)");
+        Debug.Log($"📊 Swipe Force: x{swipeForceMultiplier} (THANH THOÁT!)");
     }
     
     void Update()
@@ -187,15 +184,16 @@ public class GhostController : MonoBehaviour
             
             // ⭐ TÍNH TỔNG QUÃNG ĐƯỜNG VUỐT
             Vector2 totalSwipe = mouseWorldPos - dragStartPos;
+            float swipeDistance = totalSwipe.y;  // Chỉ quan tâm trục Y
             
-            if (totalSwipe.y > minSwipeDistance)
+            if (swipeDistance >= swipeThreshold)
             {
                 // ═══════════════════════════════════════
                 // ⭐ VUỐT LÊN = ÁP DỤNG LỰC IMPULSE 1 LẦN
                 // ═══════════════════════════════════════
                 
                 // Vuốt dài hơn = lực lớn hơn = bay xa hơn
-                float swipeForce = totalSwipe.y * swipeForceMultiplier;
+                float swipeForce = swipeDistance * swipeForceMultiplier;
                 swipeForce = Mathf.Min(swipeForce, maxSwipeForce);
                 
                 // ⭐ ÁP DỤNG LỰC IMPULSE (chỉ 1 lần)
@@ -223,12 +221,12 @@ public class GhostController : MonoBehaviour
                 if (enableColorChange && spriteRenderer != null)
                     spriteRenderer.color = originalColor;
                 
-                Debug.Log($"⬆️ VUỐT! Distance: {totalSwipe.y:F3} | Impulse: {swipeForce:F2}");
+                Debug.Log($"⬆️ VUỐT LÊN! Distance: {swipeDistance:F2} | Force: {swipeForce:F2}");
             }
-            else if (Mathf.Abs(totalSwipe.y) <= tapThreshold)
+            else
             {
                 // ═══════════════════════════════════════
-                // ⭐ NHẤN 1 CÁI (TAP) = RỚT XUỐNG!
+                // ⭐ CHẠM (TAP) = RỚT XUỐNG!
                 // ═══════════════════════════════════════
                 isFalling = true;
                 
@@ -241,25 +239,7 @@ public class GhostController : MonoBehaviour
                     targetRotation = Quaternion.Euler(0, 0, 180);  // Cắm đầu xuống
                 }
                 
-                Debug.Log("⬇️ TAP! → BẮT ĐẦU RỚT!");
-            }
-            else
-            {
-                // ═══════════════════════════════════════
-                // ⭐ VUỐT NGẮN HOẶC XUỐNG → VỀ TRẠNG THÁI TỰ BAY
-                // ═══════════════════════════════════════
-                isFalling = false;
-                
-                if (enableColorChange && spriteRenderer != null)
-                    spriteRenderer.color = originalColor;
-                
-                // ⭐ XOAY ĐẦU LÊN KHI VỀ TRẠNG THÁI BÌNH THƯỜNG
-                if (enableRotation)
-                {
-                    targetRotation = Quaternion.Euler(0, 0, 0);  // Đầu hướng lên
-                }
-                
-                Debug.Log($"✋ THẢ! Total swipe: {totalSwipe.y:F3}");
+                Debug.Log($"⬇️ CHẠM! Distance: {swipeDistance:F2} → RỚT XUỐNG!");
             }
         }
     }
