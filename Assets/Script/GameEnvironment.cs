@@ -61,11 +61,7 @@ public class GameEnvironment : MonoBehaviour
     
     void Update()
     {
-        // ⭐⭐ KIỂM TRA INPUT RESTART
-        if (ghost != null && ghost.IsGameOver && Input.GetKeyDown(KeyCode.R))
-        {
-            RestartGame();
-        }
+        // Không cần restart nữa
     }
     
     void FixedUpdate()
@@ -231,8 +227,7 @@ public class GameEnvironment : MonoBehaviour
         infoStyle.normal.textColor = Color.yellow;
         
         string result = "Độ cao đạt được: " + maxHeightReached.ToString("F1") + "m 🏆\n\n";
-        result += "Bạn đã chạm vật cản!\n";
-        result += "Nhấn R để chơi lại";
+        result += "Bạn đã chạm vật cản!";
         
         GUI.Label(
             new Rect(0, Screen.height / 2 - 20, Screen.width, 200),
@@ -241,20 +236,7 @@ public class GameEnvironment : MonoBehaviour
         );
     }
     
-    // ⭐⭐ RESTART GAME
-    void RestartGame()
-    {
-        // Reset ghost
-        ghost.ResetGame();
-        
-        // Reset camera position nếu cần
-        ghost.transform.position = new Vector3(0, groundY + objectHeight + 1f, 0);
-        
-        // Reset max height
-        maxHeightReached = 0f;
-        
-        Debug.Log("🔄 RESTART GAME!");
-    }
+    // Không cần hàm RestartGame nữa
     
     public void SetGroundY(float newGroundY)
     {
