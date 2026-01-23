@@ -8200,7 +8200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1730702269
 Transform:
   m_ObjectHideFlags: 0
@@ -8256,7 +8256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleLooper
   mainCamera: {fileID: 0}
   spawner: {fileID: 0}
-  spacingY: 1.5
+  spacingY: 3
   loopThreshold: 0.5
   randomizeOnLoop: 1
   showDebugInfo: 1
@@ -8274,8 +8274,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
   obstaclePrefab: {fileID: 0}
   spawnCount: 10
-  spacingY: 2
-  startY: 0.5
+  spacingY: 3
+  startY: 0.2
   autoAddController: 1
   useExistingObstacles: 1
   player: {fileID: 0}
