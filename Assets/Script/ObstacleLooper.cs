@@ -156,36 +156,4 @@ public class ObstacleLooper : MonoBehaviour
         randomizeOnLoop = value;
     }
     
-    // ==================== DEBUG UI ====================
-    void OnGUI()
-    {
-        if (!showDebugInfo || !Application.isPlaying) return;
-        
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 16;
-        style.normal.textColor = Color.cyan;
-        style.alignment = TextAnchor.LowerRight;
-        style.fontStyle = FontStyle.Bold;
-        
-        // Đếm vật cản trong màn hình
-        int onScreen = 0;
-        float cameraBottom = mainCamera.transform.position.y - mainCamera.orthographicSize;
-        float cameraTop = mainCamera.transform.position.y + mainCamera.orthographicSize;
-        
-        foreach (GameObject obstacle in spawner.SpawnedObstacles)
-        {
-            if (obstacle == null) continue;
-            float y = obstacle.transform.position.y;
-            if (y >= cameraBottom && y <= cameraTop)
-                onScreen++;
-        }
-        
-        string info = "♻️ LOOPER\n";
-        info += "━━━━━━━━━━\n";
-        info += $"Total: {spawner.ObstacleCount}\n";
-        info += $"On Screen: {onScreen}\n";
-        info += $"Looped: {totalLooped}";
-        
-        GUI.Label(new Rect(Screen.width - 200, Screen.height - 120, 190, 120), info, style);
-    }
 }

@@ -106,34 +106,6 @@ public class CameraFollow : MonoBehaviour
         transform.position = smoothedPosition;
     }
     
-    void OnGUI()
-    {
-        if (!showDebugInfo || !Application.isPlaying) return;
-        
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 18;
-        style.normal.textColor = Color.yellow;
-        style.alignment = TextAnchor.UpperRight;
-        style.fontStyle = FontStyle.Bold;
-        
-        string info = "📷 CAMERA INFO\n";
-        info += "━━━━━━━━━━━━━━\n";
-        info += $"Camera Y: {transform.position.y:F1}\n";
-        
-        if (target != null)
-        {
-            float distance = target.position.y - transform.position.y;
-            info += $"Ghost Y: {target.position.y:F1}\n";
-            info += $"Distance: {distance:F1}\n";
-            
-            if (Mathf.Abs(distance) < deadZoneHeight)
-                info += "⏸️ DEAD ZONE";
-            else
-                info += "▶️ ĐANG THEO";
-        }
-        
-        GUI.Label(new Rect(Screen.width - 250, 10, 240, 200), info, style);
-    }
     
     // ==================== PUBLIC METHODS ====================
     

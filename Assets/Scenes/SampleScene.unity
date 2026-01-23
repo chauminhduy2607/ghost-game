@@ -8466,7 +8466,7 @@ GameObject:
   - component: {fileID: 1730702271}
   m_Layer: 0
   m_Name: Fire&Line
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8526,7 +8526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleLooper
   mainCamera: {fileID: 0}
   spawner: {fileID: 0}
-  spacingY: 3
+  spacingY: 1.5
   loopThreshold: 0.5
   randomizeOnLoop: 1
   showDebugInfo: 1

@@ -183,38 +183,6 @@ public class InfiniteBackground : MonoBehaviour
         }
     }
     
-    // ==================== DEBUG ====================
-    void OnGUI()
-    {
-        if (!showDebugInfo || !Application.isPlaying) return;
-        
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 18;
-        style.normal.textColor = Color.cyan;
-        style.alignment = TextAnchor.LowerLeft;
-        style.fontStyle = FontStyle.Bold;
-        
-        string info = "🖼️ BACKGROUND INFO\n";
-        info += "━━━━━━━━━━━━━━━━\n";
-        info += $"Backgrounds: {backgrounds.Count}\n";
-        info += $"Parallax Speed: {parallaxSpeed:F1}\n";
-        
-        if (backgrounds.Count > 0)
-        {
-            GameObject topBg = backgrounds[backgrounds.Count - 1];
-            if (topBg != null)
-            {
-                float topEdge = topBg.transform.position.y + (backgroundHeight / 2f);
-                float camTopEdge = mainCamera.transform.position.y + mainCamera.orthographicSize;
-                float distance = topEdge - camTopEdge;
-                
-                info += $"Distance to top: {distance:F1}\n";
-                info += $"Threshold: {backgroundHeight * spawnThreshold:F1}";
-            }
-        }
-        
-        GUI.Label(new Rect(10, Screen.height - 150, 300, 150), info, style);
-    }
     
     void OnDrawGizmos()
     {
