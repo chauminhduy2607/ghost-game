@@ -2,11 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// ⭐ PROGRESSIVE SPAWNER - SPAWN NHANH THEO GHOST
-/// - Vị trí spawn như cũ (không spawn xa)
-/// - Tốc độ spawn tăng khi Ghost bay nhanh
-/// - Pattern: 6 Fire&Line → 2 FlyingCircle
-/// - Tăng tốc độ vật cản dần dần
+/// ⭐ PROGRESSIVE SPAWNER - PATTERN RÕ RÀNG
+/// - Pattern: 4 Fire&Line → 1 FlyingCircle → lặp lại
+/// - Không bị đè lên nhau
+/// - Tăng tốc độ dần dần
 /// </summary>
 public class ProgressiveObstacleSpawner : MonoBehaviour
 {
@@ -15,18 +14,29 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     [SerializeField] private GameObject flyingCirclePrefab;
     
     [Header("=== PATTERN ===")]
-    [Tooltip("Số Fire&Line mỗi lần spawn")]
-    [SerializeField] private int fireLinesPerWave = 6;
+    [Tooltip("Số Fire&Line trong mỗi nhóm")]
+    [SerializeField] private int fireLinesPerGroup = 1;  // ⭐⭐ 1 Fire
     
-    [Tooltip("Số FlyingCircle mỗi lần spawn")]
-    [SerializeField] private int circlesPerWave = 2;
+    [Tooltip("Số FlyingCircle sau mỗi nhóm Fire&Line")]
+    [SerializeField] private int circlesPerGroup = 1;    // ⭐⭐ 1 Circle
     
     [Header("=== SPAWN POSITION ===")]
-    [Tooltip("Khoảng cách tối thiểu từ Ghost đến vật cản tiếp theo")]
-    [SerializeField] private float spawnDistanceFromGhost = 8f;
+    [Tooltip("Khoảng cách CƠ BẢN từ Ghost đến vật cản tiếp theo")]
+    [SerializeField] private float baseSpawnDistance = 20f;  // ⭐⭐ TĂNG: 12 → 20
+    
+    [Tooltip("Hệ số nhân với tốc độ Ghost (càng cao = spawn càng xa)")]
+    [SerializeField] private float velocityMultiplier = 2.5f;  // ⭐⭐ TĂNG: 1.5 → 2.5
+    
+    [Tooltip("Khoảng cách spawn tối đa")]
+    [SerializeField] private float maxSpawnDistance = 50f;  // ⭐⭐ TĂNG: 30 → 50
     
     [Header("=== SPACING ===")]
-    [SerializeField] private float spacingY = 1.5f;
+    [Tooltip("Khoảng cách giữa các vật cản")]
+    [SerializeField] private float spacingY = 6.0f;  // ⭐ TĂNG: 5.0 → 6.0
+    
+    [Tooltip("Khoảng cách thêm giữa các nhóm (Fire→Circle)")]
+    [SerializeField] private float groupSpacing = 5.0f;  // ⭐⭐ TĂNG: 3.0 → 5.0
+    
     [SerializeField] private float startY = 5f;
     
     [Header("=== SPEED PROGRESSION ===")]
@@ -54,7 +64,11 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     [SerializeField] private Transform player;
     
     [Header("=== USE EXISTING ===")]
+    [Tooltip("Sử dụng vật cản có sẵn trong scene (con của object này)")]
     [SerializeField] private bool useExistingObstacles = true;
+    
+    [Tooltip("Tự động sắp xếp lại khi Start (bỏ tick nếu muốn giữ nguyên vị trí)")]
+    [SerializeField] private bool autoArrangeOnStart = true;
     
     [Header("=== LOOP ===")]
     [SerializeField] private float loopThreshold = 0.5f;
@@ -62,6 +76,7 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     
     [Header("=== DEBUG ===")]
     [SerializeField] private bool showDebugInfo = true;
+    [SerializeField] private bool manuallyEnableCircles = false;  // ⭐ MỚI: Bật thủ công
     
     // Private
     private List<GameObject> allObstacles = new List<GameObject>();
@@ -107,13 +122,109 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             SpawnInitialPattern();
         }
         
-        ArrangeAllObstacles();
+        // ⭐ TẮT CIRCLEROTATION TRƯỚC KHI SẮP XẾP
+        DisableCircleRotations();
+        
+        // Sắp xếp
+        Debug.Log("🔧 Chuẩn bị sắp xếp vật cản...");
+        ArrangeAllObstaclesInPattern();
+        
+        // ⭐⭐ BẬT LẠI SAU KHI SẮP XẾP (Coroutine)
+        StartCoroutine(EnableCircleRotationsDelayed());
+        
+        // ⭐⭐ VÀ CŨNG BẬT NGAY SAU 0.5 GIÂY ĐỂ ĐẢM BẢO
+        Invoke("ForceEnableAllCircles", 0.5f);
+        
         PrintInfo();
+    }
+    
+    // ⭐⭐ HÀM FORCE ENABLE ĐẢM BẢO 100% BẬT
+    void ForceEnableAllCircles()
+    {
+        CircleRotation[] rotations = FindObjectsOfType<CircleRotation>(true); // true = tìm cả inactive
+        
+        if (rotations.Length == 0)
+        {
+            Debug.LogError("❌❌ KHÔNG TÌM THẤY SCRIPT CIRCLEROTATION!");
+            Debug.LogError("→ Circle (1) và Circle PHẢI CÓ component CircleRotation!");
+            return;
+        }
+        
+        foreach (CircleRotation rotation in rotations)
+        {
+            rotation.enabled = true;
+        }
+        
+        Debug.Log($"✅✅ FORCE ENABLE {rotations.Length} CircleRotation!");
+    }
+    
+    // ==================== TẮT/BẬT CIRCLEROTATION ====================
+    void DisableCircleRotations()
+    {
+        Debug.Log("🔴 Tạm tắt CircleRotation để sắp xếp...");
+        
+        CircleRotation[] rotations = FindObjectsOfType<CircleRotation>();
+        foreach (CircleRotation rotation in rotations)
+        {
+            rotation.enabled = false;
+            Debug.Log($"   ❌ Tắt: {rotation.gameObject.name}");
+        }
+    }
+    
+    System.Collections.IEnumerator EnableCircleRotationsDelayed()
+    {
+        yield return new WaitForEndOfFrame();
+        
+        Debug.Log("🟢 Bật lại CircleRotation...");
+        
+        CircleRotation[] rotations = FindObjectsOfType<CircleRotation>();
+        
+        if (rotations.Length == 0)
+        {
+            Debug.LogWarning("⚠️ KHÔNG TÌM THẤY CIRCLEROTATION NÀO!");
+            Debug.LogWarning("   Có thể Circle (1) và Circle chưa có script CircleRotation!");
+            yield break;
+        }
+        
+        foreach (CircleRotation rotation in rotations)
+        {
+            rotation.enabled = true;
+            Debug.Log($"   ✅ Bật: {rotation.gameObject.name}");
+        }
+        
+        Debug.Log($"✅ Đã bật {rotations.Length} CircleRotation scripts!");
     }
     
     void Update()
     {
         CheckAndLoopObstacles();
+        
+        // ⭐ TEST: Nhấn phím SPACE để bật CircleRotation thủ công
+        if (manuallyEnableCircles && Input.GetKeyDown(KeyCode.Space))
+        {
+            ManuallyEnableCircles();
+        }
+    }
+    
+    // ⭐ HÀM BẬT THỦ CÔNG
+    void ManuallyEnableCircles()
+    {
+        Debug.Log("🟢 BẬT THỦ CÔNG CircleRotation...");
+        
+        CircleRotation[] rotations = FindObjectsOfType<CircleRotation>();
+        
+        if (rotations.Length == 0)
+        {
+            Debug.LogError("❌ KHÔNG TÌM THẤY CIRCLEROTATION NÀO!");
+            Debug.LogError("   → Kiểm tra Circle (1) và Circle có script CircleRotation chưa!");
+            return;
+        }
+        
+        foreach (CircleRotation rotation in rotations)
+        {
+            rotation.enabled = true;
+            Debug.Log($"   ✅ Đã bật: {rotation.gameObject.name}");
+        }
     }
     
     // ==================== SỬ DỤNG VẬT CẢN CÓ SẴN ====================
@@ -121,23 +232,41 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     {
         allObstacles.Clear();
         
+        Debug.Log($"🔍 Bắt đầu tìm container trong {transform.childCount} objects...");
+        
+        // ⭐ TÌM CÁC PARENT CONTAINER (Fire&Line, FlyingCircle)
         foreach (Transform child in transform)
         {
             if (child == null) continue;
             
-            if (child.name.Contains("Fire") || child.name.Contains("Obstacle"))
-            {
-                SetupFireLine(child.gameObject, currentSpeed);
-            }
-            else if (child.name.Contains("Circle") || child.name.Contains("Flying"))
-            {
-                SetupFlyingCircle(child.gameObject, currentRotationSpeed);
-            }
+            string name = child.name.ToLower();
             
-            allObstacles.Add(child.gameObject);
+            // ⭐ NẾU LÀ FIRE&LINE (parent container)
+            if (name.Contains("fire") || name.Contains("line"))
+            {
+                Debug.Log($"🔥 Tìm thấy Fire&Line container: {child.name}");
+                SetupFireLine(child.gameObject, currentSpeed);
+                allObstacles.Add(child.gameObject);
+            }
+            // ⭐ NẾU LÀ FLYINGCIRCLE (parent container)
+            else if (name.Contains("circle") || name.Contains("flying"))
+            {
+                Debug.Log($"⭕ Tìm thấy FlyingCircle container: {child.name}");
+                SetupFlyingCircle(child.gameObject, currentRotationSpeed);
+                allObstacles.Add(child.gameObject);
+            }
+            else
+            {
+                Debug.Log($"⚠️ Bỏ qua: {child.name} (không phải Fire/Circle)");
+            }
         }
         
-        Debug.Log($"✅ Sử dụng {allObstacles.Count} vật cản có sẵn");
+        Debug.Log($"✅ Sử dụng {allObstacles.Count} container (Fire&Line + FlyingCircle)");
+        
+        if (allObstacles.Count == 0)
+        {
+            Debug.LogError("❌ KHÔNG TÌM THẤY CONTAINER NÀO! Kiểm tra tên object trong Hierarchy.");
+        }
     }
     
     // ==================== SPAWN PATTERN BAN ĐẦU ====================
@@ -151,11 +280,11 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         
         allObstacles.Clear();
         
-        // Spawn 3 waves ban đầu
-        for (int wave = 0; wave < 3; wave++)
+        // Spawn 3 groups ban đầu
+        for (int group = 0; group < 3; group++)
         {
             // Spawn Fire&Lines
-            for (int i = 0; i < fireLinesPerWave; i++)
+            for (int i = 0; i < fireLinesPerGroup; i++)
             {
                 GameObject fireLine = Instantiate(fireLinePrefab, transform);
                 fireLine.name = $"Fire&Line_{spawnCounter++}";
@@ -163,17 +292,14 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
                 allObstacles.Add(fireLine);
             }
             
-            // Spawn FlyingCircles
-            for (int i = 0; i < circlesPerWave; i++)
+            // Sau đó spawn FlyingCircles
+            for (int i = 0; i < circlesPerGroup; i++)
             {
                 GameObject circle = Instantiate(flyingCirclePrefab, transform);
                 circle.name = $"FlyingCircle_{spawnCounter++}";
                 SetupFlyingCircle(circle, currentRotationSpeed);
                 allObstacles.Add(circle);
             }
-            
-            // Tăng độ khó cho wave tiếp theo
-            IncreaseWaveDifficulty();
         }
         
         Debug.Log($"✅ Đã spawn {allObstacles.Count} vật cản");
@@ -229,25 +355,92 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         controller.SetRotationSpeed(rotSpeed);
     }
     
-    // ==================== SẮP XẾP TẤT CẢ ====================
-    void ArrangeAllObstacles()
+    // ==================== ⭐ SẮP XẾP THEO PATTERN ====================
+    void ArrangeAllObstaclesInPattern()
     {
         if (allObstacles.Count == 0) return;
         
-        for (int i = 0; i < allObstacles.Count; i++)
+        // ⭐ PHÂN LOẠI CONTAINER (Fire&Line vs FlyingCircle)
+        List<GameObject> fireLineContainers = new List<GameObject>();
+        List<GameObject> circleContainers = new List<GameObject>();
+        
+        foreach (GameObject obstacle in allObstacles)
         {
-            GameObject obstacle = allObstacles[i];
             if (obstacle == null) continue;
             
-            float yPos = startY + (i * spacingY);
+            string name = obstacle.name.ToLower();
             
-            Vector3 pos = obstacle.transform.position;
-            pos.y = yPos;
-            obstacle.transform.position = pos;
+            // Fire&Line container
+            if (name.Contains("fire") || name.Contains("line"))
+            {
+                fireLineContainers.Add(obstacle);
+                Debug.Log($"🔥 Fire&Line container: {obstacle.name}");
+            }
+            // FlyingCircle container
+            else if (name.Contains("circle") || name.Contains("flying"))
+            {
+                circleContainers.Add(obstacle);
+                Debug.Log($"⭕ FlyingCircle container: {obstacle.name}");
+            }
         }
+        
+        Debug.Log($"📊 Có {fireLineContainers.Count} Fire&Line, {circleContainers.Count} FlyingCircle");
+        
+        if (fireLineContainers.Count == 0 && circleContainers.Count == 0)
+        {
+            Debug.LogError("❌ Không tìm thấy container nào!");
+            return;
+        }
+        
+        // ⭐⭐ PATTERN: Mỗi Fire&Line container + Mỗi FlyingCircle container
+        // Ví dụ: bạn có 1 Fire&Line (chứa 4 Obstacle) + 1 FlyingCircle (chứa 2 Circle)
+        // → Pattern sẽ là: Fire&Line → FlyingCircle → Fire&Line → FlyingCircle...
+        
+        float currentY = startY;
+        int fireIndex = 0;
+        int circleIndex = 0;
+        
+        Debug.Log($"🎯 Bắt đầu sắp xếp từ Y = {startY}");
+        
+        // ⭐ SẮP XẾP THEO SỐ LƯỢNG CONTAINER
+        int maxIterations = Mathf.Max(fireLineContainers.Count, circleContainers.Count);
+        
+        for (int i = 0; i < maxIterations; i++)
+        {
+            // Đặt Fire&Line container
+            if (fireIndex < fireLineContainers.Count)
+            {
+                Vector3 pos = fireLineContainers[fireIndex].transform.position;
+                pos.y = currentY;
+                fireLineContainers[fireIndex].transform.position = pos;
+                
+                Debug.Log($"  📍 {fireLineContainers[fireIndex].name} → Y = {currentY:F1}");
+                
+                currentY += spacingY;
+                fireIndex++;
+            }
+            
+            // Thêm khoảng cách giữa Fire và Circle
+            currentY += groupSpacing;
+            
+            // Đặt FlyingCircle container
+            if (circleIndex < circleContainers.Count)
+            {
+                Vector3 pos = circleContainers[circleIndex].transform.position;
+                pos.y = currentY;
+                circleContainers[circleIndex].transform.position = pos;
+                
+                Debug.Log($"  📍 {circleContainers[circleIndex].name} → Y = {currentY:F1}");
+                
+                currentY += spacingY + groupSpacing;
+                circleIndex++;
+            }
+        }
+        
+        Debug.Log($"✅ Đã sắp xếp xong! Y cuối: {currentY:F1}");
     }
     
-    // ==================== LOOP VẬT CẢN - THEO WAVE ====================
+    // ==================== LOOP VẬT CẢN - THEO PATTERN ====================
     void CheckAndLoopObstacles()
     {
         if (allObstacles.Count == 0 || player == null) return;
@@ -255,10 +448,21 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         float ghostY = player.position.y;
         float cameraBottomEdge = mainCamera.transform.position.y - mainCamera.orthographicSize;
         
-        // ⭐ ĐIỀU CHỈNH LOOP THRESHOLD DỰA VÀO TỐC ĐỘ GHOST
+        // ⭐⭐ TÍNH KHOẢNG CÁCH SPAWN ĐỘNG DỰA VÀO TỐC ĐỘ GHOST
         GhostController ghost = player.GetComponent<GhostController>();
         float ghostVelocityY = ghost != null ? ghost.Velocity.y : 0f;
         
+        // Khoảng cách spawn = base + (tốc độ * multiplier)
+        float dynamicSpawnDistance = baseSpawnDistance + (Mathf.Abs(ghostVelocityY) * velocityMultiplier);
+        dynamicSpawnDistance = Mathf.Min(dynamicSpawnDistance, maxSpawnDistance);
+        
+        // Debug mỗi 60 frame
+        if (Time.frameCount % 60 == 0)
+        {
+            Debug.Log($"📊 Ghost Velocity: {ghostVelocityY:F1} → Spawn Distance: {dynamicSpawnDistance:F1}");
+        }
+        
+        // ⭐ ĐIỀU CHỈNH LOOP THRESHOLD DỰA VÀO TỐC ĐỘ GHOST
         float dynamicLoopThreshold = loopThreshold;
         if (ghostVelocityY > 5f)
         {
@@ -288,91 +492,86 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
                 highestY = y;
         }
         
-        // ⭐ KIỂM TRA XEM CẦN LOOP WAVE KHÔNG
-        float requiredHighestY = ghostY + spawnDistanceFromGhost;
+        // ⭐⭐ KIỂM TRA XEM CẦN LOOP KHÔNG (dùng khoảng cách động)
+        float requiredHighestY = ghostY + dynamicSpawnDistance;
         
         if (lowestY < loopLine || highestY < requiredHighestY)
         {
-            // ⭐⭐ LOOP CẢ WAVE (6 Fire + 2 Circle)
-            LoopNextWave(loopLine, highestY);
+            LoopNextGroup(loopLine, highestY);
         }
     }
     
-    // ⭐⭐ LOOP MỘT WAVE HOÀN CHỈNH
-    void LoopNextWave(float loopLine, float currentHighestY)
+    // ⭐⭐ LOOP THEO PATTERN: FIRE&LINE → FLYINGCIRCLE
+    void LoopNextGroup(float loopLine, float currentHighestY)
     {
-        List<GameObject> toLoop = new List<GameObject>();
+        // Tìm các container cần loop
+        List<GameObject> fireLinesToLoop = new List<GameObject>();
+        List<GameObject> circlesToLoop = new List<GameObject>();
         
-        // Tìm các vật cản cần loop (dưới loopLine)
         foreach (GameObject obstacle in allObstacles)
         {
             if (obstacle == null) continue;
             
             if (obstacle.transform.position.y < loopLine)
             {
-                toLoop.Add(obstacle);
+                string name = obstacle.name.ToLower();
+                
+                if (name.Contains("fire") || name.Contains("line"))
+                {
+                    fireLinesToLoop.Add(obstacle);
+                }
+                else if (name.Contains("circle") || name.Contains("flying"))
+                {
+                    circlesToLoop.Add(obstacle);
+                }
             }
         }
         
-        if (toLoop.Count == 0) return;
-        
-        // ⭐⭐ SẮP XẾP THEO PATTERN: 6 Fire rồi 2 Circle
-        List<GameObject> fireLines = new List<GameObject>();
-        List<GameObject> circles = new List<GameObject>();
-        
-        foreach (GameObject obstacle in toLoop)
-        {
-            if (obstacle.name.Contains("Fire"))
-            {
-                fireLines.Add(obstacle);
-            }
-            else if (obstacle.name.Contains("Circle"))
-            {
-                circles.Add(obstacle);
-            }
-        }
+        if (fireLinesToLoop.Count == 0 && circlesToLoop.Count == 0) return;
         
         float newY = currentHighestY + spacingY;
         
-        // Loop 6 Fire&Line trước
-        int fireCount = Mathf.Min(fireLines.Count, fireLinesPerWave);
-        for (int i = 0; i < fireCount; i++)
+        // Loop Fire&Line container
+        foreach (GameObject fireLine in fireLinesToLoop)
         {
-            Vector3 pos = fireLines[i].transform.position;
+            Vector3 pos = fireLine.transform.position;
             pos.y = newY;
-            fireLines[i].transform.position = pos;
+            fireLine.transform.position = pos;
             
             if (randomizeOnLoop)
-                RandomizeObstacle(fireLines[i]);
+                RandomizeObstacle(fireLine);
             
-            ApplyCurrentSpeedToObstacle(fireLines[i]);
+            ApplyCurrentSpeedToObstacle(fireLine);
             
-            newY += spacingY;
+            newY += spacingY + groupSpacing;
             totalLooped++;
         }
         
-        // Loop 2 Circle sau
-        int circleCount = Mathf.Min(circles.Count, circlesPerWave);
-        for (int i = 0; i < circleCount; i++)
+        // Loop FlyingCircle container
+        foreach (GameObject circle in circlesToLoop)
         {
-            Vector3 pos = circles[i].transform.position;
+            Vector3 pos = circle.transform.position;
             pos.y = newY;
-            circles[i].transform.position = pos;
+            circle.transform.position = pos;
             
             if (randomizeOnLoop)
-                RandomizeObstacle(circles[i]);
+                RandomizeObstacle(circle);
             
-            ApplyCurrentSpeedToObstacle(circles[i]);
+            ApplyCurrentSpeedToObstacle(circle);
             
-            newY += spacingY;
+            newY += spacingY + groupSpacing;
             totalLooped++;
         }
         
-        // Tăng độ khó sau mỗi wave
-        if (fireCount > 0 || circleCount > 0)
+        // Tăng độ khó
+        if (fireLinesToLoop.Count > 0 || circlesToLoop.Count > 0)
         {
             IncreaseWaveDifficulty();
-            Debug.Log($"♻️ Loop Wave {currentWave}: {fireCount} Fire + {circleCount} Circle");
+            
+            if (showDebugInfo)
+            {
+                Debug.Log($"♻️ Loop: {fireLinesToLoop.Count} Fire&Line + {circlesToLoop.Count} FlyingCircle (Wave {currentWave})");
+            }
         }
     }
     
@@ -428,20 +627,24 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         currentSpeed = Mathf.Min(currentSpeed + speedIncrement, maxSpeed);
         currentRotationSpeed = Mathf.Min(currentRotationSpeed + rotationSpeedIncrement, maxRotationSpeed);
         
-        Debug.Log($"📈 Wave {currentWave}: Speed = {currentSpeed:F1}, Rotation = {currentRotationSpeed:F0}°/s");
+        if (showDebugInfo && currentWave % 3 == 0)
+        {
+            Debug.Log($"📈 Wave {currentWave}: Speed = {currentSpeed:F1}, Rotation = {currentRotationSpeed:F0}°/s");
+        }
     }
     
     // ==================== DEBUG ====================
     void PrintInfo()
     {
         Debug.Log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        Debug.Log("🎮 PROGRESSIVE SPAWNER V2");
+        Debug.Log("🎮 PROGRESSIVE SPAWNER - PATTERN MODE");
         Debug.Log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        Debug.Log($"📊 Pattern: {fireLinesPerWave} Fire → {circlesPerWave} Circle");
-        Debug.Log($"📍 Spawn khi Ghost cần: {spawnDistanceFromGhost}");
+        Debug.Log($"📊 Pattern: {fireLinesPerGroup} Fire → {circlesPerGroup} Circle → Lặp lại");
+        Debug.Log($"📍 Khoảng cách spawn: {spacingY}");
         Debug.Log($"🏁 Tốc độ ban đầu: {initialSpeed:F1}");
         Debug.Log($"📈 Tăng tốc: +{speedIncrement:F1} mỗi wave");
         Debug.Log($"⚡ Loop động theo tốc độ Ghost");
+        Debug.Log($"🎯 Tổng vật cản: {allObstacles.Count}");
         Debug.Log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     }
     
@@ -458,6 +661,10 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         GhostController ghost = player.GetComponent<GhostController>();
         float ghostVelocity = ghost != null ? ghost.Velocity.y : 0f;
         
+        // ⭐⭐ Tính khoảng cách spawn động
+        float dynamicSpawnDistance = baseSpawnDistance + (Mathf.Abs(ghostVelocity) * velocityMultiplier);
+        dynamicSpawnDistance = Mathf.Min(dynamicSpawnDistance, maxSpawnDistance);
+        
         // Tính vật cản cao nhất
         float highestY = float.MinValue;
         foreach (GameObject obstacle in allObstacles)
@@ -470,15 +677,37 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         
         float distanceAhead = highestY - player.position.y;
         
-        string info = "🎮 SPAWNER V2\n";
+        // Đếm số Fire và Circle
+        int fireCount = 0;
+        int circleCount = 0;
+        foreach (GameObject obstacle in allObstacles)
+        {
+            if (obstacle == null) continue;
+            string name = obstacle.name.ToLower();
+            if (name.Contains("fire")) fireCount++;
+            else if (name.Contains("circle")) circleCount++;
+        }
+        
+        string info = "🎮 DYNAMIC SPAWNER\n";
         info += "━━━━━━━━━━━━━━━━━\n";
+        info += $"Pattern: {fireLinesPerGroup}F→{circlesPerGroup}C\n";
+        info += $"Fire: {fireCount} | Circle: {circleCount}\n";
         info += $"Wave: {currentWave}\n";
         info += $"Speed: {currentSpeed:F1}\n";
         info += $"Ghost Vel: {ghostVelocity:F1}\n";
-        info += $"Distance Ahead: {distanceAhead:F1}\n";
+        info += $"━━━━━━━━━━━━━━━━━\n";
+        info += $"Spawn Dist: {dynamicSpawnDistance:F1}\n";
+        info += $"Ahead: {distanceAhead:F1}\n";
         info += $"Looped: {totalLooped}";
         
-        GUI.Label(new Rect(10, Screen.height - 140, 250, 140), info, style);
+        // ⭐⭐ CẢNH BÁO NẾU SẮP HẾT VẬT CẢN
+        if (distanceAhead < dynamicSpawnDistance * 0.5f)
+        {
+            style.normal.textColor = Color.red;
+            info += "\n⚠️ SPAWNING!";
+        }
+        
+        GUI.Label(new Rect(10, Screen.height - 220, 250, 220), info, style);
     }
     
     // ==================== PUBLIC METHODS ====================
@@ -491,5 +720,36 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         totalLooped = 0;
         
         Debug.Log("🔄 Reset độ khó!");
+    }
+    
+    /// <summary>
+    /// Thay đổi pattern spawn
+    /// </summary>
+    public void SetPattern(int fireCount, int circleCount)
+    {
+        fireLinesPerGroup = Mathf.Max(1, fireCount);
+        circlesPerGroup = Mathf.Max(1, circleCount);
+        
+        Debug.Log($"🔧 Pattern mới: {fireLinesPerGroup} Fire → {circlesPerGroup} Circle");
+    }
+    
+    /// <summary>
+    /// Sắp xếp lại tất cả vật cản ngay lập tức
+    /// </summary>
+    public void RearrangeAll()
+    {
+        ArrangeAllObstaclesInPattern();
+        Debug.Log($"🔄 Đã sắp xếp lại với spacing: {spacingY}, group spacing: {groupSpacing}");
+    }
+    
+    /// <summary>
+    /// Thay đổi spacing và sắp xếp lại
+    /// </summary>
+    public void SetSpacing(float newSpacing, float newGroupSpacing)
+    {
+        spacingY = Mathf.Max(1f, newSpacing);
+        groupSpacing = Mathf.Max(0f, newGroupSpacing);
+        ArrangeAllObstaclesInPattern();
+        Debug.Log($"🔧 Spacing mới: {spacingY}, group: {groupSpacing}");
     }
 }

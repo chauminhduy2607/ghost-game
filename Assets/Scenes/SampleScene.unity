@@ -328,7 +328,7 @@ Transform:
   m_GameObject: {fileID: 45679212}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.21, y: 10.01, z: 0}
+  m_LocalPosition: {x: 2.21, y: 10.37, z: 0}
   m_LocalScale: {x: 0.35499126, y: 0.27312565, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -429,7 +429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &88398412
 Transform:
   m_ObjectHideFlags: 0
@@ -604,19 +604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703388bee28c44493ba2f2a03c4316cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnController
-  fireLineManager: {fileID: 1730702270}
-  flyingFireManager: {fileID: 0}
-  mainCamera: {fileID: 519420031}
-  player: {fileID: 1173831014}
-  fireLineCount: 6
-  flyingFireCount: 3
-  spawnInterval: 2
-  waveGap: 1
-  showDebug: 1
-  isSpawningFireLine: 1
-  currentCount: 0
-  waveNumber: 0
-  nextSpawnTime: 0
 --- !u!114 &140615575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,10 +642,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProgressiveObstacleSpawner
   fireLinePrefab: {fileID: 0}
   flyingCirclePrefab: {fileID: 0}
-  fireLinesPerWave: 6
-  circlesPerWave: 2
+  fireLinesPerGroup: 4
+  circlesPerGroup: 1
   spawnDistanceFromGhost: 8
   spacingY: 1.5
+  groupSpacing: 1
   startY: 5
   initialSpeed: 1
   speedIncrement: 0.2
@@ -669,6 +657,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   player: {fileID: 0}
   useExistingObstacles: 1
+  autoArrangeOnStart: 1
   loopThreshold: 0.5
   randomizeOnLoop: 1
   showDebugInfo: 1
@@ -1964,7 +1953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
   rotationSpeed: 180
   radius: 3
-  startAngle: 0
+  startAngle: 180
   centerPoint: {fileID: 0}
   rotateSprite: 1
   spriteRotationOffset: 90
