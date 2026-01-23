@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+
 /// <summary>
 /// ⭐ VẬT LÝ THỰC TẾ: Dùng Force thay vì set Velocity!
 /// - Trọng lực âm (-0.5) = đẩy nhẹ lên trên
@@ -61,6 +63,7 @@ public class GhostController : MonoBehaviour
     [Header("=== VISUAL EFFECTS ===")]
     [SerializeField] private bool enableTrail = true;
     [SerializeField] private bool enableColorChange = true;
+     
     
     // Private variables
     private Rigidbody2D rb;
@@ -99,7 +102,7 @@ public class GhostController : MonoBehaviour
     public bool HitObstacle => hitObstacle;     // ⭐⭐ MỚI
     public bool IsGameOver => isGameOver;       // ⭐⭐ MỚI
     public float ObstacleTimer => obstacleTimer; // ⭐⭐ MỚI
-    
+   
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
