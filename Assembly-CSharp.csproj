@@ -61,6 +61,7 @@
     <Compile Include="Assets\Script\FlyingCircleController.cs" />
     <Compile Include="Assets\Script\ObstacleLooper.cs" />
     <Compile Include="Assets\Script\InfiniteBackground.cs" />
+    <Compile Include="Assets\Script\GameOverSceneController.cs" />
     <Compile Include="Assets\Script\CircleRotation.cs" />
     <Compile Include="Assets\Script\GhostController.cs" />
     <Compile Include="Assets\Script\RealisticBalloonController.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Assets\Script\ScoreManager.cs" />
     <Compile Include="Assets\Script\FloatingAnimation.cs" />
     <Compile Include="Assets\Script\HeavyBalloonController.cs" />
+    <Compile Include="Assets\Script\ameManagerSceneTransition.cs" />
     <Compile Include="Assets\Script\GameEnvironment.cs" />
     <Compile Include="Assets\Script\ScrollingBackground.cs" />
     <Compile Include="Assets\Script\UniversalObstacleSpawner.cs" />

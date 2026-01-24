@@ -1,34 +1,31 @@
 using UnityEngine;
 
 /// <summary>
-/// 🤖 AI BOT - TỰ ĐỘNG CHƠI GAME
-/// Tự động phát hiện chướng ngại vật và vuốt lên để tránh
+/// 🤖 AI BOT - PHIÊN BẢN ĐƠN GIẢN
+/// ⭐ CHIẾN LƯỢC: Bay lên liên tục + Tránh vật cản
 /// </summary>
 public class GhostAI : MonoBehaviour
 {
     [Header("=== AI SETTINGS ===")]
-    [SerializeField] private bool enableAI = true;              // Bật/tắt AI
-    [SerializeField] private float detectionDistance = 5f;      // Khoảng cách phát hiện chướng ngại vật
-    [SerializeField] private float safeHeight = 1f;             // Độ cao an toàn phía trên chướng ngại vật
-    [SerializeField] private float swipeForce = 25f;            // Lực vuốt của AI
-    [SerializeField] private float reactionDelay = 0.1f;        // Độ trễ phản ứng (giống người thật)
+    [SerializeField] private bool enableAI = true;
+    [SerializeField] private float autoSwipeInterval = 1.2f;    // ⭐ Tự động vuốt mỗi X giây
+    [SerializeField] private float swipeForce = 25f;            // Lực vuốt
+    [SerializeField] private float obstacleCheckDistance = 2.5f; // Khoảng cách check vật cản
     
-    [Header("=== DETECTION ===")]
-    [SerializeField] private LayerMask obstacleLayer;           // Layer của chướng ngại vật
-    [SerializeField] private float raycastWidth = 0.5f;         // Độ rộng quét
-    [SerializeField] private bool showDebugRays = true;         // Hiển thị tia debug
+    [Header("=== OBSTACLE DETECTION ===")]
+    [SerializeField] private string obstacleTag = "Obstacle";
+    [SerializeField] private float horizontalCheckRadius = 1.0f; // Bán kính check ngang
+    [SerializeField] private bool showDebug = true;
     
-    [Header("=== BEHAVIOR ===")]
-    [SerializeField] private float minSwipeInterval = 0.3f;     // Khoảng cách tối thiểu giữa các lần vuốt
-    [SerializeField] private float maxHeight = 4f;              // Độ cao tối đa (không bay quá cao)
-    [SerializeField] private float minHeight = 0.5f;            // Độ cao tối thiểu (không rơi quá thấp)
+    [Header("=== HEIGHT LIMITS ===")]
+    [SerializeField] private float minHeight = 0.5f;            // Độ cao tối thiểu
+    [SerializeField] private float emergencySwipeForce = 35f;   // Lực vuốt khẩn cấp
     
-    // Private variables
+    // Private
     private GhostController ghostController;
     private Rigidbody2D rb;
-    private float lastSwipeTime;
-    private float reactionTimer;
-    private bool shouldSwipe;
+    private float timeSinceLastSwipe;
+    private bool hasObstacleAhead;
     
     void Awake()
     {
@@ -42,9 +39,9 @@ public class GhostAI : MonoBehaviour
             return;
         }
         
-        Debug.Log("🤖 AI BOT: ACTIVATED!");
-        Debug.Log("📊 Detection Distance: " + detectionDistance);
-        Debug.Log("📊 Safe Height: " + safeHeight);
+        Debug.Log("🤖 AI BOT: SIMPLE MODE ACTIVATED!");
+        Debug.Log("⏱️ Auto Swipe Every: " + autoSwipeInterval + "s");
+        Debug.Log("🎯 Strategy: Bay lên liên tục + Tránh vật cản");
     }
     
     void Update()
@@ -53,140 +50,140 @@ public class GhostAI : MonoBehaviour
         if (ghostController.IsGameOver) return;
         if (ghostController.HitObstacle) return;
         
-        // Phát hiện chướng ngại vật
-        DetectObstacles();
+        timeSinceLastSwipe += Time.deltaTime;
         
-        // Xử lý phản ứng với độ trễ
-        if (shouldSwipe)
+        // ⭐⭐ CHIẾN LƯỢC ĐƠN GIẢN: BAY LÊN LIÊN TỤC!
+        
+        // 1. Check khẩn cấp - quá thấp
+        if (transform.position.y < minHeight)
         {
-            reactionTimer += Time.deltaTime;
-            if (reactionTimer >= reactionDelay)
-            {
-                PerformSwipe();
-                shouldSwipe = false;
-                reactionTimer = 0f;
-            }
+            SwipeUp(emergencySwipeForce, "🚨 KHẨN CẤP - QUÁ THẤP!");
+            return;
         }
         
-        // Duy trì độ cao an toàn
-        MaintainSafeHeight();
+        // 2. Check vật cản phía trước
+        CheckForObstacles();
+        
+        // 3. Nếu có vật cản → vuốt ngay
+        if (hasObstacleAhead)
+        {
+            if (timeSinceLastSwipe >= autoSwipeInterval * 0.5f) // Nhanh hơn khi có vật cản
+            {
+                SwipeUp(swipeForce * 1.2f, "🚨 TRÁNH VẬT CẢN!");
+            }
+        }
+        // 4. Không có vật cản → vuốt đều đặn để bay lên
+        else
+        {
+            if (timeSinceLastSwipe >= autoSwipeInterval)
+            {
+                SwipeUp(swipeForce, "⬆️ TỰ ĐỘNG BAY LÊN");
+            }
+        }
     }
     
     /// <summary>
-    /// Phát hiện chướng ngại vật phía trước
+    /// ⭐ CHECK VẬT CẢN PHÍA TRÊN (ĐƠN GIẢN)
     /// </summary>
-    void DetectObstacles()
+    void CheckForObstacles()
     {
-        Vector2 origin = transform.position;
-        Vector2 direction = Vector2.right;
+        hasObstacleAhead = false;
         
-        // Quét 3 tia: giữa, trên, dưới
-        RaycastHit2D hitCenter = Physics2D.Raycast(origin, direction, detectionDistance, obstacleLayer);
-        RaycastHit2D hitTop = Physics2D.Raycast(origin + Vector2.up * raycastWidth, direction, detectionDistance, obstacleLayer);
-        RaycastHit2D hitBottom = Physics2D.Raycast(origin + Vector2.down * raycastWidth, direction, detectionDistance, obstacleLayer);
+        // Tìm tất cả vật cản
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag(obstacleTag);
         
-        // Debug rays
-        if (showDebugRays)
+        foreach (GameObject obs in obstacles)
         {
-            Color rayColor = (hitCenter || hitTop || hitBottom) ? Color.red : Color.green;
-            Debug.DrawRay(origin, direction * detectionDistance, rayColor);
-            Debug.DrawRay(origin + Vector2.up * raycastWidth, direction * detectionDistance, rayColor);
-            Debug.DrawRay(origin + Vector2.down * raycastWidth, direction * detectionDistance, rayColor);
-        }
-        
-        // Nếu phát hiện chướng ngại vật
-        if (hitCenter || hitTop || hitBottom)
-        {
-            RaycastHit2D hit = hitCenter ? hitCenter : (hitTop ? hitTop : hitBottom);
+            Vector3 obsPos = obs.transform.position;
+            Vector3 myPos = transform.position;
             
-            // Tính độ cao cần thiết để vượt qua
-            float obstacleTop = hit.collider.bounds.max.y;
-            float requiredHeight = obstacleTop + safeHeight;
+            // Tính khoảng cách
+            float verticalDist = obsPos.y - myPos.y;      // Khoảng cách dọc
+            float horizontalDist = Mathf.Abs(obsPos.x - myPos.x); // Khoảng cách ngang
             
-            // Nếu đang ở dưới độ cao cần thiết → vuốt lên
-            if (transform.position.y < requiredHeight)
+            // ⭐ VẬT CẢN Ở PHÍA TRÊN + ĐÚNG ĐƯỜNG BAY
+            if (verticalDist > 0 && verticalDist < obstacleCheckDistance)
             {
-                if (Time.time - lastSwipeTime >= minSwipeInterval)
+                if (horizontalDist < horizontalCheckRadius)
                 {
-                    shouldSwipe = true;
-                    Debug.Log("🚨 AI: Phát hiện chướng ngại vật! Chuẩn bị vuốt lên...");
+                    hasObstacleAhead = true;
+                    
+                    if (showDebug)
+                    {
+                        Debug.DrawLine(myPos, obsPos, Color.red);
+                        Debug.Log("🚨 Phát hiện vật cản: " + obs.name + " | Dọc: " + verticalDist.ToString("F2") + " | Ngang: " + horizontalDist.ToString("F2"));
+                    }
+                    
+                    return; // Tìm thấy 1 cái là đủ
                 }
             }
         }
+        
+        // Debug - không có vật cản
+        if (showDebug && Time.frameCount % 60 == 0)
+        {
+            Debug.Log("✅ Không có vật cản phía trước");
+        }
     }
     
     /// <summary>
-    /// Thực hiện vuốt lên
+    /// ⭐ VUỐT LÊN
     /// </summary>
-    void PerformSwipe()
+    void SwipeUp(float force, string reason)
     {
+        // Nếu đang rớt → dừng rớt
         if (ghostController.IsFalling)
         {
             ghostController.StopFalling();
         }
         
-        rb.AddForce(Vector2.up * swipeForce, ForceMode2D.Impulse);
-        lastSwipeTime = Time.time;
+        // Áp lực lên
+        rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
         
-        Debug.Log("⬆️ AI: VUỐT LÊN! Force: " + swipeForce);
-    }
-    
-    /// <summary>
-    /// Duy trì độ cao an toàn (không bay quá cao, không rơi quá thấp)
-    /// </summary>
-    void MaintainSafeHeight()
-    {
-        float currentHeight = transform.position.y;
+        // Reset timer
+        timeSinceLastSwipe = 0f;
         
-        // Quá thấp → vuốt nhẹ lên
-        if (currentHeight < minHeight && rb.linearVelocity.y < 0)
+        if (showDebug)
         {
-            if (Time.time - lastSwipeTime >= minSwipeInterval)
-            {
-                shouldSwipe = true;
-                Debug.Log("⚠️ AI: Quá thấp! Vuốt lên...");
-            }
-        }
-        
-        // Quá cao → để tự rơi xuống
-        if (currentHeight > maxHeight && rb.linearVelocity.y > 0)
-        {
-            // Không làm gì, để trọng lực kéo xuống tự nhiên
-            Debug.Log("⚠️ AI: Quá cao! Để rơi xuống...");
+            Debug.Log("⬆️ AI VUỐT: " + reason + " | Force: " + force.ToString("F1"));
         }
     }
     
-    /// <summary>
-    /// Bật/tắt AI từ code khác
-    /// </summary>
+    // ==================== PUBLIC METHODS ====================
+    
     public void SetAIEnabled(bool enabled)
     {
         enableAI = enabled;
         Debug.Log("🤖 AI: " + (enabled ? "BẬT" : "TẮT"));
     }
     
-    /// <summary>
-    /// Điều chỉnh độ nhạy của AI
-    /// </summary>
-    public void SetDifficulty(float distance, float reaction)
+    public void SetSwipeInterval(float interval)
     {
-        detectionDistance = distance;
-        reactionDelay = reaction;
-        Debug.Log("🎮 AI Difficulty: Detection=" + distance + ", Reaction=" + reaction);
+        autoSwipeInterval = interval;
+        Debug.Log("⏱️ AI Swipe Interval: " + interval + "s");
     }
     
-    void OnDrawGizmosSelected()
+    // ==================== DEBUG VISUALIZATION ====================
+    
+    void OnDrawGizmos()
     {
-        // Vẽ vùng phát hiện
-        Gizmos.color = Color.yellow;
-        Vector3 pos = transform.position;
-        Gizmos.DrawWireCube(pos + Vector3.right * detectionDistance / 2, 
-                           new Vector3(detectionDistance, raycastWidth * 2, 0.1f));
+        if (!Application.isPlaying) return;
+        if (!enableAI) return;
         
-        // Vẽ độ cao an toàn
-        Gizmos.color = Color.green;
+        // Vẽ vùng check vật cản (hình chữ nhật phía trên)
+        Gizmos.color = hasObstacleAhead ? Color.red : Color.green;
+        
+        Vector3 boxCenter = transform.position + Vector3.up * (obstacleCheckDistance / 2);
+        Vector3 boxSize = new Vector3(horizontalCheckRadius * 2, obstacleCheckDistance, 0.1f);
+        
+        Gizmos.DrawWireCube(boxCenter, boxSize);
+        
+        // Vẽ độ cao tối thiểu
+        Gizmos.color = Color.yellow;
         Gizmos.DrawLine(new Vector3(-10, minHeight, 0), new Vector3(10, minHeight, 0));
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(-10, maxHeight, 0), new Vector3(10, maxHeight, 0));
+        
+        // Vẽ vị trí hiện tại
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, 0.3f);
     }
 }
