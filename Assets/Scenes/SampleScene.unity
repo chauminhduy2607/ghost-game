@@ -808,7 +808,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136408985}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6633c14162696247aad6309a24a909f, type: 3}
   m_Name: 
@@ -818,7 +818,7 @@ MonoBehaviour:
   countdownFrom: 5
   ghostController: {fileID: 1173831019}
   scoreCycle: {fileID: 1143897738}
-  fireLineManager: {fileID: 1730702270}
+  fireLineManager: {fileID: 0}
   ghostAI: {fileID: 0}
 --- !u!4 &136408987
 Transform:
@@ -1165,37 +1165,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &191310961
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 191310962}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &191310962
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 191310961}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.889, y: -1.59867, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &197211354
 GameObject:
   m_ObjectHideFlags: 0
@@ -5570,7 +5539,7 @@ MonoBehaviour:
   startScore: 100
   secondsPerMinusPoint: 2
   multiplier: 10
-  autoStart: 1
+  autoStart: 0
   scoreCycle: {fileID: 0}
 --- !u!1 &1172404994
 GameObject:
@@ -5728,6 +5697,8 @@ GameObject:
   - component: {fileID: 1173831021}
   - component: {fileID: 1173831022}
   - component: {fileID: 1173831023}
+  - component: {fileID: 1173831024}
+  - component: {fileID: 1173831025}
   m_Layer: 0
   m_Name: ghost
   m_TagString: Player
@@ -5966,7 +5937,7 @@ MonoBehaviour:
   swipeForceMultiplier: 100
   maxSwipeForce: 15
   minSwipeDistance: 0.01
-  maxRiseSpeed: 5
+  maxRiseSpeed: 7
   enableSquashStretch: 1
   squashAmount: 0.15
   squashSpeed: 8
@@ -6046,6 +6017,40 @@ MonoBehaviour:
   showDebug: 1
   minHeight: 0.5
   emergencySwipeForce: 35
+--- !u!114 &1173831024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3313546b2b74d14dbc3df93b346fae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostRewindBuffer
+  bufferSeconds: 1
+  rewindSeconds: 0.3
+  rb: {fileID: 0}
+--- !u!114 &1173831025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4fb3fe823a9fcf448674e3a9aa788bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostContinueHelper
+  safeSaveInterval: 0.05
+  ghost: {fileID: 0}
+  rb: {fileID: 0}
+  saveTimer: 0
+  safePos: {x: 0, y: 0}
+  safeVel: {x: 0, y: 0}
+  safeRot: 0
 --- !u!1 &1180034442
 GameObject:
   m_ObjectHideFlags: 0
@@ -9989,4 +9994,3 @@ SceneRoots:
   - {fileID: 1143897737}
   - {fileID: 1950429202}
   - {fileID: 136408987}
-  - {fileID: 191310962}

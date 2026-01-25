@@ -42,38 +42,41 @@ public class GameManagerSceneTransition : MonoBehaviour
     /// Bắt đầu chuyển scene
     /// </summary>
     void StartTransition()
+{
+    isTransitioning = true;
+    
+    Debug.Log("💀 GAME OVER - Preparing to transition...");
+    
+    // Lấy điểm cuối
+    int finalScore = 0;
+    if (scoreCycle != null)
     {
-        isTransitioning = true;
-        
-        Debug.Log("💀 GAME OVER - Preparing to transition...");
-        
-        // Lấy điểm cuối
-        int finalScore = 0;
-        if (scoreCycle != null)
-        {
-            finalScore = scoreCycle.GetScore();
-        }
-        
-        // Lưu điểm vào PlayerPrefs
-        PlayerPrefs.SetInt("FinalScore", finalScore);
-        
-        // Kiểm tra Best Score
-        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
-        if (finalScore > bestScore)
-        {
-            bestScore = finalScore;
-            PlayerPrefs.SetInt("BestScore", bestScore);
-            Debug.Log("🏆 NEW BEST SCORE: " + bestScore);
-        }
-        
-        PlayerPrefs.Save();
-        
-        Debug.Log("💾 Saved - Final Score: " + finalScore + " | Best: " + bestScore);
-        
-        // Chuyển scene sau delay
-        Invoke("TransitionToGameOver", delayBeforeTransition);
+        finalScore = scoreCycle.GetScore();
     }
     
+    // ⭐ LƯU VỊ TRÍ CUỐI CÙNG (để Continue)
+    // Vị trí này đã được PositionSaver lưu tự động mỗi 0.5s
+    
+    // Lưu điểm vào PlayerPrefs
+    PlayerPrefs.SetInt("FinalScore", finalScore);
+    PlayerPrefs.SetInt("ContinueScore", finalScore); // ⭐ Lưu điểm để Continue
+    
+    // Kiểm tra Best Score
+    int bestScore = PlayerPrefs.GetInt("BestScore", 0);
+    if (finalScore > bestScore)
+    {
+        bestScore = finalScore;
+        PlayerPrefs.SetInt("BestScore", bestScore);
+        Debug.Log("🏆 NEW BEST SCORE: " + bestScore);
+    }
+    
+    PlayerPrefs.Save();
+    
+    Debug.Log("💾 Saved - Final Score: " + finalScore + " | Best: " + bestScore);
+    
+    // Chuyển scene sau delay
+    Invoke("TransitionToGameOver", delayBeforeTransition);
+}
     /// <summary>
     /// Chuyển sang GameOverScene
     /// </summary>

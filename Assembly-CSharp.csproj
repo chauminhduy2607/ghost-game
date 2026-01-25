@@ -75,6 +75,7 @@
     <Compile Include="Assets\Script\GameEnvironment.cs" />
     <Compile Include="Assets\Script\Count5s.cs" />
     <Compile Include="Assets\Script\MenuPlayButton.cs" />
+    <Compile Include="Assets\Script\PositiveSaver.cs" />
     <Compile Include="Assets\Script\ScrollingBackground.cs" />
     <Compile Include="Assets\Script\UniversalObstacleSpawner.cs" />
     <Compile Include="Assets\Script\CountdownTimer.cs" />

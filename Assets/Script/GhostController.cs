@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -213,33 +214,42 @@ public class GhostController : MonoBehaviour
     }
     
     // ⭐⭐ XỬ LÝ KHI CHẠM VẬT CẢN
-    void OnObstacleHit(Collision2D collision)
+    // ⭐⭐ XỬ LÝ KHI CHẠM VẬT CẢN
+void OnObstacleHit(Collision2D collision)
+{
+    hitObstacle = true;
+    isFalling = true;
+    obstacleTimer = 0f;
+    
+    // ⭐⭐ LƯU VỊ TRÍ NGAY KHI VA CHẠM (để Continue)
+    PlayerPrefs.SetFloat("RespawnX", transform.position.x);
+    PlayerPrefs.SetFloat("RespawnY", transform.position.y);
+    PlayerPrefs.SetFloat("RespawnVelocityY", rb.linearVelocity.y);
+    PlayerPrefs.Save();
+    
+    Debug.Log("💾 SAVED RESPAWN POSITION: " + transform.position);
+    
+    // Tính hướng đẩy lùi (ngược với hướng va chạm)
+    Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+    
+    // Áp dụng lực đẩy lùi
+    rb.linearVelocity = Vector2.zero; // Reset velocity
+    rb.AddForce(knockbackDirection * obstacleKnockbackForce, ForceMode2D.Impulse);
+    
+    // Đổi màu thành đỏ sẫm
+    if (enableColorChange && spriteRenderer != null)
     {
-        hitObstacle = true;
-        isFalling = true;
-        obstacleTimer = 0f;
-        
-        // Tính hướng đẩy lùi (ngược với hướng va chạm)
-        Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
-        
-        // Áp dụng lực đẩy lùi
-        rb.linearVelocity = Vector2.zero; // Reset velocity
-        rb.AddForce(knockbackDirection * obstacleKnockbackForce, ForceMode2D.Impulse);
-        
-        // Đổi màu thành đỏ sẫm
-        if (enableColorChange && spriteRenderer != null)
-        {
-            spriteRenderer.color = new Color(0.8f, 0f, 0f, 1f); // Đỏ thẫm
-        }
-        
-        // Xoay đầu xuống
-        if (enableRotation)
-        {
-            targetRotation = Quaternion.Euler(0, 0, 180);
-        }
-        
-        Debug.Log("💥💥💥 CHẠM VẬT CẢN! Bắt đầu đếm ngược " + timeBeforeGameOver + "s...");
+        spriteRenderer.color = new Color(0.8f, 0f, 0f, 1f); // Đỏ thẫm
     }
+    
+    // Xoay đầu xuống
+    if (enableRotation)
+    {
+        targetRotation = Quaternion.Euler(0, 0, 180);
+    }
+    
+    Debug.Log("💥💥💥 CHẠM VẬT CẢN! Bắt đầu đếm ngược " + timeBeforeGameOver + "s...");
+}
     
     // ⭐⭐ GAME OVER
     void TriggerGameOver()

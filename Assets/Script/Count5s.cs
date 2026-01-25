@@ -20,52 +20,7 @@ public class Count5s : MonoBehaviour
     [SerializeField] private FireLineManager fireLineManager;
     [SerializeField] private GhostAI ghostAI;
     
-    private bool isCountingDown = false;
-    
-    void Start()
-    {
-
-        // ✅ Nếu bấm PLAY từ menu thì skip countdown
-    if (PlayerPrefs.GetInt("SkipCountdown", 0) == 1)
-    {
-        PlayerPrefs.SetInt("SkipCountdown", 0);
-        PlayerPrefs.Save();
-
-        if (countdownPanel != null) countdownPanel.SetActive(false);
-        ResumeGame();
-        return;
-    }
-        // Tự động tìm
-        if (ghostController == null)
-            ghostController = FindObjectOfType<GhostController>();
-        
-        if (scoreCycle == null)
-            scoreCycle = FindObjectOfType<ScoreCycle>();
-        
-        if (fireLineManager == null)
-            fireLineManager = FindObjectOfType<FireLineManager>();
-        
-        if (ghostAI != null)
-            ghostAI = FindObjectOfType<GhostAI>();
-        
-        // Kiểm tra xem có phải Continue không
-        bool isContinue = PlayerPrefs.GetInt("IsContinue", 0) == 1;
-        
-        if (isContinue)
-        {
-            // CONTINUE: Khôi phục điểm cũ
-            int savedScore = PlayerPrefs.GetInt("ContinueScore", 100);
-            if (scoreCycle != null)
-            {
-                scoreCycle.StopScore();
-                // Set lại score (cần thêm method SetScore trong ScoreCycle)
-            }
-            PlayerPrefs.SetInt("IsContinue", 0); // Reset flag
-        }
-        
-        // Bắt đầu đếm ngược
-        StartCountdown();
-    }
+    private bool isCountingDown = false;      
     
     /// <summary>
     /// Bắt đầu đếm ngược

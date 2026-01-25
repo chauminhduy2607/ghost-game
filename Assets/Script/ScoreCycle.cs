@@ -3,6 +3,8 @@ using TMPro;
 
 public class ScoreCycle : MonoBehaviour
 {
+
+    
     [Header("UI")]
     public TMP_Text scoreText;
 
@@ -22,7 +24,7 @@ public class ScoreCycle : MonoBehaviour
     [SerializeField] private ScoreCycle scoreCycle;
 
 
-    /// <summary>
+    //// <summary>
 /// ⭐ Set điểm trực tiếp (dùng cho Continue)
 /// </summary>
 public void SetScore(int newScore)
@@ -30,9 +32,8 @@ public void SetScore(int newScore)
     score = newScore;
     startScore = newScore;
     UpdateScoreText();
-    Debug.Log("📊 Set Score: " + newScore);
+    Debug.Log("📊 Set Score to: " + newScore);
 }
-
     void Start()
     {
         score = startScore;
