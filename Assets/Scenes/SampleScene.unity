@@ -2905,7 +2905,7 @@ MonoBehaviour:
   target: {fileID: 0}
   smoothSpeed: 3
   deadZoneHeight: 2
-  yOffset: 0
+  yOffset: 5
   useMinY: 0
   minY: -10
   useMaxY: 0
@@ -5571,6 +5571,7 @@ MonoBehaviour:
   secondsPerMinusPoint: 2
   multiplier: 10
   autoStart: 1
+  scoreCycle: {fileID: 0}
 --- !u!1 &1172404994
 GameObject:
   m_ObjectHideFlags: 0

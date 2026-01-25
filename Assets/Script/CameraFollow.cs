@@ -3,8 +3,9 @@ using UnityEngine;
 /// <summary>
 /// ⭐ CAMERA THEO MA - DI CHUYỂN MỀM MẠI
 /// - Camera chỉ theo trục Y (lên xuống)
+/// - Khi ma RỚT: camera theo NGAY (không offset, không dead zone)
+/// - Khi ma BAY LÊN: có offset + dead zone
 /// - Tốc độ theo mượt, không giật
-/// - Có vùng "dead zone" để camera không nhảy liên tục
 /// </summary>
 public class CameraFollow : MonoBehaviour
 {
@@ -17,11 +18,11 @@ public class CameraFollow : MonoBehaviour
     
     [Header("=== DEAD ZONE (Vùng Chết) ===")]
     [Tooltip("Khoảng cách ma phải di chuyển trước khi camera bắt đầu theo")]
-    [SerializeField] private float deadZoneHeight = 2f;  // Ma phải bay cao hơn 2 đơn vị
+    [SerializeField] private float deadZoneHeight = 0f;  // Ma phải bay cao hơn 2 đơn vị
     
     [Header("=== OFFSET ===")]
-    [Tooltip("Khoảng cách camera cách ma (theo trục Y)")]
-    [SerializeField] private float yOffset = 0f;  // Camera ngang tầm với ma
+    [Tooltip("Khoảng cách camera cách ma (theo trục Y) - CHỈ ÁP DỤNG KHI BAY LÊN")]
+    [SerializeField] private float yOffset = 5f;  // Camera ở dưới ma 5 đơn vị khi bay lên
     
     [Header("=== GIỚI HẠN (Tùy Chọn) ===")]
     [SerializeField] private bool useMinY = false;
@@ -36,6 +37,7 @@ public class CameraFollow : MonoBehaviour
     // Private
     private Vector3 velocity = Vector3.zero;  // Dùng cho SmoothDamp
     private float initialZ;  // Vị trí Z ban đầu của camera
+    private Rigidbody2D targetRb;  // Rigidbody của ma để lấy velocity
     
     void Start()
     {
@@ -56,29 +58,62 @@ public class CameraFollow : MonoBehaviour
             }
         }
         
+        // Lấy Rigidbody2D của ma
+        targetRb = target.GetComponent<Rigidbody2D>();
+        if (targetRb == null)
+        {
+            Debug.LogWarning("⚠️ Ma không có Rigidbody2D! Camera sẽ luôn theo.");
+        }
+        
         // Lưu vị trí Z ban đầu (camera 2D thường ở Z = -10)
         initialZ = transform.position.z;
         
         Debug.Log("📷 CameraFollow: Sẵn sàng!");
         Debug.Log($"📊 Tốc độ theo: {smoothSpeed}");
         Debug.Log($"📊 Dead Zone: {deadZoneHeight}");
-        Debug.Log($"📊 Y Offset: {yOffset}");
+        Debug.Log($"📊 Y Offset (khi bay lên): {yOffset}");
     }
     
     void LateUpdate()
     {
         if (target == null) return;
         
-        // Tính vị trí mục tiêu của camera
-        float targetY = target.position.y + yOffset;
-        
-        // ⭐ DEAD ZONE: Chỉ theo khi ma di chuyển đủ xa
-        float distanceToTarget = targetY - transform.position.y;
-        
-        if (Mathf.Abs(distanceToTarget) < deadZoneHeight)
+        // ⭐ KIỂM TRA MA ĐANG RỚT HAY BAY LÊN (qua velocity)
+        bool isFalling = false;
+        if (targetRb != null)
         {
-            // Ma vẫn trong vùng dead zone → Camera không di chuyển
-            return;
+            isFalling = targetRb.linearVelocity.y < -0.1f;  // Velocity âm = đang rơi
+        }
+        
+        // ⭐ TÍNH VỊ TRÍ MỤC TIÊU (offset khác nhau tùy trạng thái)
+        float targetY;
+        if (isFalling)
+        {
+            // Ma đang rơi → KHÔNG CÓ OFFSET, theo sát luôn
+            targetY = target.position.y;
+            
+            if (showDebugInfo)
+            {
+                Debug.Log($"📷 MA ĐANG RƠI! Velocity.y = {targetRb.linearVelocity.y:F2} → Camera theo KHÔNG OFFSET!");
+            }
+        }
+        else
+        {
+            // Ma bay lên hoặc đứng yên → CÓ OFFSET
+            targetY = target.position.y + yOffset;
+            
+            // Áp dụng dead zone
+            float distanceToTarget = targetY - transform.position.y;
+            
+            if (Mathf.Abs(distanceToTarget) < deadZoneHeight)
+            {
+                // Ma vẫn trong vùng dead zone → Camera không di chuyển
+                if (showDebugInfo)
+                {
+                    Debug.Log($"📷 Dead Zone: Ma trong vùng an toàn ({Mathf.Abs(distanceToTarget):F1} < {deadZoneHeight})");
+                }
+                return;
+            }
         }
         
         // ⭐ TÍNH VỊ TRÍ MỚI (Smooth)
@@ -147,6 +182,7 @@ public class CameraFollow : MonoBehaviour
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
+        targetRb = newTarget.GetComponent<Rigidbody2D>();
         Debug.Log($"📷 Đổi target: {newTarget.name}");
     }
 }
