@@ -19,6 +19,19 @@ public class ScoreCycle : MonoBehaviour
     private int score;
     private float timer = 0f;
     private bool running = false;
+    [SerializeField] private ScoreCycle scoreCycle;
+
+
+    /// <summary>
+/// ⭐ Set điểm trực tiếp (dùng cho Continue)
+/// </summary>
+public void SetScore(int newScore)
+{
+    score = newScore;
+    startScore = newScore;
+    UpdateScoreText();
+    Debug.Log("📊 Set Score: " + newScore);
+}
 
     void Start()
     {

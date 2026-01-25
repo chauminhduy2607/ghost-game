@@ -39,20 +39,50 @@ public class GameOverSceneController : MonoBehaviour
     }
     
     /// <summary>
-    /// Nút Retry - Chơi lại
+    /// Nút Retry - Chơi lại từ đầu (reset score)
     /// </summary>
     public void OnRetryButton()
     {
-        Debug.Log("🔄 RETRY!");
+        Debug.Log("🔄 RETRY - Chơi lại từ đầu!");
+        
+        // Xóa flag Continue
+        PlayerPrefs.SetInt("IsContinue", 0);
+        PlayerPrefs.Save();
+        
+        // Load lại SampleScene
         SceneManager.LoadScene(gameSceneName);
     }
     
     /// <summary>
-    /// Nút Menu - Về menu
+    /// ⭐ MỚI: Nút Continue - Tiếp tục ở mức thua
+    /// </summary>
+    public void OnContinueButton()
+    {
+        Debug.Log("▶️ CONTINUE - Tiếp tục chơi!");
+        
+        // Lưu điểm hiện tại để khôi phục
+        int currentScore = PlayerPrefs.GetInt("FinalScore", 0);
+        PlayerPrefs.SetInt("ContinueScore", currentScore);
+        
+        // Đánh dấu là Continue
+        PlayerPrefs.SetInt("IsContinue", 1);
+        PlayerPrefs.Save();
+        
+        // Load lại SampleScene
+        SceneManager.LoadScene(gameSceneName);
+    }
+    
+    /// <summary>
+    /// Nút Home - Về menu
     /// </summary>
     public void OnMenuButton()
     {
         Debug.Log("🏠 GO TO MENU!");
+        
+        // Xóa flag Continue
+        PlayerPrefs.SetInt("IsContinue", 0);
+        PlayerPrefs.Save();
+        
         SceneManager.LoadScene(menuSceneName);
     }
 }

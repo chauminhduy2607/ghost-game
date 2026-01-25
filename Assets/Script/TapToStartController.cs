@@ -9,13 +9,17 @@ public class TapToStartController : MonoBehaviour
     private bool gameStarted = false;
 
     void Start()
-    {
-        gameObjects.SetActive(false);
-        tapToStartUI.SetActive(true);
-        
-        // Dừng tăng điểm khi chưa bắt đầu game
+{
+    if (scoreCycle == null)
+        scoreCycle = FindObjectOfType<ScoreCycle>();
+
+    gameObjects.SetActive(false);
+    tapToStartUI.SetActive(true);
+
+    if (scoreCycle != null)
         scoreCycle.StopScore();
-    }
+}
+
 
     void Update()
     {
