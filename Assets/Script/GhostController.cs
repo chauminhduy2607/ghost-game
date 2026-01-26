@@ -19,22 +19,29 @@ using UnityEngine.SceneManagement;
 /// - Tốc độ rớt nhanh gấp 5 lần
 /// - Chạm vật cản = tự động rớt + khóa vuốt lên
 /// - Rớt 3 giây sau khi chạm vật cản = Game Over
+/// 
+/// ⭐⭐⭐ CẬP NHẬT MỚI NHẤT (LẦN 3 - TĂNG LỰC VUỐT):
+/// - Mass: 0.01 (cực nhẹ - GIỮ NGUYÊN)
+/// - Linear Drag: 0.5 (gần như không kháng - GIỮ NGUYÊN)
+/// - Swipe Force Multiplier: 180 → 300 (TĂNG 67% - VUỐT CỰC MẠNH!)
+/// - Max Swipe Force: 70 → 100 (TĂNG 43% - BỎ GIỚI HẠN!)
+/// → KẾT QUẢ: VUỐT NHẸ = BAY XA, VUỐT MẠNH = BAY CỰC XA!
 /// </summary>
 public class GhostController : MonoBehaviour
 {
     [Header("=== VẬT LÝ GHOST ===")]
-    [SerializeField] private float mass = 0.05f;              // ⭐ SIÊU NHẸ: 0.05
-    [SerializeField] private float linearDrag = 3.0f;         // ⭐ KHÁNG KHÍ VỪA: 3.0 (giảm để ít cản hơn)
+    [SerializeField] private float mass = 0.01f;              // ⭐⭐ GIẢM THÊM: 0.03 → 0.01 (CỰC NHẸ!)
+    [SerializeField] private float linearDrag = 0.5f;         // ⭐⭐ GIẢM MẠNH: 1.2 → 0.5 (GẦN NHƯ KHÔNG KHÁNG!)
     [SerializeField] private float angularDrag = 1f;
     [SerializeField] private float gravityScale = 0f;         // ⭐ TẮT TRỌNG LỰC: 0
     
     [Header("=== TỰ BAY LÊN ===")]
-    [SerializeField] private float autoRiseForce = 0.03f;     // ⭐ LỰC TỰ BAY CỰC CHẬM: 0.03
-    [SerializeField] private float maxAutoRiseSpeed = 0.06f;  // ⭐ TỐC ĐỘ TỰ BAY TỐI ĐA: 0.06
+    [SerializeField] private float autoRiseForce = 0.25f;     // ⭐⭐ TĂNG THÊM: 0.15 → 0.25 (TỰ NỔI MẠNH!)
+    [SerializeField] private float maxAutoRiseSpeed = 0.5f;   // ⭐⭐ TĂNG THÊM: 0.3 → 0.5 (NHANH HƠN!)
     
     [Header("=== RỚT XUỐNG KHI NHẤN (KHÔNG VUỐT) ===")]
     [SerializeField] private float fallForceMultiplier = 30.0f; // ⭐⭐ TĂNG x5: 30.0 (trước: 6.0)
-    [SerializeField] private float swipeThreshold = 0.5f;      // ⭐ NGƯỠNG VUỐT: >= 0.5 = swipe, < 0.5 = tap
+    [SerializeField] private float swipeThreshold = 0.3f;      // ⭐ GIẢM: 0.5 → 0.3 (DỄ VUỐT HƠN!)
     
     [Header("=== ⭐⭐ VẬT CẢN - GAME OVER ===")]
     [SerializeField] private float obstacleKnockbackForce = 15f;  // Lực đẩy lùi khi chạm vật cản
@@ -46,12 +53,12 @@ public class GhostController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 4f;         // ⭐ Tốc độ xoay MƯỢT
     
     [Header("=== ĐIỀU KHIỂN VUỐT ===")]
-    [SerializeField] private float swipeForceMultiplier = 80f; // ⭐ Hệ số lực vuốt: 80 (THANH THOÁT!)
-    [SerializeField] private float maxSwipeForce = 35f;        // ⭐ GIỚI HẠN: lực vuốt tối đa 35
+    [SerializeField] private float swipeForceMultiplier = 300f; // ⭐⭐⭐ TĂNG CỰC MẠNH: 180 → 300 (VUỐT NHẸ BAY XA!)
+    [SerializeField] private float maxSwipeForce = 100f;        // ⭐⭐⭐ TĂNG: 70 → 100 (KHÔNG GIỚI HẠN!)
     [SerializeField] private float minSwipeDistance = 0.01f;   // ⭐ Khoảng cách tối thiểu để tính là vuốt
     
     [Header("=== TỐC ĐỘ ===")]
-    [SerializeField] private float maxRiseSpeed = 8f;         // ⭐ Giới hạn tốc độ tối đa: 8
+    [SerializeField] private float maxRiseSpeed = 20f;         // ⭐⭐ TĂNG: 12 → 15 (BAY NHANH HƠN NỮA!)
     
     [Header("=== HIỆU ỨNG MÓP ===")]
     [SerializeField] private bool enableSquashStretch = true;
@@ -149,10 +156,12 @@ public class GhostController : MonoBehaviour
             }
         }
         
-        Debug.Log("👻 GhostController: VẬT LÝ THỰC TẾ + NHẤN = RỚT!");
-        Debug.Log("📊 Mass: " + mass + " (SIÊU NHẸ!)");
-        Debug.Log("📊 Linear Drag: " + linearDrag + " (LƠ LỬNG)");
-        Debug.Log("📊 Swipe Force: x" + swipeForceMultiplier + " (THANH THOÁT!)");
+        Debug.Log("👻 GhostController: VẬT LÝ THỰC TẾ + NHẤN = RỚT! (VUỐT CỰC MẠNH!)");
+        Debug.Log("📊 Mass: " + mass + " (CỰC NHẸ: 0.01!)");
+        Debug.Log("📊 Linear Drag: " + linearDrag + " (GẦN NHƯ KHÔNG KHÁNG: 0.5!)");
+        Debug.Log("📊 Auto Rise Force: " + autoRiseForce + " (TỰ NỔI MẠNH: 0.25!)");
+        Debug.Log("📊 Swipe Force: x" + swipeForceMultiplier + " (⭐⭐⭐ CỰC MẠNH: 300!)");
+        Debug.Log("📊 Max Swipe Force: " + maxSwipeForce + " (⭐⭐⭐ KHÔNG GIỚI HẠN: 100!)");
         Debug.Log("⚠️ Fall Force Multiplier: x" + fallForceMultiplier + " (NHANH GẤP 5!)");
         Debug.Log("⭐⭐ PHÁT HIỆN VẬT CẢN QUA TAG: '" + obstacleTag + "'");
     }
@@ -214,42 +223,41 @@ public class GhostController : MonoBehaviour
     }
     
     // ⭐⭐ XỬ LÝ KHI CHẠM VẬT CẢN
-    // ⭐⭐ XỬ LÝ KHI CHẠM VẬT CẢN
-void OnObstacleHit(Collision2D collision)
-{
-    hitObstacle = true;
-    isFalling = true;
-    obstacleTimer = 0f;
-    
-    // ⭐⭐ LƯU VỊ TRÍ NGAY KHI VA CHẠM (để Continue)
-    PlayerPrefs.SetFloat("RespawnX", transform.position.x);
-    PlayerPrefs.SetFloat("RespawnY", transform.position.y);
-    PlayerPrefs.SetFloat("RespawnVelocityY", rb.linearVelocity.y);
-    PlayerPrefs.Save();
-    
-    Debug.Log("💾 SAVED RESPAWN POSITION: " + transform.position);
-    
-    // Tính hướng đẩy lùi (ngược với hướng va chạm)
-    Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
-    
-    // Áp dụng lực đẩy lùi
-    rb.linearVelocity = Vector2.zero; // Reset velocity
-    rb.AddForce(knockbackDirection * obstacleKnockbackForce, ForceMode2D.Impulse);
-    
-    // Đổi màu thành đỏ sẫm
-    if (enableColorChange && spriteRenderer != null)
+    void OnObstacleHit(Collision2D collision)
     {
-        spriteRenderer.color = new Color(0.8f, 0f, 0f, 1f); // Đỏ thẫm
+        hitObstacle = true;
+        isFalling = true;
+        obstacleTimer = 0f;
+        
+        // ⭐⭐ LƯU VỊ TRÍ NGAY KHI VA CHẠM (để Continue)
+        PlayerPrefs.SetFloat("RespawnX", transform.position.x);
+        PlayerPrefs.SetFloat("RespawnY", transform.position.y);
+        PlayerPrefs.SetFloat("RespawnVelocityY", rb.linearVelocity.y);
+        PlayerPrefs.Save();
+        
+        Debug.Log("💾 SAVED RESPAWN POSITION: " + transform.position);
+        
+        // Tính hướng đẩy lùi (ngược với hướng va chạm)
+        Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+        
+        // Áp dụng lực đẩy lùi
+        rb.linearVelocity = Vector2.zero; // Reset velocity
+        rb.AddForce(knockbackDirection * obstacleKnockbackForce, ForceMode2D.Impulse);
+        
+        // Đổi màu thành đỏ sẫm
+        if (enableColorChange && spriteRenderer != null)
+        {
+            spriteRenderer.color = new Color(0.8f, 0f, 0f, 1f); // Đỏ thẫm
+        }
+        
+        // Xoay đầu xuống
+        if (enableRotation)
+        {
+            targetRotation = Quaternion.Euler(0, 0, 180);
+        }
+        
+        Debug.Log("💥💥💥 CHẠM VẬT CẢN! Bắt đầu đếm ngược " + timeBeforeGameOver + "s...");
     }
-    
-    // Xoay đầu xuống
-    if (enableRotation)
-    {
-        targetRotation = Quaternion.Euler(0, 0, 180);
-    }
-    
-    Debug.Log("💥💥💥 CHẠM VẬT CẢN! Bắt đầu đếm ngược " + timeBeforeGameOver + "s...");
-}
     
     // ⭐⭐ GAME OVER
     void TriggerGameOver()
