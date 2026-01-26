@@ -5929,7 +5929,7 @@ MonoBehaviour:
   fallForceMultiplier: 10
   swipeThreshold: 0.5
   obstacleKnockbackForce: 5
-  timeBeforeGameOver: 3
+  timeBeforeGameOver: 1
   obstacleTag: Obstacle
   enableRotation: 1
   rotationSpeed: 8
@@ -5960,7 +5960,7 @@ MonoBehaviour:
   ghost: {fileID: 0}
   groundY: -4
   constrainX: 1
-  showDebugUI: 1
+  showDebugUI: 0
   fontSize: 22
 --- !u!114 &1173831021
 MonoBehaviour:
