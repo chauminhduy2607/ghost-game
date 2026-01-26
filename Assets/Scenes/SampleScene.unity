@@ -808,7 +808,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136408985}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6633c14162696247aad6309a24a909f, type: 3}
   m_Name: 
@@ -818,7 +818,6 @@ MonoBehaviour:
   countdownFrom: 5
   ghostController: {fileID: 1173831019}
   scoreCycle: {fileID: 1143897738}
-  fireLineManager: {fileID: 0}
   ghostAI: {fileID: 0}
 --- !u!4 &136408987
 Transform:
@@ -6029,9 +6028,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3313546b2b74d14dbc3df93b346fae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostRewindBuffer
-  bufferSeconds: 1
-  rewindSeconds: 0.3
-  rb: {fileID: 0}
 --- !u!114 &1173831025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6044,13 +6040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4fb3fe823a9fcf448674e3a9aa788bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostContinueHelper
-  safeSaveInterval: 0.05
-  ghost: {fileID: 0}
-  rb: {fileID: 0}
-  saveTimer: 0
-  safePos: {x: 0, y: 0}
-  safeVel: {x: 0, y: 0}
-  safeRot: 0
 --- !u!1 &1180034442
 GameObject:
   m_ObjectHideFlags: 0
