@@ -184,34 +184,33 @@ public class Count5s : MonoBehaviour
     }
     
     /// <summary>
-    /// Tiếp tục game
+    /// Tiếp tục game - SAU COUNTDOWN
     /// </summary>
     void ResumeGame()
+{
+    // ⭐⭐ ĐÁNH DẤU ĐÃ COUNTDOWN
+    PlayerPrefs.SetInt("AfterCountdown", 1);
+    PlayerPrefs.Save();
+    
+    // ⭐⭐ SAU COUNTDOWN - CHO PHÉP BẤM "SWIPE TO START"
+    TapToStartController tapToStart = FindObjectOfType<TapToStartController>();
+    if (tapToStart != null)
     {
-        // Bật Ghost
-        if (ghostController != null)
+        tapToStart.EnableInput(); // Cho phép bấm
+        Debug.Log("✅ Đã cho phép bấm Swipe to start");
+    }
+    
+    // ⭐⭐ KHÔNG BẬT GHOST VÀ SCORE - ĐỂ TAPTOSTARTCONTROLLER XỬ LÝ
+    
+    // Bật AI nếu có
+    if (ghostAI != null)
+    {
+        bool aiEnabled = PlayerPrefs.GetInt("AIEnabled", 0) == 1;
+        if (aiEnabled)
         {
-            ghostController.EnablePhysics(true);
-            Debug.Log("▶️ Bật Ghost physics");
-        }
-        
-        // Bật Score
-        if (scoreCycle != null)
-        {
-            scoreCycle.StartScore();
-            Debug.Log("▶️ Bắt đầu Score");
-        }
-        
-        // ⭐⭐ KHÔNG CẦN BẬT GÌ - VẬT CẢN ĐÃ ĐANG CHẠY!
-        
-        // Bật AI nếu có
-        if (ghostAI != null)
-        {
-            bool aiEnabled = PlayerPrefs.GetInt("AIEnabled", 0) == 1;
             ghostAI.SetAIEnabled(aiEnabled);
-            
-            if (aiEnabled)
-                Debug.Log("▶️ Bật AI");
+            Debug.Log("▶️ Bật AI");
         }
     }
+}
 }
