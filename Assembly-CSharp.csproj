@@ -47,7 +47,6 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.3f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Script\CameraFollow.cs" />
     <Compile Include="Assets\Script\GhostAI.cs" />
     <Compile Include="Assets\Script\TapToStartController.cs" />
     <Compile Include="Assets\Script\caigai.cs" />
@@ -55,32 +54,34 @@
     <Compile Include="Assets\Script\ObstacleController.cs" />
     <Compile Include="Assets\Script\ObstacleMovement.cs" />
     <Compile Include="Assets\Script\RotateParent.cs" />
-    <Compile Include="Assets\Script\fire.cs" />
     <Compile Include="Assets\Script\ScoreCycle.cs" />
     <Compile Include="Assets\Script\MenuController.cs" />
-    <Compile Include="Assets\Script\FlyingCircleController.cs" />
     <Compile Include="Assets\Script\ObstacleLooper.cs" />
-    <Compile Include="Assets\Script\InfiniteBackground.cs" />
     <Compile Include="Assets\Script\GameOverSceneController.cs" />
     <Compile Include="Assets\Script\CircleRotation.cs" />
-    <Compile Include="Assets\Script\GhostController.cs" />
     <Compile Include="Assets\Script\RealisticBalloonController.cs" />
     <Compile Include="Assets\Script\FireLineManager.cs" />
-    <Compile Include="Assets\Script\ProgressiveObstacleSpawner.cs" />
+    <Compile Include="Assets\Script\Ghost\GameEnvironment.cs" />
     <Compile Include="Assets\Script\GameOverController.cs" />
+    <Compile Include="Assets\Script\Ghost\GhostController.cs" />
     <Compile Include="Assets\Script\ScoreManager.cs" />
+    <Compile Include="Assets\Script\Obstacle\FlyingCircleController.cs" />
+    <Compile Include="Assets\Script\ImageSwitcher.cs" />
     <Compile Include="Assets\Script\FloatingAnimation.cs" />
     <Compile Include="Assets\Script\HeavyBalloonController.cs" />
+    <Compile Include="Assets\Script\camera\CameraFollow.cs" />
     <Compile Include="Assets\Script\ameManagerSceneTransition.cs" />
-    <Compile Include="Assets\Script\GameEnvironment.cs" />
     <Compile Include="Assets\Script\Count5s.cs" />
     <Compile Include="Assets\Script\MenuPlayButton.cs" />
     <Compile Include="Assets\Script\PositiveSaver.cs" />
     <Compile Include="Assets\Script\ScrollingBackground.cs" />
+    <Compile Include="Assets\Script\background\InfiniteBackground.cs" />
+    <Compile Include="Assets\Script\Obstacle\fire.cs" />
     <Compile Include="Assets\Script\SpriteAnimator.cs" />
     <Compile Include="Assets\Script\UniversalObstacleSpawner.cs" />
     <Compile Include="Assets\Script\CountdownTimer.cs" />
-    <Compile Include="Assets\Script\ObstacleSpawner.cs" />
+    <Compile Include="Assets\Script\Obstacle\ObstacleSpawner.cs" />
+    <Compile Include="Assets\Script\Obstacle\ProgressiveObstacleSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
