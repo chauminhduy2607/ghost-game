@@ -437,10 +437,10 @@ MonoBehaviour:
   baseSpawnDistance: 12
   velocityMultiplier: 1.5
   maxSpawnDistance: 30
-  spacingY: 5
-  groupSpacing: 1
+  spacingY: 1
+  groupSpacing: 2
   circleRadius: 2.5
-  circleToFireSpacing: 1
+  circleToFireSpacing: -8
   spawnFireAboveCircle: 1
   startY: 15
   initialSpeed: 1
@@ -468,43 +468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9eb6b5ac7ade4a6e8f895873de38f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressiveObstacleSpawner_LineVersion
-  fireLinePrefab: {fileID: 0}
-  flyingCirclePrefab: {fileID: 0}
-  flyingFirePrefab: {fileID: 0}
-  fireLineAllowedLines: 020000000400000006000000
-  distributeFireLinesEvenly: 1
-  randomizeLineOnLoop: 1
-  fireLinesPerGroup: 4
-  circlesPerGroup: 1
-  flyingFiresPerGroup: 4
-  baseSpawnDistance: 25
-  velocityMultiplier: 3
-  maxSpawnDistance: 60
-  spacingY: 5
-  groupSpacing: 15
-  circleRadius: 2.5
-  circleToFireSpacing: 3
-  spawnFireAboveCircle: 0
-  startY: 5
-  initialSpeed: 1
-  speedIncrement: 0.2
-  maxSpeed: 5
-  initialRotationSpeed: 120
-  rotationSpeedIncrement: 20
-  maxRotationSpeed: 360
-  mainCamera: {fileID: 0}
-  player: {fileID: 0}
-  useExistingObstacles: 1
-  loopThreshold: 1.5
-  randomizeOnLoop: 1
-  showDebugInfo: 1
-  showGizmos: 1
-  allObstacles: []
-  screenHeight: 0
-  totalLooped: 0
-  currentWave: 0
-  currentSpeed: 0
-  currentRotationSpeed: 0
 --- !u!1 &156648840
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,12 +516,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
   center: {fileID: 0}
-  amplitudeX: 2
-  amplitudeY: 1
+  lineSpan: 3
+  heightRatio: 0.5
   speed: 1.5
   startPhaseDeg: 90
   reverseDirection: 0
   randomStartPhase: 0
+  showDebug: 1
 --- !u!114 &156648843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -949,12 +913,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
   center: {fileID: 0}
-  amplitudeX: 2
-  amplitudeY: 1
+  lineSpan: 3
+  heightRatio: 0.5
   speed: 1.5
   startPhaseDeg: 270
   reverseDirection: 0
   randomStartPhase: 0
+  showDebug: 1
 --- !u!114 &345068420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1322,12 +1287,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
   center: {fileID: 0}
-  amplitudeX: 2
-  amplitudeY: 1
+  lineSpan: 3
+  heightRatio: 0.5
   speed: 1.5
   startPhaseDeg: 0
   reverseDirection: 0
   randomStartPhase: 0
+  showDebug: 1
 --- !u!114 &599144686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2447,12 +2413,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
   center: {fileID: 0}
-  amplitudeX: 2
-  amplitudeY: 1
+  lineSpan: 3
+  heightRatio: 0.5
   speed: 1.5
   startPhaseDeg: 180
   reverseDirection: 0
   randomStartPhase: 0
+  showDebug: 1
 --- !u!114 &948857254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3405,16 +3372,15 @@ MonoBehaviour:
   gravityScale: 0
   autoRiseForce: 0.3
   maxAutoRiseSpeed: 0.6
-  fallForceMultiplier: 10
-  swipeThreshold: 0.5
   obstacleKnockbackForce: 5
   timeBeforeGameOver: 1
   obstacleTag: Obstacle
+  obstacleFallForceMultiplier: 30
   enableRotation: 1
   rotationSpeed: 8
   swipeForceMultiplier: 100
   maxSwipeForce: 15
-  minSwipeDistance: 0.01
+  swipeThreshold: 0.5
   maxRiseSpeed: 7
   enableSquashStretch: 1
   squashAmount: 0.15
@@ -3513,54 +3479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fbbe10a65bfe4d3a912d5a87225ed3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostController_LineVersion
-  mass: 0.01
-  linearDrag: 0.5
-  angularDrag: 1
-  gravityScale: 0
-  autoRiseForce: 0.25
-  maxAutoRiseSpeed: 0.5
-  fallForceMultiplier: 30
-  swipeThreshold: 0.3
-  obstacleKnockbackForce: 15
-  timeBeforeGameOver: 3
-  obstacleTag: Obstacle
-  enableRotation: 1
-  rotationSpeed: 4
-  swipeForceMultiplier: 300
-  maxSwipeForce: 100
-  minSwipeDistance: 0.01
-  maxRiseSpeed: 20
-  enableSquashStretch: 1
-  squashAmount: 0.15
-  squashSpeed: 8
-  minVelocityForSquash: 2
-  groundSquashAmount: 0.6
-  groundSquashDuration: 0.35
-  enableTrail: 1
-  enableColorChange: 1
-  rb: {fileID: 0}
-  mainCamera: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  trail: {fileID: 0}
-  originalColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
-  isDragging: 0
-  dragStartPos: {x: 0, y: 0}
-  lastMousePos: {x: 0, y: 0}
-  hasAppliedSwipe: 0
-  isFalling: 0
-  hitObstacle: 0
-  isGameOver: 0
-  obstacleTimer: 0
-  originalScale: {x: 0, y: 0, z: 0}
-  targetScale: {x: 0, y: 0, z: 0}
-  isGroundSquashing: 0
-  groundSquashTimer: 0
-  targetRotation: {x: 0, y: 0, z: 0, w: 0}
-  centerLineX: 0
 --- !u!1 &1198876091
 GameObject:
   m_ObjectHideFlags: 0
@@ -4376,7 +4294,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730702268}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cfe88da2cf6c049ebb36512dc641725a, type: 3}
   m_Name: 
@@ -4386,7 +4304,7 @@ MonoBehaviour:
   randomizeLineOnLoop: 1
   obstaclePrefab: {fileID: 0}
   spawnCount: 10
-  spacingY: 5
+  spacingY: 6
   startY: -14
   autoAddController: 1
   useExistingObstacles: 1
@@ -4404,17 +4322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a427b4b33972548c78a6670cd51d0a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fire_LineVersion
-  horizontalSpeed: 2
-  startLine: 0
-  randomStartLine: 1
-  forwardDirection: 1
-  randomDirection: 1
-  useSmoothMovement: 1
-  lerpSpeed: 5
-  currentLine: 0
-  targetLine: 0
-  currentX: 0
-  targetX: 0
 --- !u!114 &1730702275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4422,15 +4329,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730702268}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 527a640cf78704e598672de10356d907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
   obstaclePrefab: {fileID: 0}
   spawnCount: 10
-  spacingY: 1.5
-  startY: 0
+  spacingY: 4
+  startY: 0.5
   autoAddController: 1
   useExistingObstacles: 1
   player: {fileID: 0}
