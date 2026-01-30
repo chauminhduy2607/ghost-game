@@ -131,12 +131,6 @@ public class GhostAI : MonoBehaviour
     /// </summary>
     void SwipeUp(float force, string reason)
     {
-        // Nếu đang rớt → dừng rớt
-        if (ghostController.IsFalling)
-        {
-            ghostController.StopFalling();
-        }
-        
         // Áp lực lên
         rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
         

@@ -187,30 +187,29 @@ public class Count5s : MonoBehaviour
     /// Tiếp tục game - SAU COUNTDOWN
     /// </summary>
     void ResumeGame()
-{
-    // ⭐⭐ ĐÁNH DẤU ĐÃ COUNTDOWN
-    PlayerPrefs.SetInt("AfterCountdown", 1);
-    PlayerPrefs.Save();
-    
-    // ⭐⭐ SAU COUNTDOWN - CHO PHÉP BẤM "SWIPE TO START"
-    TapToStartController tapToStart = FindObjectOfType<TapToStartController>();
-    if (tapToStart != null)
     {
-        tapToStart.EnableInput(); // Cho phép bấm sau countdown
-        Debug.Log("✅ Đã cho phép bấm Swipe to start");
-    }
-    
-    // ⭐⭐ KHÔNG BẬT GHOST VÀ SCORE - ĐỂ TAPTOSTARTCONTROLLER XỬ LÝ
-    // Bật AI nếu có
-    if (ghostAI != null)
-    {
-        bool aiEnabled = PlayerPrefs.GetInt("AIEnabled", 0) == 1;
-        if (aiEnabled)
+        // ⭐⭐ ĐÁNH DẤU ĐÃ COUNTDOWN
+        PlayerPrefs.SetInt("AfterCountdown", 1);
+        PlayerPrefs.Save();
+        
+        // ⭐⭐ SAU COUNTDOWN - CHO PHÉP BẤM "SWIPE TO START"
+        TapToStartController tapToStart = FindObjectOfType<TapToStartController>();
+        if (tapToStart != null)
         {
-            ghostAI.SetAIEnabled(aiEnabled);
-            Debug.Log("▶️ Bật AI");
+            tapToStart.EnableInput(); // Cho phép bấm sau countdown
+            Debug.Log("✅ Đã cho phép bấm Swipe to start");
+        }
+        
+        // ⭐⭐ KHÔNG BẬT GHOST VÀ SCORE - ĐỂ TAPTOSTARTCONTROLLER XỬ LÝ
+        // Bật AI nếu có
+        if (ghostAI != null)
+        {
+            bool aiEnabled = PlayerPrefs.GetInt("AIEnabled", 0) == 1;
+            if (aiEnabled)
+            {
+                ghostAI.SetAIEnabled(aiEnabled);
+                Debug.Log("▶️ Bật AI");
+            }
         }
     }
-}
-
 }
