@@ -3215,6 +3215,7 @@ GameObject:
   - component: {fileID: 1173831019}
   - component: {fileID: 1173831022}
   - component: {fileID: 1173831023}
+  - component: {fileID: 1173831024}
   m_Layer: 0
   m_Name: ghost
   m_TagString: Player
@@ -3451,6 +3452,29 @@ MonoBehaviour:
   showDebug: 1
   minHeight: 0.5
   emergencySwipeForce: 35
+--- !u!114 &1173831024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485e687c372ac469cb3631616053e2d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostBoundaryConstraint
+  ghost: {fileID: 0}
+  mainCamera: {fileID: 0}
+  backgroundManager: {fileID: 0}
+  horizontalPadding: 0.5
+  constrainX: 1
+  constrainY: 1
+  verticalPadding: 1
+  pushBackForce: 5
+  velocityDampening: 0.7
+  showDebugInfo: 0
+  showBoundaryGizmos: 1
 --- !u!1 &1256944393
 GameObject:
   m_ObjectHideFlags: 0
