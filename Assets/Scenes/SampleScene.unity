@@ -2956,6 +2956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TapToStartController
   tapToStartUI: {fileID: 1392258851}
   gameObjects: {fileID: 140615572}
+  obstacleManager: {fileID: 140615572}
   scoreCycle: {fileID: 0}
 --- !u!114 &1143897734
 MonoBehaviour:
@@ -3060,7 +3061,7 @@ MonoBehaviour:
   secondsPerMinusPoint: 2
   multiplier: 10
   autoStart: 0
-  scoreCycle: {fileID: 0}
+  scoreCycle: {fileID: 1143897738}
 --- !u!1 &1172404994
 GameObject:
   m_ObjectHideFlags: 0
@@ -4052,7 +4053,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1511060101
 MonoBehaviour:
   m_ObjectHideFlags: 0

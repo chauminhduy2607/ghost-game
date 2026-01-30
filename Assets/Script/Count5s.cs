@@ -196,12 +196,11 @@ public class Count5s : MonoBehaviour
     TapToStartController tapToStart = FindObjectOfType<TapToStartController>();
     if (tapToStart != null)
     {
-        tapToStart.EnableInput(); // Cho phép bấm
+        tapToStart.EnableInput(); // Cho phép bấm sau countdown
         Debug.Log("✅ Đã cho phép bấm Swipe to start");
     }
     
     // ⭐⭐ KHÔNG BẬT GHOST VÀ SCORE - ĐỂ TAPTOSTARTCONTROLLER XỬ LÝ
-    
     // Bật AI nếu có
     if (ghostAI != null)
     {
@@ -213,4 +212,5 @@ public class Count5s : MonoBehaviour
         }
     }
 }
+
 }
