@@ -388,8 +388,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 140615573}
-  - component: {fileID: 140615575}
   - component: {fileID: 140615576}
+  - component: {fileID: 140615577}
   m_Layer: 0
   m_Name: ObstacleManager
   m_TagString: Obstacle
@@ -416,30 +416,6 @@ Transform:
   - {fileID: 861842295}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &140615575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140615572}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b450f36f28454930aa9e8160d136c76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UniversalObstacleSpawner
-  fireLinePrefab: {fileID: 0}
-  flyingCirclePrefab: {fileID: 0}
-  fireLinesBeforeCircle: 6
-  totalObstacleCount: 20
-  spacingY: 1.5
-  startY: 5
-  mainCamera: {fileID: 0}
-  player: {fileID: 0}
-  useExistingObstacles: 1
-  loopThreshold: 0.5
-  randomizeOnLoop: 1
-  showDebugInfo: 1
 --- !u!114 &140615576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,6 +456,55 @@ MonoBehaviour:
   randomizeOnLoop: 1
   showDebugInfo: 1
   showGizmos: 1
+--- !u!114 &140615577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140615572}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9eb6b5ac7ade4a6e8f895873de38f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProgressiveObstacleSpawner_LineVersion
+  fireLinePrefab: {fileID: 0}
+  flyingCirclePrefab: {fileID: 0}
+  flyingFirePrefab: {fileID: 0}
+  fireLineAllowedLines: 020000000400000006000000
+  distributeFireLinesEvenly: 1
+  randomizeLineOnLoop: 1
+  fireLinesPerGroup: 4
+  circlesPerGroup: 1
+  flyingFiresPerGroup: 4
+  baseSpawnDistance: 25
+  velocityMultiplier: 3
+  maxSpawnDistance: 60
+  spacingY: 5
+  groupSpacing: 15
+  circleRadius: 2.5
+  circleToFireSpacing: 3
+  spawnFireAboveCircle: 0
+  startY: 5
+  initialSpeed: 1
+  speedIncrement: 0.2
+  maxSpeed: 5
+  initialRotationSpeed: 120
+  rotationSpeedIncrement: 20
+  maxRotationSpeed: 360
+  mainCamera: {fileID: 0}
+  player: {fileID: 0}
+  useExistingObstacles: 1
+  loopThreshold: 1.5
+  randomizeOnLoop: 1
+  showDebugInfo: 1
+  showGizmos: 1
+  allObstacles: []
+  screenHeight: 0
+  totalLooped: 0
+  currentWave: 0
+  currentSpeed: 0
+  currentRotationSpeed: 0
 --- !u!1 &156648840
 GameObject:
   m_ObjectHideFlags: 0
@@ -3216,6 +3241,7 @@ GameObject:
   - component: {fileID: 1173831022}
   - component: {fileID: 1173831023}
   - component: {fileID: 1173831024}
+  - component: {fileID: 1173831025}
   m_Layer: 0
   m_Name: ghost
   m_TagString: Player
@@ -3318,8 +3344,8 @@ Transform:
   m_GameObject: {fileID: 1173831011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: -4.0162, z: 0}
-  m_LocalScale: {x: 0.1227604, y: 0.10650267, z: 1}
+  m_LocalPosition: {x: 0.0313, y: -3.9822, z: 0}
+  m_LocalScale: {x: 0.1386223, y: 0.12787715, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1777135013}
@@ -3475,6 +3501,114 @@ MonoBehaviour:
   velocityDampening: 0.7
   showDebugInfo: 0
   showBoundaryGizmos: 1
+--- !u!114 &1173831025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fbbe10a65bfe4d3a912d5a87225ed3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostController_LineVersion
+  mass: 0.01
+  linearDrag: 0.5
+  angularDrag: 1
+  gravityScale: 0
+  autoRiseForce: 0.25
+  maxAutoRiseSpeed: 0.5
+  fallForceMultiplier: 30
+  swipeThreshold: 0.3
+  obstacleKnockbackForce: 15
+  timeBeforeGameOver: 3
+  obstacleTag: Obstacle
+  enableRotation: 1
+  rotationSpeed: 4
+  swipeForceMultiplier: 300
+  maxSwipeForce: 100
+  minSwipeDistance: 0.01
+  maxRiseSpeed: 20
+  enableSquashStretch: 1
+  squashAmount: 0.15
+  squashSpeed: 8
+  minVelocityForSquash: 2
+  groundSquashAmount: 0.6
+  groundSquashDuration: 0.35
+  enableTrail: 1
+  enableColorChange: 1
+  rb: {fileID: 0}
+  mainCamera: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  trail: {fileID: 0}
+  originalColor:
+    r: 0
+    g: 0
+    b: 0
+    a: 0
+  isDragging: 0
+  dragStartPos: {x: 0, y: 0}
+  lastMousePos: {x: 0, y: 0}
+  hasAppliedSwipe: 0
+  isFalling: 0
+  hitObstacle: 0
+  isGameOver: 0
+  obstacleTimer: 0
+  originalScale: {x: 0, y: 0, z: 0}
+  targetScale: {x: 0, y: 0, z: 0}
+  isGroundSquashing: 0
+  groundSquashTimer: 0
+  targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  centerLineX: 0
+--- !u!1 &1198876091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1198876093}
+  - component: {fileID: 1198876092}
+  m_Layer: 0
+  m_Name: LineSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1198876092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198876091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72d612eb0d9544178e39c3d6c2f81be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LineSystem
+  totalLines: 9
+  marginPercent: 0.05
+  showDebugLines: 1
+  lineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!4 &1198876093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198876091}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.4425, y: 56.62344, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1256944393
 GameObject:
   m_ObjectHideFlags: 0
@@ -4206,9 +4340,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1730702269}
-  - component: {fileID: 1730702270}
-  - component: {fileID: 1730702272}
-  - component: {fileID: 1730702271}
+  - component: {fileID: 1730702273}
+  - component: {fileID: 1730702274}
+  - component: {fileID: 1730702275}
   m_Layer: 0
   m_Name: Fire&Line
   m_TagString: Obstacle
@@ -4235,47 +4369,7 @@ Transform:
   - {fileID: 643778460}
   m_Father: {fileID: 140615573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1730702270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730702268}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 155d34d9c39c84919b6d94ff16efa7f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireLineManager
-  mainCamera: {fileID: 0}
-  player: {fileID: 0}
-  spacingY: 5
-  autoAddControllers: 1
-  parallaxSpeed: 0.8
-  moveSpeed: 2
-  minSpeed: 1
-  maxSpeed: 4
-  screenPadding: 0.5
-  showDebugInfo: 1
---- !u!114 &1730702271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730702268}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 912205acf8f33430c8173470a008a3ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObstacleLooper
-  mainCamera: {fileID: 0}
-  spawner: {fileID: 0}
-  spacingY: 1.5
-  loopThreshold: 0.5
-  randomizeOnLoop: 1
-  showDebugInfo: 1
---- !u!114 &1730702272
+--- !u!114 &1730702273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4284,13 +4378,59 @@ MonoBehaviour:
   m_GameObject: {fileID: 1730702268}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfe88da2cf6c049ebb36512dc641725a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner_LineVersion
+  allowedLines: 020000000400000006000000
+  distributeLinesEvenly: 1
+  randomizeLineOnLoop: 1
+  obstaclePrefab: {fileID: 0}
+  spawnCount: 10
+  spacingY: 5
+  startY: -14
+  autoAddController: 1
+  useExistingObstacles: 1
+  player: {fileID: 0}
+  mainCamera: {fileID: 0}
+--- !u!114 &1730702274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730702268}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a427b4b33972548c78a6670cd51d0a19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fire_LineVersion
+  horizontalSpeed: 2
+  startLine: 0
+  randomStartLine: 1
+  forwardDirection: 1
+  randomDirection: 1
+  useSmoothMovement: 1
+  lerpSpeed: 5
+  currentLine: 0
+  targetLine: 0
+  currentX: 0
+  targetX: 0
+--- !u!114 &1730702275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730702268}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 527a640cf78704e598672de10356d907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
   obstaclePrefab: {fileID: 0}
   spawnCount: 10
-  spacingY: 3
-  startY: 0.2
+  spacingY: 1.5
+  startY: 0
   autoAddController: 1
   useExistingObstacles: 1
   player: {fileID: 0}
@@ -4949,3 +5089,4 @@ SceneRoots:
   - {fileID: 1143897737}
   - {fileID: 1950429202}
   - {fileID: 136408987}
+  - {fileID: 1198876093}
