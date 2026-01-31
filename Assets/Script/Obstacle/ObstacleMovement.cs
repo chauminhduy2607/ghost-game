@@ -57,8 +57,8 @@ public class ObstacleMovement : MonoBehaviour
     // ==================== RANDOM HÓA CHUYỂN ĐỘNG ====================
     void RandomizeMovement()
     {
-        // Random tốc độ cho mỗi vật cản
-        actualSpeed = Random.Range(minSpeed, maxSpeed);
+        // ⭐ DÙNG CHUNG TỐC ĐỘ - KHÔNG RANDOM
+        actualSpeed = moveSpeed;
         
         if (showDebug)
         {
@@ -69,7 +69,7 @@ public class ObstacleMovement : MonoBehaviour
     // ==================== VỊ TRÍ BAN ĐẦU NGẪU NHIÊN ====================
     void SetRandomStartPosition()
     {
-        // Random line bắt đầu
+        // ⭐ RANDOM LINE BẮT ĐẦU - MỖI OBSTACLE KHÁC NHAU
         if (randomStartLine)
         {
             currentLineIndex = Random.Range(0, lineSystem.GetTotalLines());
@@ -79,7 +79,7 @@ public class ObstacleMovement : MonoBehaviour
             currentLineIndex = lineSystem.GetTotalLines() / 2; // Giữa màn hình
         }
         
-        // Random hướng
+        // ⭐ RANDOM HƯỚNG - MỖI OBSTACLE KHÁC NHAU
         if (randomStartDirection)
         {
             movingRight = Random.value > 0.5f;
@@ -95,7 +95,7 @@ public class ObstacleMovement : MonoBehaviour
         
         if (showDebug)
         {
-            Debug.Log($"📍 {gameObject.name}: Start Line {currentLineIndex}, Moving {(movingRight ? "RIGHT" : "LEFT")}");
+            Debug.Log($"📍 {gameObject.name}: Start Line {currentLineIndex}, Moving {(movingRight ? "RIGHT ➡️" : "LEFT ⬅️")}, Speed {actualSpeed:F2}");
         }
     }
     
