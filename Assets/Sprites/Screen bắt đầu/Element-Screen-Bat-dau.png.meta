@@ -1,0 +1,2340 @@
+fileFormatVersion: 2
+guid: 71c261c258c9c4e75a5cbc75f377fded
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2042858471804635556
+    second: Element-Screen-Bat-dau_0
+  - first:
+      213: 1290329616035608313
+    second: Element-Screen-Bat-dau_1
+  - first:
+      213: -8699045014700208552
+    second: Element-Screen-Bat-dau_2
+  - first:
+      213: 5840816498840948585
+    second: Element-Screen-Bat-dau_3
+  - first:
+      213: -3675388103277988015
+    second: Element-Screen-Bat-dau_4
+  - first:
+      213: 8245313499108267593
+    second: Element-Screen-Bat-dau_5
+  - first:
+      213: 9104018366351579477
+    second: Element-Screen-Bat-dau_6
+  - first:
+      213: -5376563288772080466
+    second: Element-Screen-Bat-dau_7
+  - first:
+      213: 5025416628637145556
+    second: Element-Screen-Bat-dau_8
+  - first:
+      213: -6025319066588474605
+    second: Element-Screen-Bat-dau_9
+  - first:
+      213: -4024372592410404424
+    second: Element-Screen-Bat-dau_10
+  - first:
+      213: 8028446979215330416
+    second: Element-Screen-Bat-dau_11
+  - first:
+      213: 4286251521707539406
+    second: Element-Screen-Bat-dau_12
+  - first:
+      213: -7855692477055412056
+    second: Element-Screen-Bat-dau_13
+  - first:
+      213: 8990990471117620006
+    second: Element-Screen-Bat-dau_14
+  - first:
+      213: 4899118499064366953
+    second: Element-Screen-Bat-dau_15
+  - first:
+      213: -2883283545816858806
+    second: Element-Screen-Bat-dau_16
+  - first:
+      213: 5769059324916400327
+    second: Element-Screen-Bat-dau_17
+  - first:
+      213: 5064992575941493898
+    second: Element-Screen-Bat-dau_18
+  - first:
+      213: 2808256659521145377
+    second: Element-Screen-Bat-dau_19
+  - first:
+      213: -5171177153354070002
+    second: Element-Screen-Bat-dau_20
+  - first:
+      213: -1072536786672640230
+    second: Element-Screen-Bat-dau_21
+  - first:
+      213: 3284940377018850033
+    second: Element-Screen-Bat-dau_22
+  - first:
+      213: -9150395373955029703
+    second: Element-Screen-Bat-dau_23
+  - first:
+      213: 5197849666047010842
+    second: Element-Screen-Bat-dau_24
+  - first:
+      213: -1131762790127717089
+    second: Element-Screen-Bat-dau_25
+  - first:
+      213: -1125391355186008812
+    second: Element-Screen-Bat-dau_26
+  - first:
+      213: 9162872849921224456
+    second: Element-Screen-Bat-dau_27
+  - first:
+      213: -6704680693557841652
+    second: Element-Screen-Bat-dau_28
+  - first:
+      213: -6541782124954317010
+    second: Element-Screen-Bat-dau_29
+  - first:
+      213: -509028468012287913
+    second: Element-Screen-Bat-dau_30
+  - first:
+      213: -1383920946747279641
+    second: Element-Screen-Bat-dau_31
+  - first:
+      213: -1900635233886715684
+    second: Element-Screen-Bat-dau_32
+  - first:
+      213: -1450119029535524686
+    second: Element-Screen-Bat-dau_33
+  - first:
+      213: -7692886080833533447
+    second: Element-Screen-Bat-dau_34
+  - first:
+      213: 46513523218410687
+    second: Element-Screen-Bat-dau_35
+  - first:
+      213: -1128364867191687135
+    second: Element-Screen-Bat-dau_36
+  - first:
+      213: -1437668851635577101
+    second: Element-Screen-Bat-dau_37
+  - first:
+      213: 6263868351435134611
+    second: Element-Screen-Bat-dau_38
+  - first:
+      213: 5357493694846259973
+    second: Element-Screen-Bat-dau_39
+  - first:
+      213: -2187658530628660178
+    second: Element-Screen-Bat-dau_40
+  - first:
+      213: 201663733282031517
+    second: Element-Screen-Bat-dau_41
+  - first:
+      213: -5348840749048155971
+    second: Element-Screen-Bat-dau_42
+  - first:
+      213: 2246751998417330886
+    second: Element-Screen-Bat-dau_43
+  - first:
+      213: 4422593003880083599
+    second: Element-Screen-Bat-dau_44
+  - first:
+      213: -3492414852750028233
+    second: Element-Screen-Bat-dau_45
+  - first:
+      213: 8421397573273827796
+    second: Element-Screen-Bat-dau_46
+  - first:
+      213: -5145270541302767526
+    second: Element-Screen-Bat-dau_47
+  - first:
+      213: 8294551207985439569
+    second: Element-Screen-Bat-dau_48
+  - first:
+      213: -2167408959474896057
+    second: Element-Screen-Bat-dau_49
+  - first:
+      213: -7283232567673034490
+    second: Element-Screen-Bat-dau_50
+  - first:
+      213: -6936809089732806335
+    second: Element-Screen-Bat-dau_51
+  - first:
+      213: 5324032892086154395
+    second: Element-Screen-Bat-dau_52
+  - first:
+      213: 6650669756457863761
+    second: Element-Screen-Bat-dau_53
+  - first:
+      213: 3000093989012710095
+    second: Element-Screen-Bat-dau_54
+  - first:
+      213: 1745831077154607673
+    second: Element-Screen-Bat-dau_55
+  - first:
+      213: -7600590360666938027
+    second: Element-Screen-Bat-dau_56
+  - first:
+      213: -128793196946122162
+    second: Element-Screen-Bat-dau_57
+  - first:
+      213: 5750539482874780740
+    second: Element-Screen-Bat-dau_58
+  - first:
+      213: 2842288153011255906
+    second: Element-Screen-Bat-dau_59
+  - first:
+      213: -5150302793966750808
+    second: Element-Screen-Bat-dau_60
+  - first:
+      213: 2564995410545615001
+    second: Element-Screen-Bat-dau_61
+  - first:
+      213: -1361878249606416763
+    second: Element-Screen-Bat-dau_62
+  - first:
+      213: -7770171986365289125
+    second: Element-Screen-Bat-dau_63
+  - first:
+      213: -8610685777487907539
+    second: Element-Screen-Bat-dau_64
+  - first:
+      213: 2703236751526458079
+    second: Element-Screen-Bat-dau_65
+  - first:
+      213: 3344351176889047957
+    second: Element-Screen-Bat-dau_66
+  - first:
+      213: 6113159426665432213
+    second: Element-Screen-Bat-dau_67
+  - first:
+      213: -6010485690758211249
+    second: Element-Screen-Bat-dau_68
+  - first:
+      213: 1385932113558867896
+    second: Element-Screen-Bat-dau_69
+  - first:
+      213: 1944990106838183342
+    second: Element-Screen-Bat-dau_70
+  - first:
+      213: -8813336400286462295
+    second: Element-Screen-Bat-dau_71
+  - first:
+      213: -2976280347613562680
+    second: Element-Screen-Bat-dau_72
+  - first:
+      213: -4167591946112002157
+    second: Element-Screen-Bat-dau_73
+  - first:
+      213: 2124645445629599370
+    second: Element-Screen-Bat-dau_74
+  - first:
+      213: -6021353527422025841
+    second: Element-Screen-Bat-dau_75
+  - first:
+      213: 993594193971529198
+    second: Element-Screen-Bat-dau_76
+  - first:
+      213: -5545570301532673279
+    second: Element-Screen-Bat-dau_77
+  - first:
+      213: 9151710438737065210
+    second: Element-Screen-Bat-dau_78
+  - first:
+      213: 441359040267578151
+    second: Element-Screen-Bat-dau_79
+  - first:
+      213: 5690571937634152914
+    second: Element-Screen-Bat-dau_80
+  - first:
+      213: -531586714785967400
+    second: Element-Screen-Bat-dau_81
+  - first:
+      213: 8394416306758768682
+    second: Element-Screen-Bat-dau_82
+  - first:
+      213: -3545217489313434762
+    second: Element-Screen-Bat-dau_83
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_0
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 1003
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c56ffad1b0f46a3e0800000000000000
+      internalID: -2042858471804635556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_1
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 1009
+        width: 16
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f6f7f603fb28e110800000000000000
+      internalID: 1290329616035608313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_2
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 1008
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85e49ad06a8c64780800000000000000
+      internalID: -8699045014700208552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_3
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 1002
+        width: 19
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96fc7a3e8afbe0150800000000000000
+      internalID: 5840816498840948585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_4
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 1008
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1573b6c3ef56efcc0800000000000000
+      internalID: -3675388103277988015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_5
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 1008
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 946d41021fc3d6270800000000000000
+      internalID: 8245313499108267593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_6
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 1002
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55994031878f75e70800000000000000
+      internalID: 9104018366351579477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_7
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 1008
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eac8554dc2c9265b0800000000000000
+      internalID: -5376563288772080466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_8
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 1008
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d912464ccdddb540800000000000000
+      internalID: 5025416628637145556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_9
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 1026
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3131b918b34c16ca0800000000000000
+      internalID: -6025319066588474605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_10
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 1009
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b95f81037e8628c0800000000000000
+      internalID: -4024372592410404424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_11
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 1008
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07c0036bdf5ca6f60800000000000000
+      internalID: 8028446979215330416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_12
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 1003
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecbfa59ac03db7b30800000000000000
+      internalID: 4286251521707539406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_13
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 1008
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a857683059faf290800000000000000
+      internalID: -7855692477055412056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_14
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 1008
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62343e9723a66cc70800000000000000
+      internalID: 8990990471117620006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_15
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 1008
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 967c649715a2df340800000000000000
+      internalID: 4899118499064366953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_16
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 831
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4f7bd034e48cf7d0800000000000000
+      internalID: -2883283545816858806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_17
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 837
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c00cc5e3e0df0050800000000000000
+      internalID: 5769059324916400327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_18
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 858
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a84cbfe89e77a4640800000000000000
+      internalID: 5064992575941493898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_19
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 836
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12a02e49d8ee8f620800000000000000
+      internalID: 2808256659521145377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_20
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 854
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0807bfe6c94c38b0800000000000000
+      internalID: -5171177153354070002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_21
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 836
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1f96dd99759d11f0800000000000000
+      internalID: -1072536786672640230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_22
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 854
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fadb885ed3769d20800000000000000
+      internalID: 3284940377018850033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_23
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 837
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 935680563e3430180800000000000000
+      internalID: -9150395373955029703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_24
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 837
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a186d9c5bb8722840800000000000000
+      internalID: 5197849666047010842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_25
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 836
+        width: 19
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f15be6c1dbb2b40f0800000000000000
+      internalID: -1131762790127717089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_26
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 836
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41da7d8668ec160f0800000000000000
+      internalID: -1125391355186008812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_27
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 854
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80f20ad5f40192f70800000000000000
+      internalID: 9162872849921224456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_28
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c01b010ae6034f2a0800000000000000
+      internalID: -6704680693557841652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_29
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2f091431dbe635a0800000000000000
+      internalID: -6541782124954317010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_30
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 758f0972e419fe8f0800000000000000
+      internalID: -509028468012287913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_31
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e6f7e33b335bcce0800000000000000
+      internalID: -1383920946747279641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_32
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd0479423569f95e0800000000000000
+      internalID: -1900635233886715684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_33
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b8308afc6420ebe0800000000000000
+      internalID: -1450119029535524686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_34
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f9ce5e3ed06d3590800000000000000
+      internalID: -7692886080833533447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_35
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbc6fac8dcf35a000800000000000000
+      internalID: 46513523218410687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_36
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1283202b12e3750f0800000000000000
+      internalID: -1128364867191687135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_37
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fe1e99ebcf5c0ce0800000000000000
+      internalID: -1437668851635577101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_38
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3965a17041bbde650800000000000000
+      internalID: 6263868351435134611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_39
+      rect:
+        serializedVersion: 2
+        x: 662
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 503d4b75124a95a40800000000000000
+      internalID: 5357493694846259973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_40
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2496083820e3a1e0800000000000000
+      internalID: -2187658530628660178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_41
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d97ca52d8147cc200800000000000000
+      internalID: 201663733282031517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_42
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db0b9d89da915c5b0800000000000000
+      internalID: -5348840749048155971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_43
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c2601ce9011e2f10800000000000000
+      internalID: 2246751998417330886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_44
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f807666b7e4306d30800000000000000
+      internalID: 4422593003880083599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_45
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 732598de133788fc0800000000000000
+      internalID: -3492414852750028233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_46
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d9b2537970ded470800000000000000
+      internalID: 8421397573273827796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_47
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a50ed5814b35898b0800000000000000
+      internalID: -5145270541302767526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_48
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1536243906a2c1370800000000000000
+      internalID: 8294551207985439569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_49
+      rect:
+        serializedVersion: 2
+        x: 847
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 743ff77e801dbe1e0800000000000000
+      internalID: -2167408959474896057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_50
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 844
+        width: 6
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 609ea436192ccea90800000000000000
+      internalID: -7283232567673034490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_51
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14976cbb2e08bbf90800000000000000
+      internalID: -6936809089732806335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_52
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 844
+        width: 6
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b947a4915b3c2e940800000000000000
+      internalID: 5324032892086154395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_53
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 836
+        width: 7
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15aca1028eceb4c50800000000000000
+      internalID: 6650669756457863761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_54
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 831
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc223eb769972a920800000000000000
+      internalID: 3000093989012710095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_55
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 837
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93253a76d107a3810800000000000000
+      internalID: 1745831077154607673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_56
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 836
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 555603d2657458690800000000000000
+      internalID: -7600590360666938027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_57
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 837
+        width: 13
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4a1a8e054f663ef0800000000000000
+      internalID: -128793196946122162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_58
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 836
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44c1c9721350ecf40800000000000000
+      internalID: 5750539482874780740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_59
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 830
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26a798d1406d17720800000000000000
+      internalID: 2842288153011255906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_60
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 836
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a3f8e775e27688b0800000000000000
+      internalID: -5150302793966750808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_61
+      rect:
+        serializedVersion: 2
+        x: 865
+        y: 836
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99024186cb1b89320800000000000000
+      internalID: 2564995410545615001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_62
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 836
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 586f0e092f2a91de0800000000000000
+      internalID: -1361878249606416763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_63
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 629
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5d610d1fbdca2490800000000000000
+      internalID: -7770171986365289125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_64
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 634
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d25335028e2b08880800000000000000
+      internalID: -8610685777487907539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_65
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 634
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd2f38ec083d38520800000000000000
+      internalID: 2703236751526458079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_66
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 652
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59b91ae1da5896e20800000000000000
+      internalID: 3344351176889047957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_67
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 635
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59449b11c1e46d450800000000000000
+      internalID: 6113159426665432213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_68
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 628
+        width: 18
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f49d9c2fb17769ca0800000000000000
+      internalID: -6010485690758211249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_69
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 634
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bf8b7f0ae1db3310800000000000000
+      internalID: 1385932113558867896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_70
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 634
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ead2db9723efdfa10800000000000000
+      internalID: 1944990106838183342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_71
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 652
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aec7ee2d3db0b580800000000000000
+      internalID: -8813336400286462295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_72
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 634
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c87488fac022b6d0800000000000000
+      internalID: -2976280347613562680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_73
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 635
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3971733b43db926c0800000000000000
+      internalID: -4167591946112002157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_74
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 652
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8e5764a6c14c7d10800000000000000
+      internalID: 2124645445629599370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_75
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 634
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8ff6fa8edadf6ca0800000000000000
+      internalID: -6021353527422025841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_76
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 635
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee54096b7a4f9cd00800000000000000
+      internalID: 993594193971529198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_77
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 628
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10b6034413d2a03b0800000000000000
+      internalID: -5545570301532673279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_78
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 635
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af4382cf728610f70800000000000000
+      internalID: 9151710438737065210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_79
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 634
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72b6e8d65b5002600800000000000000
+      internalID: 441359040267578151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_80
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 634
+        width: 19
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d17d7ff609f8fe40800000000000000
+      internalID: 5690571937634152914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_81
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 652
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d29dd903bc6f98f0800000000000000
+      internalID: -531586714785967400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_82
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 634
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a285a1dc725fe7470800000000000000
+      internalID: 8394416306758768682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Element-Screen-Bat-dau_83
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 629
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67378f11a7bdccec0800000000000000
+      internalID: -3545217489313434762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Element-Screen-Bat-dau_0: -2042858471804635556
+      Element-Screen-Bat-dau_1: 1290329616035608313
+      Element-Screen-Bat-dau_10: -4024372592410404424
+      Element-Screen-Bat-dau_11: 8028446979215330416
+      Element-Screen-Bat-dau_12: 4286251521707539406
+      Element-Screen-Bat-dau_13: -7855692477055412056
+      Element-Screen-Bat-dau_14: 8990990471117620006
+      Element-Screen-Bat-dau_15: 4899118499064366953
+      Element-Screen-Bat-dau_16: -2883283545816858806
+      Element-Screen-Bat-dau_17: 5769059324916400327
+      Element-Screen-Bat-dau_18: 5064992575941493898
+      Element-Screen-Bat-dau_19: 2808256659521145377
+      Element-Screen-Bat-dau_2: -8699045014700208552
+      Element-Screen-Bat-dau_20: -5171177153354070002
+      Element-Screen-Bat-dau_21: -1072536786672640230
+      Element-Screen-Bat-dau_22: 3284940377018850033
+      Element-Screen-Bat-dau_23: -9150395373955029703
+      Element-Screen-Bat-dau_24: 5197849666047010842
+      Element-Screen-Bat-dau_25: -1131762790127717089
+      Element-Screen-Bat-dau_26: -1125391355186008812
+      Element-Screen-Bat-dau_27: 9162872849921224456
+      Element-Screen-Bat-dau_28: -6704680693557841652
+      Element-Screen-Bat-dau_29: -6541782124954317010
+      Element-Screen-Bat-dau_3: 5840816498840948585
+      Element-Screen-Bat-dau_30: -509028468012287913
+      Element-Screen-Bat-dau_31: -1383920946747279641
+      Element-Screen-Bat-dau_32: -1900635233886715684
+      Element-Screen-Bat-dau_33: -1450119029535524686
+      Element-Screen-Bat-dau_34: -7692886080833533447
+      Element-Screen-Bat-dau_35: 46513523218410687
+      Element-Screen-Bat-dau_36: -1128364867191687135
+      Element-Screen-Bat-dau_37: -1437668851635577101
+      Element-Screen-Bat-dau_38: 6263868351435134611
+      Element-Screen-Bat-dau_39: 5357493694846259973
+      Element-Screen-Bat-dau_4: -3675388103277988015
+      Element-Screen-Bat-dau_40: -2187658530628660178
+      Element-Screen-Bat-dau_41: 201663733282031517
+      Element-Screen-Bat-dau_42: -5348840749048155971
+      Element-Screen-Bat-dau_43: 2246751998417330886
+      Element-Screen-Bat-dau_44: 4422593003880083599
+      Element-Screen-Bat-dau_45: -3492414852750028233
+      Element-Screen-Bat-dau_46: 8421397573273827796
+      Element-Screen-Bat-dau_47: -5145270541302767526
+      Element-Screen-Bat-dau_48: 8294551207985439569
+      Element-Screen-Bat-dau_49: -2167408959474896057
+      Element-Screen-Bat-dau_5: 8245313499108267593
+      Element-Screen-Bat-dau_50: -7283232567673034490
+      Element-Screen-Bat-dau_51: -6936809089732806335
+      Element-Screen-Bat-dau_52: 5324032892086154395
+      Element-Screen-Bat-dau_53: 6650669756457863761
+      Element-Screen-Bat-dau_54: 3000093989012710095
+      Element-Screen-Bat-dau_55: 1745831077154607673
+      Element-Screen-Bat-dau_56: -7600590360666938027
+      Element-Screen-Bat-dau_57: -128793196946122162
+      Element-Screen-Bat-dau_58: 5750539482874780740
+      Element-Screen-Bat-dau_59: 2842288153011255906
+      Element-Screen-Bat-dau_6: 9104018366351579477
+      Element-Screen-Bat-dau_60: -5150302793966750808
+      Element-Screen-Bat-dau_61: 2564995410545615001
+      Element-Screen-Bat-dau_62: -1361878249606416763
+      Element-Screen-Bat-dau_63: -7770171986365289125
+      Element-Screen-Bat-dau_64: -8610685777487907539
+      Element-Screen-Bat-dau_65: 2703236751526458079
+      Element-Screen-Bat-dau_66: 3344351176889047957
+      Element-Screen-Bat-dau_67: 6113159426665432213
+      Element-Screen-Bat-dau_68: -6010485690758211249
+      Element-Screen-Bat-dau_69: 1385932113558867896
+      Element-Screen-Bat-dau_7: -5376563288772080466
+      Element-Screen-Bat-dau_70: 1944990106838183342
+      Element-Screen-Bat-dau_71: -8813336400286462295
+      Element-Screen-Bat-dau_72: -2976280347613562680
+      Element-Screen-Bat-dau_73: -4167591946112002157
+      Element-Screen-Bat-dau_74: 2124645445629599370
+      Element-Screen-Bat-dau_75: -6021353527422025841
+      Element-Screen-Bat-dau_76: 993594193971529198
+      Element-Screen-Bat-dau_77: -5545570301532673279
+      Element-Screen-Bat-dau_78: 9151710438737065210
+      Element-Screen-Bat-dau_79: 441359040267578151
+      Element-Screen-Bat-dau_8: 5025416628637145556
+      Element-Screen-Bat-dau_80: 5690571937634152914
+      Element-Screen-Bat-dau_81: -531586714785967400
+      Element-Screen-Bat-dau_82: 8394416306758768682
+      Element-Screen-Bat-dau_83: -3545217489313434762
+      Element-Screen-Bat-dau_9: -6025319066588474605
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -651,7 +651,7 @@ MonoBehaviour:
   menuPanel: {fileID: 1325828461}
   scorePanel: {fileID: 0}
   highScoreText: {fileID: 0}
-  gameSceneName: SampleScene
+  gameSceneName: GameplayScreen
 --- !u!4 &773560207
 Transform:
   m_ObjectHideFlags: 0

@@ -1772,8 +1772,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverSceneController
   currentScoreText: {fileID: 43024688}
   bestScoreText: {fileID: 206379828}
-  gameSceneName: SampleScene
-  menuSceneName: MenuScene
+  gameSceneName: GameplayScreen
+  menuSceneName: StartGameScreen
 --- !u!4 &1472064609
 Transform:
   m_ObjectHideFlags: 0
