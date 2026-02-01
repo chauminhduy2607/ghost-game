@@ -38,6 +38,7 @@ public class CameraFollow : MonoBehaviour
     private Vector3 velocity = Vector3.zero;  // Dùng cho SmoothDamp
     private float initialZ;  // Vị trí Z ban đầu của camera
     private Rigidbody2D targetRb;  // Rigidbody của ma để lấy velocity
+    private GhostController ghostController;
     
     void Start()
     {
@@ -48,6 +49,7 @@ public class CameraFollow : MonoBehaviour
             if (ghost != null)
             {
                 target = ghost.transform;
+                ghostController = ghost;
                 Debug.Log("✅ Đã tự động tìm thấy Ghost!");
             }
             else
@@ -77,6 +79,10 @@ public class CameraFollow : MonoBehaviour
     void LateUpdate()
     {
         if (target == null) return;
+        
+        // ⭐ Ma chạm vật cản → camera dừng follow
+        if (ghostController != null && ghostController.HitObstacle)
+            return;
         
         // ⭐ KIỂM TRA MA ĐANG RỚT HAY BAY LÊN (qua velocity)
         bool isFalling = false;
