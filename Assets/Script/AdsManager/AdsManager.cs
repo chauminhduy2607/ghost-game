@@ -23,14 +23,10 @@ public class AdsManager : MonoBehaviour,
     [SerializeField] private bool testMode = true;
 
     [Header("Game IDs")]
-    [SerializeField] private string androidGameId = "YOUR_ANDROID_GAME_ID";
-    [SerializeField] private string iosGameId = "YOUR_IOS_GAME_ID";
+    [SerializeField] private string androidGameId = "6037561";
+    [SerializeField] private string iosGameId = "6037560";
 
     [Header("Placement/Unit IDs")]
-    // Lưu ý: tên mặc định Unity hay dùng:
-    // - Interstitial: "Interstitial_Android" / "Interstitial_iOS"
-    // - Rewarded:     "Rewarded_Android" / "Rewarded_iOS"
-    // - Banner:       "Banner_Android" / "Banner_iOS"
     [SerializeField] private string interstitialUnitIdAndroid = "Interstitial_Android";
     [SerializeField] private string interstitialUnitIdIOS = "Interstitial_iOS";
     [SerializeField] private string rewardedUnitIdAndroid = "Rewarded_Android";
@@ -40,21 +36,21 @@ public class AdsManager : MonoBehaviour,
 
     [Header("Interstitial Config")]
     [Tooltip("Thời gian tối thiểu giữa 2 lần show interstitial (giây)")]
-    [SerializeField] private float interstitialCooldownSeconds = 30f;
+    [SerializeField] private float interstitialCooldownSeconds = 0f;
 
     // Events cho game bắt
     public event Action OnInitialized;
     public event Action<string> OnInitFailed;
 
     public event Action<string> OnAdLoaded;
-    public event Action<string, string> OnAdFailedToLoad; // (unitId, message)
+    public event Action<string, string> OnAdFailedToLoad;
 
     public event Action<string> OnAdShowStart;
     public event Action<string> OnAdShowClick;
     public event Action<string> OnAdShowComplete;
-    public event Action<string, string> OnAdShowFailed; // (unitId, message)
+    public event Action<string, string> OnAdShowFailed;
 
-    public event Action OnRewardedEarned; // Khi rewarded thành công
+    public event Action OnRewardedEarned;
 
     private bool _initialized;
     private bool _loadingInterstitial;
@@ -65,7 +61,6 @@ public class AdsManager : MonoBehaviour,
 
     private float _lastInterstitialShownTime = -9999f;
 
-    // Dùng để gọi callback riêng cho mỗi lần show rewarded
     private Action _pendingRewardSuccess;
     private Action _pendingRewardClosedOrFailed;
 
@@ -134,22 +129,27 @@ public class AdsManager : MonoBehaviour,
 
     public void InitializeAds()
     {
-        if (_initialized) return;
-
-        if (string.IsNullOrEmpty(GameId) || GameId.Contains("YOUR_"))
+        if (_initialized)
         {
-            Debug.LogError("[AdsManager] GameId chưa được set. Hãy nhập androidGameId/iosGameId trong Inspector.");
+            Debug.Log("[AdsManager] ⚠️ Đã initialize rồi, bỏ qua.");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(GameId))
+        {
+            Debug.LogError("[AdsManager] ❌ GameId TRỐNG! Hãy nhập Game ID trong Inspector.");
             OnInitFailed?.Invoke("Missing GameId");
             return;
         }
 
+        Debug.Log($"[AdsManager] 🎬 Bắt đầu initialize với Game ID: {GameId}, Test Mode: {testMode}");
         Advertisement.Initialize(GameId, testMode, this);
     }
 
     public void OnInitializationComplete()
     {
         _initialized = true;
-        Debug.Log("[AdsManager] Initialization complete.");
+        Debug.Log("[AdsManager] ✅ Initialization complete!");
 
         // Auto load ads
         LoadInterstitial();
@@ -161,7 +161,7 @@ public class AdsManager : MonoBehaviour,
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
         _initialized = false;
-        Debug.LogError($"[AdsManager] Initialization failed: {error} - {message}");
+        Debug.LogError($"[AdsManager] ❌ Initialization failed: {error} - {message}");
         OnInitFailed?.Invoke($"{error} - {message}");
     }
 
@@ -171,10 +171,21 @@ public class AdsManager : MonoBehaviour,
 
     public void LoadInterstitial()
     {
-        if (!_initialized) return;
-        if (_loadingInterstitial) return;
+        if (!_initialized)
+        {
+            Debug.LogWarning("[AdsManager] ⚠️ Chưa initialize, thử initialize lại...");
+            InitializeAds(); // ⭐ TỰ ĐỘNG INITIALIZE LẠI
+            return; // Chờ OnInitializationComplete() sẽ tự động gọi LoadInterstitial()
+        }
+        
+        if (_loadingInterstitial)
+        {
+            Debug.Log("[AdsManager] ⏳ Đang load Interstitial, bỏ qua request mới.");
+            return;
+        }
 
         _loadingInterstitial = true;
+        Debug.Log($"[AdsManager] 📥 Bắt đầu load Interstitial: {InterstitialUnitId}");
         Advertisement.Load(InterstitialUnitId, this);
     }
 
@@ -184,17 +195,16 @@ public class AdsManager : MonoBehaviour,
         if (_loadingRewarded) return;
 
         _loadingRewarded = true;
+        Debug.Log($"[AdsManager] 📥 Bắt đầu load Rewarded: {RewardedUnitId}");
         Advertisement.Load(RewardedUnitId, this);
     }
 
-    // Banner (Unity Ads banner thường load/show qua Banner API)
     public void ShowBanner(BannerPosition position = BannerPosition.BOTTOM_CENTER)
     {
         if (!_initialized) return;
 
         Advertisement.Banner.SetPosition(position);
 
-        // Load banner rồi show
         Advertisement.Banner.Load(
             BannerUnitId,
             new BannerLoadOptions
@@ -224,23 +234,32 @@ public class AdsManager : MonoBehaviour,
         {
             _interstitialReady = true;
             _loadingInterstitial = false;
+            Debug.Log($"[AdsManager] ✅ Interstitial đã load xong! READY = {_interstitialReady}");
         }
         else if (unitId == RewardedUnitId)
         {
             _rewardedReady = true;
             _loadingRewarded = false;
+            Debug.Log($"[AdsManager] ✅ Rewarded đã load xong!");
         }
 
-        Debug.Log($"[AdsManager] Ad loaded: {unitId}");
         OnAdLoaded?.Invoke(unitId);
     }
 
     public void OnUnityAdsFailedToLoad(string unitId, UnityAdsLoadError error, string message)
     {
-        if (unitId == InterstitialUnitId) _loadingInterstitial = false;
-        if (unitId == RewardedUnitId) _loadingRewarded = false;
+        if (unitId == InterstitialUnitId)
+        {
+            _loadingInterstitial = false;
+            Debug.LogError($"[AdsManager] ❌ Interstitial FAILED TO LOAD: {error} - {message}");
+        }
+        
+        if (unitId == RewardedUnitId)
+        {
+            _loadingRewarded = false;
+            Debug.LogError($"[AdsManager] ❌ Rewarded FAILED TO LOAD: {error} - {message}");
+        }
 
-        Debug.LogWarning($"[AdsManager] Failed to load: {unitId} - {error} - {message}");
         OnAdFailedToLoad?.Invoke(unitId, $"{error} - {message}");
     }
 
@@ -250,10 +269,15 @@ public class AdsManager : MonoBehaviour,
 
     public bool CanShowInterstitial()
     {
+        Debug.Log($"[AdsManager] 🔍 Kiểm tra CanShowInterstitial:");
+        Debug.Log($"  - Initialized: {_initialized}");
+        Debug.Log($"  - Interstitial Ready: {_interstitialReady}");
+        Debug.Log($"  - Advertisement.isInitialized: {Advertisement.isInitialized}");
+        Debug.Log($"  - Cooldown OK: {Time.unscaledTime - _lastInterstitialShownTime >= interstitialCooldownSeconds}");
+        
         if (!_initialized) return false;
         if (!_interstitialReady) return false;
 
-        // cooldown
         if (Time.unscaledTime - _lastInterstitialShownTime < interstitialCooldownSeconds)
             return false;
 
@@ -269,25 +293,27 @@ public class AdsManager : MonoBehaviour,
 
     public bool ShowInterstitial()
     {
+        Debug.Log("[AdsManager] 🎬 ShowInterstitial() được gọi!");
+        
         if (!CanShowInterstitial())
         {
-            // nếu chưa sẵn thì thử load lại
-            if (!_loadingInterstitial) LoadInterstitial();
+            Debug.LogWarning("[AdsManager] ⚠️ KHÔNG THỂ SHOW INTERSTITIAL!");
+            if (!_loadingInterstitial)
+            {
+                Debug.Log("[AdsManager] 🔄 Thử load lại Interstitial...");
+                LoadInterstitial();
+            }
             return false;
         }
 
         _interstitialReady = false;
         _lastInterstitialShownTime = Time.unscaledTime;
 
+        Debug.Log($"[AdsManager] 📺 Đang SHOW Interstitial: {InterstitialUnitId}");
         Advertisement.Show(InterstitialUnitId, this);
         return true;
     }
 
-    /// <summary>
-    /// Show rewarded.
-    /// onReward: gọi khi user nhận reward (Completed)
-    /// onClosedOrFailed: gọi khi user đóng hoặc fail (không reward)
-    /// </summary>
     public bool ShowRewarded(Action onReward, Action onClosedOrFailed = null)
     {
         if (!CanShowRewarded())
@@ -307,10 +333,9 @@ public class AdsManager : MonoBehaviour,
 
     public void OnUnityAdsShowFailure(string unitId, UnityAdsShowError error, string message)
     {
-        Debug.LogWarning($"[AdsManager] Show failed: {unitId} - {error} - {message}");
+        Debug.LogError($"[AdsManager] ❌ Show failed: {unitId} - {error} - {message}");
         OnAdShowFailed?.Invoke(unitId, $"{error} - {message}");
 
-        // Nếu fail thì load lại
         if (unitId == InterstitialUnitId) LoadInterstitial();
         if (unitId == RewardedUnitId)
         {
@@ -323,31 +348,30 @@ public class AdsManager : MonoBehaviour,
 
     public void OnUnityAdsShowStart(string unitId)
     {
-        Debug.Log($"[AdsManager] Show start: {unitId}");
+        Debug.Log($"[AdsManager] ▶️ Show start: {unitId}");
         OnAdShowStart?.Invoke(unitId);
     }
 
     public void OnUnityAdsShowClick(string unitId)
     {
-        Debug.Log($"[AdsManager] Show click: {unitId}");
+        Debug.Log($"[AdsManager] 👆 Show click: {unitId}");
         OnAdShowClick?.Invoke(unitId);
     }
 
     public void OnUnityAdsShowComplete(string unitId, UnityAdsShowCompletionState showCompletionState)
     {
-        Debug.Log($"[AdsManager] Show complete: {unitId} - {showCompletionState}");
+        Debug.Log($"[AdsManager] ✅ Show complete: {unitId} - {showCompletionState}");
         OnAdShowComplete?.Invoke(unitId);
 
         if (unitId == InterstitialUnitId)
         {
-            // Load lại để lần sau dùng
+            Debug.Log("[AdsManager] 🔄 Load lại Interstitial cho lần sau...");
             LoadInterstitial();
             return;
         }
 
         if (unitId == RewardedUnitId)
         {
-            // Reward chỉ khi Completed
             if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
             {
                 OnRewardedEarned?.Invoke();
@@ -361,10 +385,29 @@ public class AdsManager : MonoBehaviour,
             _pendingRewardSuccess = null;
             _pendingRewardClosedOrFailed = null;
 
-            // Load lại rewarded
             LoadRewarded();
         }
     }
 
     #endregion
+    
+    public void ForceLoadInterstitial()
+    {
+        _interstitialReady = false;
+        _loadingInterstitial = false;
+        LoadInterstitial();
+        Debug.Log("[AdsManager] 🔄 Force reload Interstitial!");
+    }
+    
+    public void DebugStatus()
+    {
+        Debug.Log("========== ADS MANAGER STATUS ==========");
+        Debug.Log($"Initialized: {_initialized}");
+        Debug.Log($"Game ID: {GameId}");
+        Debug.Log($"Test Mode: {testMode}");
+        Debug.Log($"Interstitial Ready: {_interstitialReady}");
+        Debug.Log($"Rewarded Ready: {_rewardedReady}");
+        Debug.Log($"Advertisement.isInitialized: {Advertisement.isInitialized}");
+        Debug.Log("========================================");
+    }
 }

@@ -114,11 +114,11 @@ public class CameraFollow : MonoBehaviour
             if (Mathf.Abs(distanceToTarget) < deadZoneHeight)
             {
                 // Ma vẫn trong vùng dead zone → Camera không di chuyển
-                if (showDebugInfo)
-                {
-                    Debug.Log($"📷 Dead Zone: Ma trong vùng an toàn ({Mathf.Abs(distanceToTarget):F1} < {deadZoneHeight})");
-                }
-                return;
+                // if (showDebugInfo)
+                // {
+                //     Debug.Log($"📷 Dead Zone: Ma trong vùng an toàn ({Mathf.Abs(distanceToTarget):F1} < {deadZoneHeight})");
+                // }
+                // return;
             }
         }
         
