@@ -3184,6 +3184,7 @@ GameObject:
   - component: {fileID: 1173831019}
   - component: {fileID: 1173831022}
   - component: {fileID: 1173831023}
+  - component: {fileID: 1173831024}
   m_Layer: 0
   m_Name: ghost
   m_TagString: Player
@@ -3348,7 +3349,6 @@ MonoBehaviour:
   autoRiseForce: 0.3
   maxAutoRiseSpeed: 0.6
   fallForceMultiplier: 30
-  swipeThreshold: 0.5
   obstacleKnockbackForce: 1
   timeBeforeGameOver: 0.5
   obstacleTag: Obstacle
@@ -3420,6 +3420,23 @@ MonoBehaviour:
   showDebug: 1
   minHeight: 0.5
   emergencySwipeForce: 35
+--- !u!114 &1173831024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3fa76b58f6a4ad8b4bd9b3ce036e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleAdsManager
+  androidGameId: 251a29845
+  iOSGameId: 4374880
+  testMode: 1
+  androidAdUnitId: Interstitial_Android
+  iOSAdUnitId: Interstitial_iOS
 --- !u!1 &1198876091
 GameObject:
   m_ObjectHideFlags: 0
@@ -4239,18 +4256,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfe88da2cf6c049ebb36512dc641725a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner_LineVersion
-  allowedLines: 020000000400000006000000
-  distributeLinesEvenly: 1
-  randomizeLineOnLoop: 1
-  obstaclePrefab: {fileID: 0}
-  spawnCount: 10
-  spacingY: 6
-  startY: -14
-  autoAddController: 1
-  useExistingObstacles: 1
-  player: {fileID: 0}
-  mainCamera: {fileID: 0}
-  spawnedObstacles: []
 --- !u!114 &1730702275
 MonoBehaviour:
   m_ObjectHideFlags: 0
