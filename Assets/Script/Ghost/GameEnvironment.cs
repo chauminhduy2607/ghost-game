@@ -22,7 +22,7 @@ public class GameEnvironment : MonoBehaviour
         
         if (ghost == null)
         {
-            ghost = FindObjectOfType<GhostController>();
+            ghost = Object.FindFirstObjectByType<GhostController>();
             if (ghost == null)
             {
                 enabled = false;

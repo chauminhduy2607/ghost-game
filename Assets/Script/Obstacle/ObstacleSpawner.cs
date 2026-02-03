@@ -34,7 +34,7 @@ public class ObstacleSpawner : MonoBehaviour
         
         if (player == null)
         {
-            GhostController ghost = FindObjectOfType<GhostController>();
+            GhostController ghost = Object.FindFirstObjectByType<GhostController>();
             if (ghost != null)
                 player = ghost.transform;
         }

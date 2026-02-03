@@ -75,7 +75,7 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         
         if (player == null)
         {
-            GhostController ghost = FindObjectOfType<GhostController>();
+            GhostController ghost = Object.FindFirstObjectByType<GhostController>();
             if (ghost != null)
                 player = ghost.transform;
         }
@@ -107,7 +107,7 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     
     void ForceEnableAllCircles()
     {
-        CircleRotation[] rotations = FindObjectsOfType<CircleRotation>(true);
+        CircleRotation[] rotations = Object.FindObjectsByType<CircleRotation>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (CircleRotation rotation in rotations)
         {
             rotation.enabled = true;
@@ -116,7 +116,7 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     
     void DisableCircleRotations()
     {
-        CircleRotation[] rotations = FindObjectsOfType<CircleRotation>();
+        CircleRotation[] rotations = Object.FindObjectsByType<CircleRotation>(FindObjectsSortMode.None);
         foreach (CircleRotation rotation in rotations)
         {
             rotation.enabled = false;
@@ -127,7 +127,7 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         
-        CircleRotation[] rotations = FindObjectsOfType<CircleRotation>();
+        CircleRotation[] rotations = Object.FindObjectsByType<CircleRotation>(FindObjectsSortMode.None);
         foreach (CircleRotation rotation in rotations)
         {
             rotation.enabled = true;
