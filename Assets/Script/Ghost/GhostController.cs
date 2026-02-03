@@ -1,11 +1,7 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
-/// ⭐ VẬT LÝ THỰC TẾ: Dùng Force thay vì set Velocity!
-/// ⭐⭐⭐⭐ CẬP NHẬT QUẢNG CÁO:
-/// - Khi Ghost chết → Hiện quảng cáo Interstitial
-/// - Skip/Đóng quảng cáo → Mới hiện màn hình Game Over
+/// Controller cho Ghost với physics thực tế và tích hợp ads
 /// </summary>
 public class GhostController : MonoBehaviour
 {
@@ -19,10 +15,10 @@ public class GhostController : MonoBehaviour
     [SerializeField] private float autoRiseForce = 0.25f;
     [SerializeField] private float maxAutoRiseSpeed = 0.5f;
     
-    [Header("=== RỚT XUỐNG KHI NHẤN (KHÔNG VUỐT) ===")]
+    [Header("=== RỚT XUỐNG KHI NHẤN ===")]
     [SerializeField] private float fallForceMultiplier = 30.0f;
     
-    [Header("=== ⭐⭐ VẬT CẢN - GAME OVER ===")]
+    [Header("=== VẬT CẢN - GAME OVER ===")]
     [SerializeField] private float obstacleKnockbackForce = 15f;
     [SerializeField] private float timeBeforeGameOver = 3f;
     [SerializeField] private string obstacleTag = "Obstacle";
@@ -51,38 +47,32 @@ public class GhostController : MonoBehaviour
     [SerializeField] private bool enableTrail = true;
     [SerializeField] private bool enableColorChange = true;
     
-    [Header("=== ⭐ GAME OVER UI ===")]
+    [Header("=== GAME OVER UI ===")]
     [SerializeField] private string gameOverPanelName = "GameOverPanel";
     
-    // Private variables
     private Rigidbody2D rb;
     private Camera mainCamera;
     private SpriteRenderer spriteRenderer;
     private TrailRenderer trail;
     private Color originalColor;
     
-    // Vuốt
     private bool isDragging = false;
     private Vector2 dragStartPos;
     private Vector2 lastMousePos;
     private bool hasAppliedSwipe = false;
     private bool isFalling = false;
     
-    // ⭐⭐ VẬT CẢN - TRẠNG THÁI MỚI
     private bool hitObstacle = false;
     private bool isGameOver = false;
     private float obstacleTimer = 0f;
     
-    // Squash & Stretch
     private Vector3 originalScale;
     private Vector3 targetScale;
     private bool isGroundSquashing = false;
     private float groundSquashTimer = 0f;
     
-    // Rotation
     private Quaternion targetRotation;
     
-    // Public properties
     public Rigidbody2D Rigidbody => rb;
     public bool IsGroundSquashing => isGroundSquashing;
     public Vector2 Velocity => rb.linearVelocity;
@@ -98,7 +88,6 @@ public class GhostController : MonoBehaviour
         mainCamera = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
         
-        // Setup Rigidbody2D
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.mass = mass;
         rb.linearDamping = linearDrag;
@@ -107,21 +96,16 @@ public class GhostController : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         
-        // Lưu scale gốc
         originalScale = transform.localScale;
         targetScale = originalScale;
-        
-        // Lưu góc xoay ban đầu
         targetRotation = Quaternion.Euler(0, 0, 0);
         transform.rotation = targetRotation;
         
-        // Lưu màu gốc
         if (spriteRenderer != null)
         {
             originalColor = spriteRenderer.color;
         }
         
-        // Setup Trail
         if (enableTrail)
         {
             trail = GetComponent<TrailRenderer>();
@@ -136,30 +120,19 @@ public class GhostController : MonoBehaviour
                 trail.endColor = new Color(1f, 1f, 0f, 0f);
             }
         }
-        
-        Debug.Log("👻 GhostController: VẬT LÝ THỰC TẾ! (BỎ TAP=RỚT, CHỈ VUỐT LÊN)");
     }
     
     void Start()
     {
-        // ⭐ LOAD SẴN QUẢNG CÁO KHI BẮT ĐẦU GAME
         if (AdsManager.Instance != null)
         {
             AdsManager.Instance.LoadInterstitial();
-            Debug.Log("🎬 Đã yêu cầu load quảng cáo Interstitial");
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ AdsManager không tồn tại! Hãy tạo GameObject AdsManager trong scene.");
         }
     }
     
     void Update()
     {
-        if (isGameOver)
-        {
-            return;
-        }
+        if (isGameOver) return;
         
         if (hitObstacle)
         {
@@ -189,14 +162,11 @@ public class GhostController : MonoBehaviour
     void FixedUpdate()
     {
         if (isGameOver) return;
-        
         ApplyMovement();
     }
     
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("💥 VA CHẠM VỚI: " + collision.gameObject.name + " (Tag: " + collision.gameObject.tag + ")");
-        
         if (collision.gameObject.CompareTag(obstacleTag))
         {
             if (!hitObstacle)
@@ -217,8 +187,6 @@ public class GhostController : MonoBehaviour
         PlayerPrefs.SetFloat("RespawnVelocityY", rb.linearVelocity.y);
         PlayerPrefs.Save();
         
-        Debug.Log("💾 SAVED RESPAWN POSITION: " + transform.position);
-        
         Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
         
         rb.linearVelocity = Vector2.zero;
@@ -233,14 +201,11 @@ public class GhostController : MonoBehaviour
         {
             targetRotation = Quaternion.Euler(0, 0, 180);
         }
-        
-        Debug.Log("💥💥💥 CHẠM VẬT CẢN! Bắt đầu đếm ngược " + timeBeforeGameOver + "s...");
     }
     
-    // ⭐⭐⭐⭐ HIỆN QUẢNG CÁO TRƯỚC KHI GAME OVER
     void TriggerGameOver()
     {
-        if (isGameOver) return; // Tránh gọi nhiều lần
+        if (isGameOver) return;
         
         isGameOver = true;
         rb.linearVelocity = Vector2.zero;
@@ -251,33 +216,22 @@ public class GhostController : MonoBehaviour
             spriteRenderer.color = Color.black;
         }
         
-        Debug.Log("☠️☠️☠️ GAME OVER - Chuẩn bị hiện quảng cáo...");
-        
-        // ⭐ GỌI QUẢNG CÁO TRƯỚC KHI GAME OVER
         ShowAdThenGameOver();
     }
     
-    // ⭐ HÀM MỚI: Hiện quảng cáo rồi mới Game Over
     void ShowAdThenGameOver()
     {
         if (AdsManager.Instance != null)
         {
-            // ⭐ Kiểm tra xem quảng cáo có sẵn sàng không
             if (AdsManager.Instance.CanShowInterstitial())
             {
-                Debug.Log("📺 ĐANG HIỆN QUẢNG CÁO...");
-                
-                // ⭐ Đăng ký event TRƯỚC KHI show (QUAN TRỌNG!)
                 AdsManager.Instance.OnAdShowComplete += HandleAdComplete;
                 AdsManager.Instance.OnAdShowFailed += HandleAdFailed;
                 
-                // Show quảng cáo
                 bool adShown = AdsManager.Instance.ShowInterstitial();
                 
                 if (!adShown)
                 {
-                    // Nếu show thất bại, hủy event và hiện Game Over luôn
-                    Debug.LogWarning("⚠️ ShowInterstitial() trả về false!");
                     AdsManager.Instance.OnAdShowComplete -= HandleAdComplete;
                     AdsManager.Instance.OnAdShowFailed -= HandleAdFailed;
                     ShowGameOverScreen();
@@ -285,65 +239,47 @@ public class GhostController : MonoBehaviour
             }
             else
             {
-                Debug.Log("⚠️ Quảng cáo chưa sẵn sàng, vào Game Over luôn");
                 ShowGameOverScreen();
             }
         }
         else
         {
-            Debug.LogWarning("⚠️ AdsManager không tồn tại!");
             ShowGameOverScreen();
         }
     }
     
-    // ⭐ XỬ LÝ KHI QUẢNG CÁO ĐÓNG/SKIP/HOÀN THÀNH
     void HandleAdComplete(string unitId)
     {
-        Debug.Log("✅✅✅ Quảng cáo đã đóng/skip: " + unitId + " - BÂY GIỜ MỚI HIỆN GAME OVER!");
-        
-        // ⭐ Hủy đăng ký event (QUAN TRỌNG để tránh memory leak)
         if (AdsManager.Instance != null)
         {
             AdsManager.Instance.OnAdShowComplete -= HandleAdComplete;
             AdsManager.Instance.OnAdShowFailed -= HandleAdFailed;
         }
         
-        // ⭐ HIỆN MÀN HÌNH GAME OVER SAU KHI ĐÓNG QUẢNG CÁO
         ShowGameOverScreen();
     }
     
-    // ⭐ XỬ LÝ KHI QUẢNG CÁO BỊ LỖI
     void HandleAdFailed(string unitId, string message)
     {
-        Debug.LogWarning("❌ Quảng cáo lỗi: " + message + " - HIỆN GAME OVER!");
-        
-        // ⭐ Hủy đăng ký event
         if (AdsManager.Instance != null)
         {
             AdsManager.Instance.OnAdShowComplete -= HandleAdComplete;
             AdsManager.Instance.OnAdShowFailed -= HandleAdFailed;
         }
         
-        // ⭐ Vẫn hiện Game Over dù quảng cáo lỗi
         ShowGameOverScreen();
     }
     
-    // ⭐ HIỆN MÀN HÌNH GAME OVER (CHỈ GỌI SAU KHI ĐÓNG QUẢNG CÁO)
     void ShowGameOverScreen()
     {
-        Debug.Log("🎮🎮🎮 BÂY GIỜ MỚI HIỆN MÀN HÌNH GAME OVER!");
-        
-        // Tìm GameObject Game Over Panel
         GameObject gameOverPanel = GameObject.Find(gameOverPanelName);
         
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
-            Debug.Log("✅ Đã bật " + gameOverPanelName);
         }
         else
         {
-            // Thử tìm trong Canvas
             GameObject canvas = GameObject.Find("Canvas");
             if (canvas != null)
             {
@@ -351,30 +287,16 @@ public class GhostController : MonoBehaviour
                 if (panelTransform != null)
                 {
                     panelTransform.gameObject.SetActive(true);
-                    Debug.Log("✅ Đã bật " + gameOverPanelName + " trong Canvas");
                 }
-                else
-                {
-                    Debug.LogWarning("⚠️⚠️⚠️ KHÔNG TÌM THẤY '" + gameOverPanelName + "' trong Canvas!");
-                    Debug.LogWarning("👉 Hãy tạo Panel tên '" + gameOverPanelName + "' trong Canvas");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("⚠️⚠️⚠️ KHÔNG TÌM THẤY Canvas!");
-                Debug.LogWarning("👉 Tạo UI > Panel trong Canvas, đặt tên '" + gameOverPanelName + "'");
             }
         }
         
-        // ⭐ Load lại quảng cáo cho lần chết tiếp theo
         if (AdsManager.Instance != null)
         {
             AdsManager.Instance.LoadInterstitial();
-            Debug.Log("🔄 Đã load lại quảng cáo cho lần sau");
         }
     }
     
-    // ==================== INPUT: VUỐT ====================
     void HandleSwipeInput()
     {
         if (hitObstacle)
@@ -438,7 +360,6 @@ public class GhostController : MonoBehaviour
         }
     }
     
-    // ==================== CHUYỂN ĐỘNG ====================
     void ApplyMovement()
     {
         if (isFalling)
@@ -462,7 +383,6 @@ public class GhostController : MonoBehaviour
         }
     }
     
-    // ==================== XOAY ĐẦU ====================
     void UpdateRotation()
     {
         transform.rotation = Quaternion.Lerp(
@@ -472,7 +392,6 @@ public class GhostController : MonoBehaviour
         );
     }
     
-    // ==================== SQUASH & STRETCH ====================
     void UpdateSquashStretch()
     {
         if (isGroundSquashing)
@@ -544,7 +463,6 @@ public class GhostController : MonoBehaviour
         groundSquashTimer = 0f;
     }
     
-    // ==================== VISUAL ====================
     void UpdateVisuals()
     {
         if (!enableColorChange || spriteRenderer == null) return;
@@ -600,7 +518,6 @@ public class GhostController : MonoBehaviour
         }
     }
     
-    // ==================== PUBLIC METHODS ====================
     public void ResetVelocity()
     {
         rb.linearVelocity = Vector2.zero;
@@ -608,25 +525,10 @@ public class GhostController : MonoBehaviour
         isFalling = false;
     }
     
-    public void SetVelocity(Vector2 velocity)
-    {
-        rb.linearVelocity = velocity;
-    }
-    
-    public void SetAutoRiseForce(float force)
-    {
-        autoRiseForce = force;
-    }
-    
-    public void AddImpulse(Vector2 force)
-    {
-        rb.AddForce(force, ForceMode2D.Impulse);
-    }
-    
-    public void EnablePhysics(bool enable)
-    {
-        rb.simulated = enable;
-    }
+    public void SetVelocity(Vector2 velocity) => rb.linearVelocity = velocity;
+    public void SetAutoRiseForce(float force) => autoRiseForce = force;
+    public void AddImpulse(Vector2 force) => rb.AddForce(force, ForceMode2D.Impulse);
+    public void EnablePhysics(bool enable) => rb.simulated = enable;
     
     public void StopFalling()
     {
@@ -660,7 +562,6 @@ public class GhostController : MonoBehaviour
         targetRotation = Quaternion.Euler(0, 0, 0);
     }
     
-    // ⭐ HỦY ĐĂNG KÝ EVENT KHI DESTROY (QUAN TRỌNG - TRÁNH MEMORY LEAK!)
     void OnDestroy()
     {
         if (AdsManager.Instance != null)
@@ -668,7 +569,5 @@ public class GhostController : MonoBehaviour
             AdsManager.Instance.OnAdShowComplete -= HandleAdComplete;
             AdsManager.Instance.OnAdShowFailed -= HandleAdFailed;
         }
-        
-        Debug.Log("👻 GhostController đã bị destroy - đã hủy event callbacks");
     }
 }

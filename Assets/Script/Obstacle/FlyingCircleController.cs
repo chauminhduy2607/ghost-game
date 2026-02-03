@@ -1,10 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// ⭐ QUẢN LÝ FLYING CIRCLE
-/// - Tự động setup 2 Circle con quay tròn
-/// - Di chuyển xuống theo camera (parallax)
-/// - Gắn vào FlyingCircle (parent)
+/// Quản lý Flying Circle với rotation tự động
 /// </summary>
 public class FlyingCircleController : MonoBehaviour
 {
@@ -13,16 +10,10 @@ public class FlyingCircleController : MonoBehaviour
     [SerializeField] private float radius = 1f;
     
     [Header("=== AUTO SETUP ===")]
-    [Tooltip("Tự động thêm CircleRotation vào các con")]
     [SerializeField] private bool autoSetup = true;
-    
-    [Tooltip("Góc bắt đầu của Circle 1")]
     [SerializeField] private float circle1StartAngle = 0f;
-    
-    [Tooltip("Góc bắt đầu của Circle 2")]
     [SerializeField] private float circle2StartAngle = 180f;
     
-    // Private
     private CircleRotation[] circles;
     
     void Start()
@@ -35,12 +26,10 @@ public class FlyingCircleController : MonoBehaviour
     
     void SetupCircles()
     {
-        // Tìm tất cả CircleRotation trong con
         circles = GetComponentsInChildren<CircleRotation>();
         
         if (circles.Length == 0)
         {
-            // Tự động thêm CircleRotation vào các con
             int childCount = transform.childCount;
             circles = new CircleRotation[childCount];
             
@@ -52,14 +41,12 @@ public class FlyingCircleController : MonoBehaviour
                 if (rotation == null)
                 {
                     rotation = child.gameObject.AddComponent<CircleRotation>();
-                    Debug.Log($"➕ Đã thêm CircleRotation vào {child.name}");
                 }
                 
                 circles[i] = rotation;
             }
         }
         
-        // Setup từng circle
         if (circles.Length >= 1)
         {
             circles[0].SetRotationSpeed(rotationSpeed);
@@ -73,15 +60,8 @@ public class FlyingCircleController : MonoBehaviour
             circles[1].SetRadius(radius);
             circles[1].SetAngle(circle2StartAngle);
         }
-        
-        Debug.Log($"✅ FlyingCircle: Setup {circles.Length} circles");
     }
     
-    // ==================== PUBLIC METHODS ====================
-    
-    /// <summary>
-    /// Đặt vị trí Y
-    /// </summary>
     public void SetPositionY(float y)
     {
         Vector3 pos = transform.position;
@@ -89,9 +69,6 @@ public class FlyingCircleController : MonoBehaviour
         transform.position = pos;
     }
     
-    /// <summary>
-    /// Đặt tốc độ quay cho tất cả circles
-    /// </summary>
     public void SetRotationSpeed(float speed)
     {
         rotationSpeed = speed;
@@ -106,9 +83,6 @@ public class FlyingCircleController : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Đặt bán kính cho tất cả circles
-    /// </summary>
     public void SetRadius(float newRadius)
     {
         radius = newRadius;
@@ -123,9 +97,6 @@ public class FlyingCircleController : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Random góc bắt đầu
-    /// </summary>
     public void RandomizeAngles()
     {
         if (circles != null)
@@ -138,9 +109,6 @@ public class FlyingCircleController : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Dừng quay
-    /// </summary>
     public void Stop()
     {
         if (circles != null)
@@ -153,9 +121,6 @@ public class FlyingCircleController : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Tiếp tục quay
-    /// </summary>
     public void Resume()
     {
         if (circles != null)

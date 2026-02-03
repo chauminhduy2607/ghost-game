@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// <summary>
-/// ⭐⭐⭐ PROGRESSIVE SPAWNER - AUTO SPEED UP VERSION
-/// - Tự động tăng tốc sau mỗi 3 vật cản qua
-/// - Random pattern mỗi lần spawn group mới
-/// - Loop liên tục với độ khó tăng dần
+/// Progressive spawner với auto speed up
 /// </summary>
 public class ProgressiveObstacleSpawner : MonoBehaviour
 {
@@ -29,29 +26,16 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     [SerializeField] private float spacingY = 5.0f;
     [SerializeField] private float groupSpacing = 15f;
     
-    [Header("=== ⭐ CIRCLE SETTINGS ===")]
-    [Tooltip("⭐⭐⭐ Bán kính của Circle")]
+    [Header("=== CIRCLE SETTINGS ===")]
     [SerializeField] private float circleRadius = 2.5f;
-    
-    [Tooltip("Khoảng cách từ VIỀN NGOÀI Circle đến FlyingFire đầu tiên")]
     [SerializeField] private float circleToFireSpacing = 3f;
-    
-    [Tooltip("FlyingFire spawn từ phía TRÊN hay DƯỚI Circle?")]
     [SerializeField] private bool spawnFireAboveCircle = false;
-    
     [SerializeField] private float startY = 5f;
     
-    [Header("=== ⭐ SPEED PROGRESSION - QUAN TRỌNG! ===")]
-    [Tooltip("Tốc độ ban đầu")]
+    [Header("=== SPEED PROGRESSION ===")]
     [SerializeField] private float initialSpeed = 1.0f;
-    
-    [Tooltip("Tăng tốc độ sau mỗi 3 vật cản")]
     [SerializeField] private float speedIncrement = 0.2f;
-    
-    [Tooltip("Tốc độ tối đa")]
     [SerializeField] private float maxSpeed = 5.0f;
-    
-    [Tooltip("Số vật cản cần vượt qua để tăng tốc (mặc định = 3)")]
     [SerializeField] private int obstaclesPerSpeedIncrease = 3;
     
     [Header("=== ROTATION SPEED ===")]
@@ -71,18 +55,15 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
     [SerializeField] private bool randomizeOnLoop = true;
     
     [Header("=== DEBUG ===")]
-    [SerializeField] private bool showDebugInfo = true;
-    [SerializeField] private bool showGizmos = true;
+    [SerializeField] private bool showDebugInfo = false;
+    [SerializeField] private bool showGizmos = false;
     
-    // Private
     private List<GameObject> allObstacles = new List<GameObject>();
     private float screenHeight;
     private int totalLooped = 0;
     private int currentWave = 0;
     private float currentSpeed;
     private float currentRotationSpeed;
-    
-    // ⭐ NEW: Tracking obstacles passed
     private HashSet<GameObject> passedObstacles = new HashSet<GameObject>();
     private int obstaclesPassed = 0;
     private float lastSpeedIncreaseAt = 0;
@@ -122,8 +103,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         ArrangeAllObstaclesInPattern();
         StartCoroutine(EnableCircleRotationsDelayed());
         Invoke("ForceEnableAllCircles", 0.5f);
-        
-        PrintInfo();
     }
     
     void ForceEnableAllCircles()
@@ -133,8 +112,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         {
             rotation.enabled = true;
         }
-        if (rotations.Length > 0)
-            Debug.Log($"✅ FORCE ENABLE {rotations.Length} CircleRotation!");
     }
     
     void DisableCircleRotations()
@@ -155,18 +132,14 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         {
             rotation.enabled = true;
         }
-        
-        if (rotations.Length > 0)
-            Debug.Log($"✅ Đã bật {rotations.Length} CircleRotation!");
     }
     
     void Update()
     {
         CheckAndLoopObstacles();
-        CheckObstaclesPassed(); // ⭐ NEW: Kiểm tra vật cản đã qua
+        CheckObstaclesPassed();
     }
     
-    // ⭐⭐⭐ NEW: Theo dõi vật cản mà player đã vượt qua
     void CheckObstaclesPassed()
     {
         if (player == null || allObstacles.Count == 0) return;
@@ -177,18 +150,13 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         {
             if (obstacle == null) continue;
             
-            // Nếu chưa đánh dấu là đã qua
             if (!passedObstacles.Contains(obstacle))
             {
-                // Nếu player đã vượt qua vật cản này (player Y > obstacle Y + threshold)
                 if (playerY > obstacle.transform.position.y + 2f)
                 {
                     passedObstacles.Add(obstacle);
                     obstaclesPassed++;
                     
-                    Debug.Log($"🎯 Đã qua vật cản: {obstacle.name} | Tổng: {obstaclesPassed}");
-                    
-                    // Kiểm tra xem đã đủ số lượng để tăng tốc chưa
                     if (obstaclesPassed - lastSpeedIncreaseAt >= obstaclesPerSpeedIncrease)
                     {
                         IncreaseSpeed();
@@ -199,27 +167,13 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ⭐⭐⭐ NEW: Tăng tốc độ
     void IncreaseSpeed()
     {
-        float oldSpeed = currentSpeed;
-        float oldRotSpeed = currentRotationSpeed;
-        
         currentSpeed = Mathf.Min(currentSpeed + speedIncrement, maxSpeed);
         currentRotationSpeed = Mathf.Min(currentRotationSpeed + rotationSpeedIncrement, maxRotationSpeed);
-        
-        Debug.Log($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        Debug.Log($"⚡ TĂNG TỐC ĐỘ!");
-        Debug.Log($"📊 Đã qua {obstaclesPassed} vật cản");
-        Debug.Log($"🏃 Speed: {oldSpeed:F2} → {currentSpeed:F2}");
-        Debug.Log($"🔄 Rotation: {oldRotSpeed:F0}° → {currentRotationSpeed:F0}°");
-        Debug.Log($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        
-        // Áp dụng tốc độ mới cho TẤT CẢ vật cản hiện tại
         ApplySpeedToAllObstacles();
     }
     
-    // ⭐⭐⭐ NEW: Áp dụng tốc độ hiện tại cho tất cả vật cản
     void ApplySpeedToAllObstacles()
     {
         foreach (GameObject obstacle in allObstacles)
@@ -227,8 +181,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             if (obstacle == null) continue;
             ApplyCurrentSpeedToObstacle(obstacle);
         }
-        
-        Debug.Log($"✅ Đã cập nhật tốc độ cho {allObstacles.Count} vật cản");
     }
     
     void UseExistingObstacles()
@@ -257,17 +209,11 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
                 allObstacles.Add(child.gameObject);
             }
         }
-        
-        Debug.Log($"✅ Sử dụng {allObstacles.Count} container");
     }
     
     void SpawnInitialPattern()
     {
-        if (fireLinePrefab == null || flyingCirclePrefab == null)
-        {
-            Debug.LogError("❌ Chưa gán Prefab!");
-            return;
-        }
+        if (fireLinePrefab == null || flyingCirclePrefab == null) return;
         
         allObstacles.Clear();
         int spawnCounter = 0;
@@ -301,8 +247,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
                 }
             }
         }
-        
-        Debug.Log($"✅ Đã spawn {allObstacles.Count} vật cản");
     }
     
     void SetupFireLine(GameObject obj, float speed)
@@ -425,11 +369,8 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             )
         );
         
-        Debug.Log($"\n🎯 Sắp xếp với Circle Radius = {circleRadius}");
-        
         for (int groupIndex = 0; groupIndex < totalGroups; groupIndex++)
         {
-            // 1. Fire&Line
             for (int f = 0; f < fireLinesPerGroup && fireIndex < fireLineContainers.Count; f++)
             {
                 Vector3 pos = fireLineContainers[fireIndex].transform.position;
@@ -441,7 +382,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             
             currentY += groupSpacing;
             
-            // 2. Circle
             float circleCenterY = currentY;
             
             for (int c = 0; c < circlesPerGroup && circleIndex < circleContainers.Count; c++)
@@ -452,7 +392,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
                 circleIndex++;
             }
             
-            // 3. FlyingFire - spawn từ viền Circle
             float flyingFireStartY;
             
             if (spawnFireAboveCircle)
@@ -479,8 +418,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             
             currentY += groupSpacing;
         }
-        
-        Debug.Log($"✅ Sắp xếp hoàn tất!");
     }
     
     void CheckAndLoopObstacles()
@@ -566,7 +503,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         
         float newY = currentHighestY + groupSpacing;
         
-        // ⭐ Xóa khỏi danh sách "đã qua" khi loop lại
         foreach (GameObject fire in toLoopFire)
         {
             passedObstacles.Remove(fire);
@@ -580,9 +516,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             passedObstacles.Remove(flyingFire);
         }
         
-        Debug.Log($"\n🔄 LOOP GROUP - Đã xóa khỏi tracking");
-        
-        // 1. Loop Fire&Line
         foreach (GameObject fire in toLoopFire)
         {
             Vector3 pos = fire.transform.position;
@@ -600,7 +533,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         
         newY += groupSpacing;
         
-        // 2. Loop Circle
         float circleCenterY = newY;
         
         foreach (GameObject circle in toLoopCircle)
@@ -617,7 +549,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             totalLooped++;
         }
         
-        // 3. Loop FlyingFire
         float flyingFireStartY;
         
         if (spawnFireAboveCircle)
@@ -695,18 +626,6 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         }
     }
     
-    void PrintInfo()
-    {
-        Debug.Log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        Debug.Log("🎮 PROGRESSIVE SPAWNER - AUTO SPEED VERSION");
-        Debug.Log($"⚡ Tăng tốc sau mỗi: {obstaclesPerSpeedIncrease} vật cản");
-        Debug.Log($"📈 Tốc độ tăng: +{speedIncrement} / lần");
-        Debug.Log($"🏁 Tốc độ tối đa: {maxSpeed}");
-        Debug.Log($"⭐ Circle Radius: {circleRadius}");
-        Debug.Log($"📍 FlyingFire spawn từ: {(spawnFireAboveCircle ? "TRÊN" : "DƯỚI")} Circle");
-        Debug.Log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    }
-    
     void OnGUI()
     {
         if (!showDebugInfo || !Application.isPlaying || player == null) return;
@@ -717,35 +636,14 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         style.alignment = TextAnchor.LowerLeft;
         style.fontStyle = FontStyle.Bold;
         
-        int fireCount = 0;
-        int circleCount = 0;
-        int flyingFireCount = 0;
-        
-        foreach (GameObject obstacle in allObstacles)
-        {
-            if (obstacle == null) continue;
-            string name = obstacle.name.ToLower();
-            
-            if (name.Contains("fire") && name.Contains("line"))
-                fireCount++;
-            else if (name.Contains("circle"))
-                circleCount++;
-            else if (name.Contains("flying") && name.Contains("fire"))
-                flyingFireCount++;
-        }
-        
-        // ⭐ Tính số vật cản còn lại đến lần tăng tốc tiếp theo
         int remainingToSpeedUp = obstaclesPerSpeedIncrease - ((int)(obstaclesPassed - lastSpeedIncreaseAt));
         
-        string info = $"🎮 AUTO SPEED VERSION\n";
-        info += $"━━━━━━━━━━━━━━━━━\n";
-        info += $"⚡ Speed: {currentSpeed:F2}/{maxSpeed:F1}\n";
-        info += $"🎯 Đã qua: {obstaclesPassed}\n";
-        info += $"⏳ Còn {remainingToSpeedUp} vật cản → +SPEED\n";
-        info += $"Wave: {currentWave}\n";
-        info += $"F:{fireCount} C:{circleCount} FF:{flyingFireCount}";
+        string info = $"Speed: {currentSpeed:F2}/{maxSpeed:F1}\n";
+        info += $"Passed: {obstaclesPassed}\n";
+        info += $"Next +SPEED: {remainingToSpeedUp}\n";
+        info += $"Wave: {currentWave}";
         
-        GUI.Label(new Rect(10, Screen.height - 140, 300, 140), info, style);
+        GUI.Label(new Rect(10, Screen.height - 100, 300, 100), info, style);
     }
     
     void OnDrawGizmos()
@@ -760,38 +658,11 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
             {
                 Vector3 center = obj.transform.position;
                 
-                // Vẽ tâm Circle
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(center, 0.3f);
                 
-                // Vẽ viền Circle
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireSphere(center, circleRadius);
-                
-                // Vẽ viền trên và dưới
-                float topEdge = center.y + circleRadius;
-                float bottomEdge = center.y - circleRadius;
-                
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(new Vector3(-3, topEdge, 0), new Vector3(3, topEdge, 0));
-                
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(new Vector3(-3, bottomEdge, 0), new Vector3(3, bottomEdge, 0));
-                
-                // Vẽ vùng spawn FlyingFire
-                float spawnY;
-                if (spawnFireAboveCircle)
-                {
-                    spawnY = topEdge + circleToFireSpacing;
-                    Gizmos.color = new Color(1, 0.5f, 0, 1);
-                }
-                else
-                {
-                    spawnY = bottomEdge - circleToFireSpacing;
-                    Gizmos.color = Color.magenta;
-                }
-                
-                Gizmos.DrawLine(new Vector3(-5, spawnY, 0), new Vector3(5, spawnY, 0));
             }
         }
     }
@@ -805,7 +676,5 @@ public class ProgressiveObstacleSpawner : MonoBehaviour
         obstaclesPassed = 0;
         lastSpeedIncreaseAt = 0;
         passedObstacles.Clear();
-        
-        Debug.Log("🔄 Đã reset difficulty!");
     }
 }
