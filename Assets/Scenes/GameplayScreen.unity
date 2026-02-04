@@ -422,7 +422,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140615572}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 955b9d9294855484ebdda382f2deb186, type: 3}
   m_Name: 
@@ -463,11 +463,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140615572}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9eb6b5ac7ade4a6e8f895873de38f1f, type: 3}
+  m_Script: {fileID: 11500000, guid: a5ca4ea8c628e4776bb7369afb36e24d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProgressiveObstacleSpawner_LineVersion
+  m_EditorClassIdentifier: Assembly-CSharp::ImprovedObstacleSpawner
+  fireLinesPerGroup: 4
+  circlesPerGroup: 1
+  flyingFiresPerGroup: 4
+  obstacleSpacing: 5
+  groupSpacing: 15
+  circleToFireSpacing: 3
+  circleRadius: 2.5
+  spawnFireAboveCircle: 0
+  spawnDistance: -10
+  despawnDistance: -30
+  maxActiveGroups: 5
+  initialSpeed: 1
+  speedIncrement: 0.2
+  maxSpeed: 5
+  groupsPerSpeedIncrease: 2
+  initialRotationSpeed: 120
+  rotationSpeedIncrement: 20
+  maxRotationSpeed: 360
+  player: {fileID: 1173831014}
+  mainCamera: {fileID: 519420031}
+  showDebugInfo: 1
+  showGizmos: 1
 --- !u!1 &156648840
 GameObject:
   m_ObjectHideFlags: 0
@@ -3356,7 +3378,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -4829,6 +4851,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1969806152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1969806154}
+  - component: {fileID: 1969806153}
+  m_Layer: 0
+  m_Name: PerformanceOptimizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1969806153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969806152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b040cfd557244cbbc7c81419ab88d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimplePerformanceOptimizer
+  cullingDistance: 30
+  enableDistance: 25
+  checkEveryNFrames: 3
+  cullRenderers: 1
+  cullColliders: 1
+  cullScripts: 0
+  mainCamera: {fileID: 519420031}
+  player: {fileID: 1173831014}
+  showDebugInfo: 1
+  enableOptimization: 1
+--- !u!4 &1969806154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969806152}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.98632, y: -18.99358, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2098164551
 GameObject:
   m_ObjectHideFlags: 0
@@ -4994,3 +5070,4 @@ SceneRoots:
   - {fileID: 1198876093}
   - {fileID: 661725226}
   - {fileID: 631954422}
+  - {fileID: 1969806154}
