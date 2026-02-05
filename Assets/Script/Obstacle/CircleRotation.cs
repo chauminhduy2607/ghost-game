@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Object quay quanh điểm tâm tạo hình tròn
+/// Object quay quanh điểm tâm tạo hình tròn - XOAY NHƯ KIM ĐỒNG HỒ
 /// </summary>
 public class CircleRotation : MonoBehaviour
 {
@@ -14,7 +14,8 @@ public class CircleRotation : MonoBehaviour
     [SerializeField] private Transform centerPoint;
     
     [Header("=== SPRITE ROTATION ===")]
-    [SerializeField] private bool rotateSprite = true;
+    [SerializeField] private bool rotateSprite = false;
+    [SerializeField] private bool rotateTowardsCenter = true; // MỚI - Xoay về tâm như kim đồng hồ
     [SerializeField] private float spriteRotationOffset = 90f;
     [SerializeField] private bool keepOriginalFlip = true;
     
@@ -78,6 +79,26 @@ public class CircleRotation : MonoBehaviour
         if (rotateSprite)
         {
             UpdateSpriteRotation();
+        }
+    }
+    
+    void LateUpdate()
+    {
+        if (rotateTowardsCenter)
+        {
+            // XOAY PADDLE ĐỂ HƯỚNG VỀ TÂM (như kim đồng hồ)
+            Vector3 directionToCenter = centerPosition - transform.position;
+            float angle = Mathf.Atan2(directionToCenter.y, directionToCenter.x) * Mathf.Rad2Deg;
+            
+            // Offset để căn chỉnh sprite (tùy hướng sprite gốc)
+            angle += spriteRotationOffset;
+            
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+        else if (!rotateSprite)
+        {
+            // Giữ nguyên rotation ban đầu (nằm ngang)
+            transform.rotation = Quaternion.identity;
         }
     }
     

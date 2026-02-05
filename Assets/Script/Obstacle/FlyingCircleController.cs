@@ -1,18 +1,20 @@
 using UnityEngine;
 
 /// <summary>
-/// Quản lý Flying Circle với rotation tự động
+/// Quản lý Flying Circle với rotation tự động - HỖ TRỢ NHIỀU PADDLE
 /// </summary>
 public class FlyingCircleController : MonoBehaviour
 {
     [Header("=== ROTATION ===")]
-    [SerializeField] private float rotationSpeed = 180f;
-    [SerializeField] private float radius = 1f;
+    [SerializeField] private float rotationSpeed = 120f;
+    [SerializeField] private float radius = 3f;
     
     [Header("=== AUTO SETUP ===")]
     [SerializeField] private bool autoSetup = true;
-    [SerializeField] private float circle1StartAngle = 0f;
-    [SerializeField] private float circle2StartAngle = 180f;
+    [SerializeField] private bool distributeEvenly = true; // Tự động chia đều 360°
+    
+    [Header("=== MANUAL ANGLES (nếu không dùng distributeEvenly) ===")]
+    [SerializeField] private float[] customStartAngles = new float[] { 0f, 180f }; // Góc thủ công
     
     private CircleRotation[] circles;
     
@@ -26,8 +28,10 @@ public class FlyingCircleController : MonoBehaviour
     
     void SetupCircles()
     {
+        // Tìm tất cả CircleRotation trong children
         circles = GetComponentsInChildren<CircleRotation>();
         
+        // Nếu không có, tự động thêm vào các child
         if (circles.Length == 0)
         {
             int childCount = transform.childCount;
@@ -47,19 +51,45 @@ public class FlyingCircleController : MonoBehaviour
             }
         }
         
-        if (circles.Length >= 1)
+        // Setup cho từng paddle
+        if (distributeEvenly)
         {
-            circles[0].SetRotationSpeed(rotationSpeed);
-            circles[0].SetRadius(radius);
-            circles[0].SetAngle(circle1StartAngle);
+            // CHIA ĐỀU: 360° / số lượng paddle
+            float angleStep = 360f / circles.Length;
+            
+            for (int i = 0; i < circles.Length; i++)
+            {
+                if (circles[i] != null)
+                {
+                    circles[i].SetRotationSpeed(rotationSpeed);
+                    circles[i].SetRadius(radius);
+                    circles[i].SetAngle(i * angleStep); // 0°, 90°, 180°, 270° (nếu 4 paddle)
+                }
+            }
+        }
+        else
+        {
+            // DÙNG GÓC THỦ CÔNG
+            for (int i = 0; i < circles.Length; i++)
+            {
+                if (circles[i] != null)
+                {
+                    circles[i].SetRotationSpeed(rotationSpeed);
+                    circles[i].SetRadius(radius);
+                    
+                    if (i < customStartAngles.Length)
+                    {
+                        circles[i].SetAngle(customStartAngles[i]);
+                    }
+                    else
+                    {
+                        circles[i].SetAngle(0f);
+                    }
+                }
+            }
         }
         
-        if (circles.Length >= 2)
-        {
-            circles[1].SetRotationSpeed(rotationSpeed);
-            circles[1].SetRadius(radius);
-            circles[1].SetAngle(circle2StartAngle);
-        }
+        Debug.Log($"[FlyingCircle] Setup {circles.Length} paddles với góc mỗi cái: {360f / circles.Length}°");
     }
     
     public void SetPositionY(float y)
@@ -105,6 +135,21 @@ public class FlyingCircleController : MonoBehaviour
             {
                 if (circle != null)
                     circle.RandomizeStartAngle();
+            }
+        }
+    }
+    
+    public void RedistributeEvenly()
+    {
+        if (circles == null) return;
+        
+        float angleStep = 360f / circles.Length;
+        
+        for (int i = 0; i < circles.Length; i++)
+        {
+            if (circles[i] != null)
+            {
+                circles[i].SetAngle(i * angleStep);
             }
         }
     }
