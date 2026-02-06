@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// <summary>
-/// IMPROVED Obstacle Spawner V2 - HỖ TRỢ NHIỀU LOẠI VẬT CẢN
+/// IMPROVED Obstacle Spawner V3 - HỖ TRỢ CHỒNG VẬT CẢN
 /// Tự động phát hiện và sắp xếp theo TAG
+/// Hỗ trợ chồng các obstacles cùng loại lên nhau
 /// </summary>
 public class ImprovedObstacleSpawner : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     [SerializeField] private int obstaclesPerType = 4;
     
     [Header("=== SPACING SETTINGS ===")]
-    [Tooltip("Khoảng cách giữa các obstacles cùng loại")]
+    [Tooltip("Khoảng cách giữa các obstacles cùng loại (nếu KHÔNG stackable)")]
     [SerializeField] private float obstacleSpacing = 6f;
     
     [Tooltip("Khoảng cách giữa các loại vật cản khác nhau")]
@@ -60,10 +61,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     // Loại vật cản (được tự động phát hiện)
     private class ObstacleType
     {
-        public string name;              // FireLine, Circle1, Circle2, FlyingFire...
+        public string name;              // FireLine, Circle, FlyingFire...
         public List<GameObject> objects = new List<GameObject>();
         public bool isCircle;            // Có phải Circle không (để apply rotation)
         public int priority;             // Thứ tự hiển thị (0 = đầu tiên)
+        public bool stackable;           // ⭐ CÓ THỂ CHỒNG LÊN NHAU KHÔNG
     }
     
     private class ObstacleGroup
@@ -181,7 +183,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 {
                     name = typeName,
                     isCircle = typeName.ToLower().Contains("circle"),
-                    priority = GetPriority(typeName)
+                    priority = GetPriority(typeName),
+                    stackable = IsStackable(typeName)  // ⭐ XÁC ĐỊNH CÓ THỂ CHỒNG KHÔNG
                 };
                 
                 newType.objects.Add(child.gameObject);
@@ -190,7 +193,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 SetupObstacle(child.gameObject, newType.isCircle);
                 
                 if (showDebugInfo)
-                    Debug.Log($"[Spawner] 🆕 New type detected: {typeName} (Circle: {newType.isCircle})");
+                    Debug.Log($"[Spawner] 🆕 New type: {typeName} (Circle: {newType.isCircle}, Stackable: {newType.stackable})");
             }
             else
             {
@@ -200,7 +203,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             }
         }
         
-        // Sắp xếp theo priority (FireLine → Circle1 → Circle2 → FlyingFire)
+        // Sắp xếp theo priority (FireLine → Circle → FlyingFire)
         obstacleTypes = obstacleTypes.OrderBy(t => t.priority).ToList();
         
         if (showDebugInfo)
@@ -208,9 +211,22 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             Debug.Log($"[ImprovedSpawner] 📊 Detected {obstacleTypes.Count} obstacle types:");
             foreach (var type in obstacleTypes)
             {
-                Debug.Log($"  • {type.name}: {type.objects.Count} objects (Priority: {type.priority})");
+                Debug.Log($"  • {type.name}: {type.objects.Count} objects (Priority: {type.priority}, Stackable: {type.stackable})");
             }
         }
+    }
+    
+    // ⭐ XÁC ĐỊNH LOẠI NÀO CÓ THỂ CHỒNG LÊN NHAU
+    bool IsStackable(string typeName)
+    {
+        string lower = typeName.ToLower();
+        
+        // ✅ Các loại này sẽ chồng lên nhau (cùng tag = cùng vị trí Y)
+        if (lower.Contains("circle")) return true;           // Vòng tròn chồng lên nhau
+        if (lower.Contains("flyingfire")) return true;       // FlyingFire có thể chồng
+        
+        // ❌ Các loại khác KHÔNG chồng (cách xa nhau)
+        return false;
     }
     
     // Xác định thứ tự hiển thị
@@ -368,6 +384,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             Debug.Log($"[ImprovedSpawner] 📍 Spawned {group.name} at Y={yPosition:F1}");
     }
     
+    // ⭐ QUAN TRỌNG: HÀM ĐẶT VỊ TRÍ CÓ HỖ TRỢ STACKABLE
     void PositionGroup(ObstacleGroup group, float startY)
     {
         float currentY = startY;
@@ -380,21 +397,42 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             List<GameObject> objectsOfThisType = group.obstaclesByType[type.name];
             
-            // Đặt vị trí cho từng obstacle trong loại này
-            for (int i = 0; i < objectsOfThisType.Count; i++)
+            if (type.stackable)
             {
-                GameObject obj = objectsOfThisType[i];
-                if (obj == null) continue;
+                // ⭐ NẾU STACKABLE: Tất cả obstacles cùng loại này ở CÙNG VỊ TRÍ Y
+                foreach (var obj in objectsOfThisType)
+                {
+                    if (obj == null) continue;
+                    
+                    Vector3 pos = obj.transform.position;
+                    pos.y = currentY;  // Tất cả cùng Y
+                    obj.transform.position = pos;
+                }
                 
-                Vector3 pos = obj.transform.position;
-                pos.y = currentY;
-                obj.transform.position = pos;
-                
+                // Chỉ tăng Y một lần cho cả nhóm stackable
                 currentY += obstacleSpacing;
+                
+                if (showDebugInfo)
+                    Debug.Log($"  🔗 Stacked {objectsOfThisType.Count}x {type.name} at Y={currentY - obstacleSpacing:F1}");
+            }
+            else
+            {
+                // ⭐ NẾU KHÔNG STACKABLE: Cách xa nhau như cũ
+                for (int i = 0; i < objectsOfThisType.Count; i++)
+                {
+                    GameObject obj = objectsOfThisType[i];
+                    if (obj == null) continue;
+                    
+                    Vector3 pos = obj.transform.position;
+                    pos.y = currentY;
+                    obj.transform.position = pos;
+                    
+                    currentY += obstacleSpacing;
+                }
             }
             
             // Thêm khoảng cách giữa các loại
-            currentY += typeGap - obstacleSpacing; // Bù lại vì đã cộng obstacleSpacing ở trên
+            currentY += typeGap - obstacleSpacing;
         }
         
         if (showDebugInfo)
@@ -409,8 +447,16 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         foreach (var type in obstacleTypes)
         {
-            // Khoảng cách giữa các obstacles cùng loại
-            height += (obstaclesPerType - 1) * obstacleSpacing;
+            if (type.stackable)
+            {
+                // Nếu stackable, chỉ tính 1 lần obstacleSpacing (vì chồng lên nhau)
+                height += obstacleSpacing;
+            }
+            else
+            {
+                // Nếu không stackable, tính khoảng cách giữa các obstacles
+                height += (obstaclesPerType - 1) * obstacleSpacing;
+            }
             
             // Khoảng cách đến loại tiếp theo
             height += typeGap;
