@@ -24,7 +24,7 @@ public class SimplePerformanceOptimizer : MonoBehaviour
     [Tooltip("Có tắt Collider không")]
     [SerializeField] private bool cullColliders = true;
     
-    [Tooltip("Có tắt Scripts không (ObstacleMovement, CircleRotation...)")]
+    [Tooltip("Có tắt Scripts không (ObstacleMovement, FlyingCircleController...)")]
     [SerializeField] private bool cullScripts = false; // Tắt mặc định vì có thể gây lỗi
     
     [Header("=== REFERENCES ===")]
@@ -62,9 +62,9 @@ public class SimplePerformanceOptimizer : MonoBehaviour
             ObstacleMovement[] movements = obj.GetComponentsInChildren<ObstacleMovement>();
             scriptList.AddRange(movements);
             
-            // CircleRotation
-            CircleRotation[] rotations = obj.GetComponentsInChildren<CircleRotation>();
-            scriptList.AddRange(rotations);
+            // FlyingCircleController (THAY CHO CircleRotation)
+            FlyingCircleController[] controllers = obj.GetComponentsInChildren<FlyingCircleController>();
+            scriptList.AddRange(controllers);
             
             scripts = scriptList.ToArray();
         }

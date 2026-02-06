@@ -1,143 +1,197 @@
 using UnityEngine;
 
 /// <summary>
-/// Quản lý Flying Circle với rotation tự động - HỖ TRỢ NHIỀU PADDLE
+/// Quản lý Flying Circle - PHIÊN BẢN ĐƠN GIẢN
 /// </summary>
 public class FlyingCircleController : MonoBehaviour
 {
     [Header("=== ROTATION ===")]
     [SerializeField] private float rotationSpeed = 120f;
     [SerializeField] private float radius = 3f;
-    [SerializeField] private bool clockwise = true; // CHECKBOX MỚI - tick = xuôi, không tick = ngược
+    [SerializeField] private bool clockwise = true;
     
-    [Header("=== AUTO SETUP ===")]
-    [SerializeField] private bool autoSetup = true;
-    [SerializeField] private bool distributeEvenly = true; // Tự động chia đều 360°
+    [Header("=== SPRITE ROTATION ===")]
+    [SerializeField] private bool rotateTowardsCenter = true;
+    [SerializeField] private float spriteRotationOffset = 90f;
     
-    [Header("=== MANUAL ANGLES (nếu không dùng distributeEvenly) ===")]
-    [SerializeField] private float[] customStartAngles = new float[] { 0f, 180f }; // Góc thủ công
+    [Header("=== DEBUG ===")]
+    [SerializeField] private bool showDebugGizmos = true;
     
-    private CircleRotation[] circles;
+    // Data cho mỗi paddle
+    private class PaddleData
+    {
+        public Transform transform;
+        public float currentAngle;
+    }
+    
+    private PaddleData[] paddles;
+    private float currentRotationSpeed;
     
     void Start()
     {
-        if (autoSetup)
-        {
-            SetupCircles();
-        }
+        SetupPaddles();
+        currentRotationSpeed = clockwise ? rotationSpeed : -rotationSpeed;
     }
     
-    void SetupCircles()
+    void Update()
     {
-        // Tìm tất cả CircleRotation trong children
-        circles = GetComponentsInChildren<CircleRotation>();
+        if (paddles == null) return;
         
-        // Nếu không có, tự động thêm vào các child
-        if (circles.Length == 0)
+        // Xoay tất cả paddles
+        float deltaAngle = currentRotationSpeed * Time.deltaTime;
+        
+        foreach (var paddle in paddles)
         {
-            int childCount = transform.childCount;
-            circles = new CircleRotation[childCount];
+            if (paddle.transform == null) continue;
             
-            for (int i = 0; i < childCount; i++)
-            {
-                Transform child = transform.GetChild(i);
-                CircleRotation rotation = child.GetComponent<CircleRotation>();
-                
-                if (rotation == null)
-                {
-                    rotation = child.gameObject.AddComponent<CircleRotation>();
-                }
-                
-                circles[i] = rotation;
-            }
-        }
-        
-        // Tính tốc độ thực tế dựa trên chiều xoay
-        float actualSpeed = clockwise ? rotationSpeed : -rotationSpeed;
-        
-        // Setup cho từng paddle
-        if (distributeEvenly)
-        {
-            // CHIA ĐỀU: 360° / số lượng paddle
-            float angleStep = 360f / circles.Length;
+            // Cập nhật góc
+            paddle.currentAngle += deltaAngle;
             
-            for (int i = 0; i < circles.Length; i++)
-            {
-                if (circles[i] != null)
-                {
-                    circles[i].SetRotationSpeed(actualSpeed);
-                    circles[i].SetRadius(radius);
-                    circles[i].SetAngle(i * angleStep); // 0°, 90°, 180°, 270° (nếu 4 paddle)
-                }
-            }
+            if (paddle.currentAngle >= 360f)
+                paddle.currentAngle -= 360f;
+            else if (paddle.currentAngle < 0f)
+                paddle.currentAngle += 360f;
+            
+            // Tính vị trí mới
+            float angleInRadians = paddle.currentAngle * Mathf.Deg2Rad;
+            float x = transform.position.x + Mathf.Cos(angleInRadians) * radius;
+            float y = transform.position.y + Mathf.Sin(angleInRadians) * radius;
+            
+            paddle.transform.position = new Vector3(x, y, paddle.transform.position.z);
         }
-        else
-        {
-            // DÙNG GÓC THỦ CÔNG
-            for (int i = 0; i < circles.Length; i++)
-            {
-                if (circles[i] != null)
-                {
-                    circles[i].SetRotationSpeed(actualSpeed);
-                    circles[i].SetRadius(radius);
-                    
-                    if (i < customStartAngles.Length)
-                    {
-                        circles[i].SetAngle(customStartAngles[i]);
-                    }
-                    else
-                    {
-                        circles[i].SetAngle(0f);
-                    }
-                }
-            }
-        }
-        
-        Debug.Log($"[FlyingCircle] Setup {circles.Length} paddles với góc mỗi cái: {360f / circles.Length}° - Chiều: {(clockwise ? "Xuôi" : "Ngược")}");
     }
     
-    // Cập nhật chiều xoay real-time khi thay đổi trong Inspector
+    void LateUpdate()
+    {
+        if (!rotateTowardsCenter || paddles == null) return;
+        
+        // Xoay sprite về tâm (như kim đồng hồ)
+        foreach (var paddle in paddles)
+        {
+            if (paddle.transform == null) continue;
+            
+            Vector3 directionToCenter = transform.position - paddle.transform.position;
+            float angle = Mathf.Atan2(directionToCenter.y, directionToCenter.x) * Mathf.Rad2Deg;
+            angle += spriteRotationOffset;
+            
+            paddle.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+    }
+    
+    void SetupPaddles()
+    {
+        int childCount = transform.childCount;
+        if (childCount == 0)
+        {
+            Debug.LogWarning("[FlyingCircle] Không có child object nào!");
+            return;
+        }
+        
+        paddles = new PaddleData[childCount];
+        
+        // Tự động chia đều 360°
+        float angleStep = 360f / childCount;
+        
+        for (int i = 0; i < childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            
+            paddles[i] = new PaddleData
+            {
+                transform = child,
+                currentAngle = i * angleStep // 0°, 60°, 120°, 180°, 240°, 300° (nếu 6 paddles)
+            };
+            
+            // Set vị trí ban đầu
+            float angleInRadians = paddles[i].currentAngle * Mathf.Deg2Rad;
+            float x = transform.position.x + Mathf.Cos(angleInRadians) * radius;
+            float y = transform.position.y + Mathf.Sin(angleInRadians) * radius;
+            
+            child.position = new Vector3(x, y, child.position.z);
+        }
+        
+        Debug.Log($"[FlyingCircle] Setup {paddles.Length} paddles - Góc mỗi cái: {angleStep}° - Chiều: {(clockwise ? "Xuôi ⟳" : "Ngược ⟲")}");
+    }
+    
     void OnValidate()
     {
-        if (Application.isPlaying && circles != null)
+        if (Application.isPlaying)
         {
-            float actualSpeed = clockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
-            SetRotationSpeed(actualSpeed);
+            currentRotationSpeed = clockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
         }
     }
     
-    public void SetPositionY(float y)
+    void OnDrawGizmos()
     {
-        Vector3 pos = transform.position;
-        pos.y = y;
-        transform.position = pos;
+        if (!showDebugGizmos) return;
+        
+        Gizmos.color = Color.yellow;
+        
+        // Vẽ vòng tròn
+        int segments = 50;
+        float angleStep = 360f / segments;
+        
+        for (int i = 0; i < segments; i++)
+        {
+            float angle1 = i * angleStep * Mathf.Deg2Rad;
+            float angle2 = (i + 1) * angleStep * Mathf.Deg2Rad;
+            
+            Vector3 point1 = new Vector3(
+                transform.position.x + Mathf.Cos(angle1) * radius,
+                transform.position.y + Mathf.Sin(angle1) * radius,
+                transform.position.z
+            );
+            
+            Vector3 point2 = new Vector3(
+                transform.position.x + Mathf.Cos(angle2) * radius,
+                transform.position.y + Mathf.Sin(angle2) * radius,
+                transform.position.z
+            );
+            
+            Gizmos.DrawLine(point1, point2);
+        }
+        
+        // Vẽ tâm
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 0.1f);
+        
+        // Vẽ đường nối tới các paddle
+        if (Application.isPlaying && paddles != null)
+        {
+            Gizmos.color = Color.cyan;
+            foreach (var paddle in paddles)
+            {
+                if (paddle.transform != null)
+                {
+                    Gizmos.DrawLine(transform.position, paddle.transform.position);
+                }
+            }
+        }
     }
+    
+    // ===== PUBLIC METHODS =====
     
     public void SetRotationSpeed(float speed)
     {
-        rotationSpeed = Mathf.Abs(speed); // Lưu giá trị dương
-        float actualSpeed = clockwise ? rotationSpeed : -rotationSpeed;
-        
-        if (circles != null)
-        {
-            foreach (var circle in circles)
-            {
-                if (circle != null)
-                    circle.SetRotationSpeed(actualSpeed);
-            }
-        }
+        rotationSpeed = Mathf.Abs(speed);
+        currentRotationSpeed = clockwise ? rotationSpeed : -rotationSpeed;
     }
     
     public void SetRadius(float newRadius)
     {
-        radius = newRadius;
+        radius = Mathf.Max(0.1f, newRadius);
         
-        if (circles != null)
+        if (paddles != null)
         {
-            foreach (var circle in circles)
+            foreach (var paddle in paddles)
             {
-                if (circle != null)
-                    circle.SetRadius(newRadius);
+                if (paddle.transform == null) continue;
+                
+                float angleInRadians = paddle.currentAngle * Mathf.Deg2Rad;
+                float x = transform.position.x + Mathf.Cos(angleInRadians) * radius;
+                float y = transform.position.y + Mathf.Sin(angleInRadians) * radius;
+                
+                paddle.transform.position = new Vector3(x, y, paddle.transform.position.z);
             }
         }
     }
@@ -145,66 +199,9 @@ public class FlyingCircleController : MonoBehaviour
     public void SetClockwise(bool isClockwise)
     {
         clockwise = isClockwise;
-        float actualSpeed = clockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
-        
-        if (circles != null)
-        {
-            foreach (var circle in circles)
-            {
-                if (circle != null)
-                    circle.SetRotationSpeed(actualSpeed);
-            }
-        }
+        currentRotationSpeed = clockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
     }
     
-    public void RandomizeAngles()
-    {
-        if (circles != null)
-        {
-            foreach (var circle in circles)
-            {
-                if (circle != null)
-                    circle.RandomizeStartAngle();
-            }
-        }
-    }
-    
-    public void RedistributeEvenly()
-    {
-        if (circles == null) return;
-        
-        float angleStep = 360f / circles.Length;
-        
-        for (int i = 0; i < circles.Length; i++)
-        {
-            if (circles[i] != null)
-            {
-                circles[i].SetAngle(i * angleStep);
-            }
-        }
-    }
-    
-    public void Stop()
-    {
-        if (circles != null)
-        {
-            foreach (var circle in circles)
-            {
-                if (circle != null)
-                    circle.Stop();
-            }
-        }
-    }
-    
-    public void Resume()
-    {
-        if (circles != null)
-        {
-            foreach (var circle in circles)
-            {
-                if (circle != null)
-                    circle.Resume();
-            }
-        }
-    }
+    public void Stop() => enabled = false;
+    public void Resume() => enabled = true;
 }
