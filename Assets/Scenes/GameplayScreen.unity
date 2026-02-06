@@ -728,7 +728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlyingCircleController
   rotationSpeed: 120
   radius: 1
-  clockwise: 0
+  clockwise: 1
   rotateTowardsCenter: 1
   spriteRotationOffset: 90
   showDebugGizmos: 1

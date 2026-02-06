@@ -23,9 +23,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     [Tooltip("Khoảng cách giữa các groups")]
     [SerializeField] private float groupGap = 15f;
     
-    [Header("=== SPECIAL: CIRCLES ===")]
-    [Tooltip("Bán kính của Circle (để tính vị trí)")]
-    [SerializeField] private float circleRadius = 3f;
+    // ⭐ RADIUS được quản lý bởi FlyingCircleController, KHÔNG cần config ở đây
     
     [Header("=== SPAWN/DESPAWN ===")]
     [Tooltip("Khoảng cách spawn trước player")]
@@ -103,6 +101,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     private List<ObstacleType> obstacleTypes = new List<ObstacleType>();
     private Queue<ObstacleGroup> inactiveGroups = new Queue<ObstacleGroup>();
     private List<ObstacleGroup> activeGroups = new List<ObstacleGroup>();
+    
+    // ⭐ LƯU RADIUS GỐC CỦA TỪNG CIRCLE (để không bị ghi đè)
+    private Dictionary<GameObject, float> originalRadiusMap = new Dictionary<GameObject, float>();
     
     private float currentSpeed;
     private float currentRotationSpeed;
@@ -254,11 +255,15 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         if (isCircle)
         {
+            // ⭐ CHỈ set rotation speed, KHÔNG động vào radius
+            // Radius được quản lý bởi FlyingCircleController
             FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
             if (controller != null)
             {
                 controller.SetRotationSpeed(currentRotationSpeed);
-                controller.SetRadius(circleRadius);
+                
+                if (showDebugInfo)
+                    Debug.Log($"[Circle Setup] {obj.name} → Rotation Speed = {currentRotationSpeed}");
             }
         }
         else
