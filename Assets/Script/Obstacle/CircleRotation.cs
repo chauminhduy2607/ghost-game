@@ -31,6 +31,41 @@ public class CircleRotation : MonoBehaviour
     
     void Start()
     {
+        // ===== THÊM ĐOẠN NÀY Ở ĐẦU HÀM START =====
+        // Tắt tự động nếu có parent FlyingCircleController
+        if (transform.parent != null && transform.parent.GetComponent<FlyingCircleController>() != null)
+        {
+            // Vẫn phải setup centerPosition trước khi tắt
+            if (centerPoint == null && transform.parent != null)
+            {
+                centerPosition = transform.parent.position;
+            }
+            else if (centerPoint != null)
+            {
+                centerPosition = centerPoint.position;
+            }
+            else
+            {
+                centerPosition = transform.position;
+            }
+            
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null && keepOriginalFlip)
+            {
+                originalFlipX = spriteRenderer.flipX;
+                originalFlipY = spriteRenderer.flipY;
+            }
+            
+            currentAngle = startAngle;
+            UpdatePosition();
+            lastPosition = transform.position;
+            
+            enabled = false; // Tắt Update của script này
+            return; // Dừng Start() tại đây
+        }
+        // ==========================================
+        
+        // CODE CŨ GIỮ NGUYÊN
         if (centerPoint == null && transform.parent != null)
         {
             centerPosition = transform.parent.position;

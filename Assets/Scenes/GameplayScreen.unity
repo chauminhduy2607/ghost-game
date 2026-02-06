@@ -324,13 +324,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88398411}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb8b13316f8f840b091ef753345a8a22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyingCircleController
   rotationSpeed: 120
   radius: 3
+  clockwise: 1
   autoSetup: 1
   distributeEvenly: 1
   customStartAngles:
@@ -544,20 +545,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce91df7ef15a9f4881a901565716d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
+  center: {fileID: 0}
   lineSpan: 3
   heightRatio: 0.5
   speed: 1.5
-  enableDynamicCenter: 1
-  centerDuration: 5
-  centerTransitionTime: 1.5
-  outerZoneWeight: 80
-  centerZoneWeight: 20
-  autoDistributePhase: 1
-  manualPhaseDeg: 0
+  startPhaseDeg: 0
   reverseDirection: 0
+  randomStartPhase: 0
   showDebug: 1
-  showPathPreview: 1
-  showZones: 1
 --- !u!114 &156648843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -927,20 +922,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce91df7ef15a9f4881a901565716d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
+  center: {fileID: 0}
   lineSpan: 3
   heightRatio: 0.5
   speed: 1.5
-  enableDynamicCenter: 1
-  centerDuration: 5
-  centerTransitionTime: 1.5
-  outerZoneWeight: 80
-  centerZoneWeight: 20
-  autoDistributePhase: 1
-  manualPhaseDeg: 0
+  startPhaseDeg: 0
   reverseDirection: 0
+  randomStartPhase: 0
   showDebug: 1
-  showPathPreview: 1
-  showZones: 1
 --- !u!114 &345068420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1466,20 +1455,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce91df7ef15a9f4881a901565716d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
+  center: {fileID: 0}
   lineSpan: 3
   heightRatio: 0.5
   speed: 1.5
-  enableDynamicCenter: 1
-  centerDuration: 5
-  centerTransitionTime: 1.5
-  outerZoneWeight: 80
-  centerZoneWeight: 20
-  autoDistributePhase: 1
-  manualPhaseDeg: 0
+  startPhaseDeg: 0
   reverseDirection: 0
+  randomStartPhase: 0
   showDebug: 1
-  showPathPreview: 1
-  showZones: 1
 --- !u!114 &599144686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2816,20 +2799,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce91df7ef15a9f4881a901565716d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fire
+  center: {fileID: 0}
   lineSpan: 3
   heightRatio: 0.5
   speed: 1.5
-  enableDynamicCenter: 1
-  centerDuration: 5
-  centerTransitionTime: 1.5
-  outerZoneWeight: 80
-  centerZoneWeight: 20
-  autoDistributePhase: 1
-  manualPhaseDeg: 0
+  startPhaseDeg: 0
   reverseDirection: 0
+  randomStartPhase: 0
   showDebug: 1
-  showPathPreview: 1
-  showZones: 1
 --- !u!114 &948857254
 MonoBehaviour:
   m_ObjectHideFlags: 0

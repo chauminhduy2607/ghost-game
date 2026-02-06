@@ -99,8 +99,7 @@ public class FireNew : MonoBehaviour
         for (int i = 0; i < parent.childCount; i++)
         {
             Transform child = parent.GetChild(i);
-            fire fireComponent = child.GetComponent<fire>();
-            
+            FireNew fireComponent = child.GetComponent<FireNew>();            
             if (fireComponent != null && fireComponent.autoDistributePhase)
             {
                 if (child == transform)

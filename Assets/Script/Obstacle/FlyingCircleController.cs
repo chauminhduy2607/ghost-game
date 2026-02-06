@@ -8,6 +8,7 @@ public class FlyingCircleController : MonoBehaviour
     [Header("=== ROTATION ===")]
     [SerializeField] private float rotationSpeed = 120f;
     [SerializeField] private float radius = 3f;
+    [SerializeField] private bool clockwise = true; // CHECKBOX MỚI - tick = xuôi, không tick = ngược
     
     [Header("=== AUTO SETUP ===")]
     [SerializeField] private bool autoSetup = true;
@@ -51,6 +52,9 @@ public class FlyingCircleController : MonoBehaviour
             }
         }
         
+        // Tính tốc độ thực tế dựa trên chiều xoay
+        float actualSpeed = clockwise ? rotationSpeed : -rotationSpeed;
+        
         // Setup cho từng paddle
         if (distributeEvenly)
         {
@@ -61,7 +65,7 @@ public class FlyingCircleController : MonoBehaviour
             {
                 if (circles[i] != null)
                 {
-                    circles[i].SetRotationSpeed(rotationSpeed);
+                    circles[i].SetRotationSpeed(actualSpeed);
                     circles[i].SetRadius(radius);
                     circles[i].SetAngle(i * angleStep); // 0°, 90°, 180°, 270° (nếu 4 paddle)
                 }
@@ -74,7 +78,7 @@ public class FlyingCircleController : MonoBehaviour
             {
                 if (circles[i] != null)
                 {
-                    circles[i].SetRotationSpeed(rotationSpeed);
+                    circles[i].SetRotationSpeed(actualSpeed);
                     circles[i].SetRadius(radius);
                     
                     if (i < customStartAngles.Length)
@@ -89,7 +93,17 @@ public class FlyingCircleController : MonoBehaviour
             }
         }
         
-        Debug.Log($"[FlyingCircle] Setup {circles.Length} paddles với góc mỗi cái: {360f / circles.Length}°");
+        Debug.Log($"[FlyingCircle] Setup {circles.Length} paddles với góc mỗi cái: {360f / circles.Length}° - Chiều: {(clockwise ? "Xuôi" : "Ngược")}");
+    }
+    
+    // Cập nhật chiều xoay real-time khi thay đổi trong Inspector
+    void OnValidate()
+    {
+        if (Application.isPlaying && circles != null)
+        {
+            float actualSpeed = clockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
+            SetRotationSpeed(actualSpeed);
+        }
     }
     
     public void SetPositionY(float y)
@@ -101,14 +115,15 @@ public class FlyingCircleController : MonoBehaviour
     
     public void SetRotationSpeed(float speed)
     {
-        rotationSpeed = speed;
+        rotationSpeed = Mathf.Abs(speed); // Lưu giá trị dương
+        float actualSpeed = clockwise ? rotationSpeed : -rotationSpeed;
         
         if (circles != null)
         {
             foreach (var circle in circles)
             {
                 if (circle != null)
-                    circle.SetRotationSpeed(speed);
+                    circle.SetRotationSpeed(actualSpeed);
             }
         }
     }
@@ -123,6 +138,21 @@ public class FlyingCircleController : MonoBehaviour
             {
                 if (circle != null)
                     circle.SetRadius(newRadius);
+            }
+        }
+    }
+    
+    public void SetClockwise(bool isClockwise)
+    {
+        clockwise = isClockwise;
+        float actualSpeed = clockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
+        
+        if (circles != null)
+        {
+            foreach (var circle in circles)
+            {
+                if (circle != null)
+                    circle.SetRotationSpeed(actualSpeed);
             }
         }
     }
