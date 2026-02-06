@@ -32,7 +32,6 @@ public class SimplePerformanceOptimizer : MonoBehaviour
     [SerializeField] private Transform player;
     
     [Header("=== DEBUG ===")]
-    [SerializeField] private bool showDebugInfo = true;
     [SerializeField] private bool enableOptimization = true;
     
     // ========== PRIVATE VARIABLES ==========

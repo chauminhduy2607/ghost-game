@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Obstacle
+  - FireNLineObstacle
+  - FlyingFireObstacle
+  - FlyingCircleObstacle
+  - FlyingCircleReverseObstacle
   layers:
   - Default
   - TransparentFX

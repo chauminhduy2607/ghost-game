@@ -3,67 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// <summary>
-/// IMPROVED Obstacle Spawner - Làm việc trực tiếp với obstacles có sẵn trong Hierarchy
+/// IMPROVED Obstacle Spawner V2 - HỖ TRỢ NHIỀU LOẠI VẬT CẢN
+/// Tự động phát hiện và sắp xếp theo TAG
 /// </summary>
 public class ImprovedObstacleSpawner : MonoBehaviour
 {
     [Header("=== GROUP CONFIGURATION ===")]
-    [Tooltip("Số Fire&Line mỗi group")]
-    [SerializeField] private int fireLinesPerGroup = 4;
-    
-    [Tooltip("Số FlyingCircle mỗi group")]
-    [SerializeField] private int circlesPerGroup = 1;
-    
-    [Tooltip("Số FlyingFire mỗi group")]
-    [SerializeField] private int flyingFiresPerGroup = 4;
+    [Tooltip("Số obstacles mỗi loại trong 1 group")]
+    [SerializeField] private int obstaclesPerType = 4;
     
     [Header("=== SPACING SETTINGS ===")]
-    [Tooltip("Khoảng cách giữa các obstacles trong group")]
-    [SerializeField] private float obstacleSpacing = 5f;
+    [Tooltip("Khoảng cách giữa các obstacles cùng loại")]
+    [SerializeField] private float obstacleSpacing = 6f;
+    
+    [Tooltip("Khoảng cách giữa các loại vật cản khác nhau")]
+    [SerializeField] private float typeGap = 12f;
     
     [Tooltip("Khoảng cách giữa các groups")]
-    [SerializeField] private float groupSpacing = 15f;
+    [SerializeField] private float groupGap = 15f;
     
-    [Tooltip("Khoảng cách từ Circle đến FlyingFire")]
-    [SerializeField] private float circleToFireSpacing = 3f;
-    
+    [Header("=== SPECIAL: CIRCLES ===")]
     [Tooltip("Bán kính của Circle (để tính vị trí)")]
-    [SerializeField] private float circleRadius = 2.5f;
-    
-    [Tooltip("FlyingFire spawn ở trên hay dưới Circle")]
-    [SerializeField] private bool spawnFireAboveCircle = false;
+    [SerializeField] private float circleRadius = 3f;
     
     [Header("=== SPAWN/DESPAWN ===")]
     [Tooltip("Khoảng cách spawn trước player")]
     [SerializeField] private float spawnDistance = 30f;
     
-    [Tooltip("Khoảng cách despawn sau player (âm = phía dưới)")]
+    [Tooltip("Khoảng cách despawn sau player")]
     [SerializeField] private float despawnDistance = -20f;
     
     [Tooltip("Số groups active tối đa cùng lúc")]
     [SerializeField] private int maxActiveGroups = 5;
     
     [Header("=== SPEED PROGRESSION ===")]
-    [Tooltip("Tốc độ ban đầu")]
     [SerializeField] private float initialSpeed = 1.0f;
-    
-    [Tooltip("Tăng speed mỗi lần")]
     [SerializeField] private float speedIncrement = 0.2f;
-    
-    [Tooltip("Tốc độ tối đa")]
     [SerializeField] private float maxSpeed = 5.0f;
-    
-    [Tooltip("Số groups đi qua để tăng speed")]
     [SerializeField] private int groupsPerSpeedIncrease = 2;
     
     [Header("=== ROTATION (for Circles) ===")]
-    [Tooltip("Tốc độ quay ban đầu")]
     [SerializeField] private float initialRotationSpeed = 120f;
-    
-    [Tooltip("Tăng rotation mỗi lần")]
     [SerializeField] private float rotationSpeedIncrement = 20f;
-    
-    [Tooltip("Tốc độ quay tối đa")]
     [SerializeField] private float maxRotationSpeed = 360f;
     
     [Header("=== REFERENCES ===")]
@@ -76,12 +57,19 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     
     // ========== PRIVATE VARIABLES ==========
     
+    // Loại vật cản (được tự động phát hiện)
+    private class ObstacleType
+    {
+        public string name;              // FireLine, Circle1, Circle2, FlyingFire...
+        public List<GameObject> objects = new List<GameObject>();
+        public bool isCircle;            // Có phải Circle không (để apply rotation)
+        public int priority;             // Thứ tự hiển thị (0 = đầu tiên)
+    }
+    
     private class ObstacleGroup
     {
         public string name;
-        public List<GameObject> fireLines = new List<GameObject>();
-        public List<GameObject> circles = new List<GameObject>();
-        public List<GameObject> flyingFires = new List<GameObject>();
+        public Dictionary<string, List<GameObject>> obstaclesByType = new Dictionary<string, List<GameObject>>();
         public float centerY;
         public bool isActive;
         public bool isPassed;
@@ -89,18 +77,28 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         public void SetActive(bool active)
         {
             isActive = active;
-            foreach (var obj in fireLines) if (obj) obj.SetActive(active);
-            foreach (var obj in circles) if (obj) obj.SetActive(active);
-            foreach (var obj in flyingFires) if (obj) obj.SetActive(active);
+            foreach (var typeList in obstaclesByType.Values)
+            {
+                foreach (var obj in typeList)
+                {
+                    if (obj) obj.SetActive(active);
+                }
+            }
         }
         
-        public int TotalCount => fireLines.Count + circles.Count + flyingFires.Count;
+        public int TotalCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (var list in obstaclesByType.Values)
+                    count += list.Count;
+                return count;
+            }
+        }
     }
     
-    private List<GameObject> allFireLines = new List<GameObject>();
-    private List<GameObject> allCircles = new List<GameObject>();
-    private List<GameObject> allFlyingFires = new List<GameObject>();
-    
+    private List<ObstacleType> obstacleTypes = new List<ObstacleType>();
     private Queue<ObstacleGroup> inactiveGroups = new Queue<ObstacleGroup>();
     private List<ObstacleGroup> activeGroups = new List<ObstacleGroup>();
     
@@ -115,7 +113,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     void Start()
     {
         InitializeReferences();
-        CollectAllObstacles();
+        AutoDetectObstacleTypes();
         CreateGroupsFromObstacles();
         InitializeFirstGroups();
     }
@@ -153,138 +151,111 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         if (player != null)
             nextSpawnY = player.position.y + screenHeight * 0.5f;
         
-        Debug.Log($"[ImprovedSpawner] Initialized - Screen Height: {screenHeight}");
+        Debug.Log($"[ImprovedSpawner] Initialized");
     }
     
-    void CollectAllObstacles()
+    // ===== TỰ ĐỘNG PHÁT HIỆN CÁC LOẠI VẬT CẢN =====
+    void AutoDetectObstacleTypes()
     {
-        allFireLines.Clear();
-        allCircles.Clear();
-        allFlyingFires.Clear();
+        obstacleTypes.Clear();
         
         foreach (Transform child in transform)
         {
             if (child == null) continue;
             
-            string name = child.name.ToLower();
+            string tag = child.tag;
             
-            if (name.Contains("fire") && name.Contains("line"))
+            // Chỉ xử lý các tag có đuôi "Obstacle"
+            if (!tag.EndsWith("Obstacle")) continue;
+            
+            // Tách tên loại (bỏ đuôi "Obstacle")
+            string typeName = tag.Replace("Obstacle", "");
+            
+            // Tìm xem loại này đã tồn tại chưa
+            ObstacleType existingType = obstacleTypes.Find(t => t.name == typeName);
+            
+            if (existingType == null)
             {
-                allFireLines.Add(child.gameObject);
-                SetupFireLine(child.gameObject);
+                // Tạo loại mới
+                ObstacleType newType = new ObstacleType
+                {
+                    name = typeName,
+                    isCircle = typeName.ToLower().Contains("circle"),
+                    priority = GetPriority(typeName)
+                };
+                
+                newType.objects.Add(child.gameObject);
+                obstacleTypes.Add(newType);
+                
+                SetupObstacle(child.gameObject, newType.isCircle);
+                
+                if (showDebugInfo)
+                    Debug.Log($"[Spawner] 🆕 New type detected: {typeName} (Circle: {newType.isCircle})");
             }
-            else if (name.Contains("flying") && name.Contains("circle"))
+            else
             {
-                allCircles.Add(child.gameObject);
-                SetupCircle(child.gameObject);
-            }
-            else if (name.Contains("flying") && name.Contains("fire"))
-            {
-                allFlyingFires.Add(child.gameObject);
-                SetupFlyingFire(child.gameObject);
+                // Thêm vào loại đã có
+                existingType.objects.Add(child.gameObject);
+                SetupObstacle(child.gameObject, existingType.isCircle);
             }
         }
         
-        Debug.Log($"[ImprovedSpawner] Collected: {allFireLines.Count} FireLines, " +
-                  $"{allCircles.Count} Circles, {allFlyingFires.Count} FlyingFires");
-    }
-    
-    void CreateGroupsFromObstacles()
-    {
-        int maxGroups = Mathf.Max(
-            Mathf.CeilToInt((float)allFireLines.Count / fireLinesPerGroup),
-            Mathf.Max(
-                Mathf.CeilToInt((float)allCircles.Count / circlesPerGroup),
-                Mathf.CeilToInt((float)allFlyingFires.Count / flyingFiresPerGroup)
-            )
-        );
+        // Sắp xếp theo priority (FireLine → Circle1 → Circle2 → FlyingFire)
+        obstacleTypes = obstacleTypes.OrderBy(t => t.priority).ToList();
         
-        int fireIndex = 0;
-        int circleIndex = 0;
-        int fireIndex2 = 0;
-        
-        for (int i = 0; i < maxGroups; i++)
+        if (showDebugInfo)
         {
-            ObstacleGroup group = new ObstacleGroup();
-            group.name = $"Group_{i}";
-            
-            for (int f = 0; f < fireLinesPerGroup && fireIndex < allFireLines.Count; f++)
+            Debug.Log($"[ImprovedSpawner] 📊 Detected {obstacleTypes.Count} obstacle types:");
+            foreach (var type in obstacleTypes)
             {
-                group.fireLines.Add(allFireLines[fireIndex]);
-                fireIndex++;
-            }
-            
-            for (int c = 0; c < circlesPerGroup && circleIndex < allCircles.Count; c++)
-            {
-                group.circles.Add(allCircles[circleIndex]);
-                circleIndex++;
-            }
-            
-            for (int ff = 0; ff < flyingFiresPerGroup && fireIndex2 < allFlyingFires.Count; ff++)
-            {
-                group.flyingFires.Add(allFlyingFires[fireIndex2]);
-                fireIndex2++;
-            }
-            
-            if (group.TotalCount > 0)
-            {
-                group.SetActive(false);
-                inactiveGroups.Enqueue(group);
+                Debug.Log($"  • {type.name}: {type.objects.Count} objects (Priority: {type.priority})");
             }
         }
-        
-        Debug.Log($"[ImprovedSpawner] Created {maxGroups} groups, {inactiveGroups.Count} in pool");
     }
     
-    void InitializeFirstGroups()
+    // Xác định thứ tự hiển thị
+    int GetPriority(string typeName)
     {
-        float currentY = nextSpawnY;
+        string lower = typeName.ToLower();
         
-        int groupsToSpawn = Mathf.Min(maxActiveGroups, inactiveGroups.Count);
-        
-        for (int i = 0; i < groupsToSpawn; i++)
+        if (lower.Contains("fireline") || lower.Contains("firenline"))
+            return 0; // FireLine đầu tiên
+        else if (lower.Contains("circle"))
         {
-            SpawnGroup(currentY);
-            currentY += CalculateGroupHeight() + groupSpacing;
+            // Circle1, Circle2, Circle3...
+            if (lower.Contains("1")) return 1;
+            if (lower.Contains("2")) return 2;
+            if (lower.Contains("3")) return 3;
+            return 10; // Circle không số
         }
-        
-        Debug.Log($"[ImprovedSpawner] Spawned {groupsToSpawn} initial groups");
+        else if (lower.Contains("flyingfire"))
+            return 100; // FlyingFire cuối cùng
+        else
+            return 50; // Loại khác ở giữa
     }
     
-    // ========== SETUP METHODS ==========
-    
-    void SetupFireLine(GameObject obj)
+    void SetupObstacle(GameObject obj, bool isCircle)
     {
-        ObstacleLooper looper = obj.GetComponent<ObstacleLooper>();
-        if (looper != null)
-            looper.enabled = false;
-        
-        ObstacleSpawner spawner = obj.GetComponent<ObstacleSpawner>();
-        if (spawner != null)
+        if (isCircle)
         {
-            StartCoroutine(ApplySpeedToSpawnedObstacles(obj, currentSpeed));
+            FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
+            if (controller != null)
+            {
+                controller.SetRotationSpeed(currentRotationSpeed);
+                controller.SetRadius(circleRadius);
+            }
         }
-    }
-    
-    void SetupCircle(GameObject obj)
-    {
-        FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
-        if (controller != null)
+        else
         {
-            controller.SetRotationSpeed(currentRotationSpeed);
-        }
-    }
-    
-    void SetupFlyingFire(GameObject obj)
-    {
-        ObstacleLooper looper = obj.GetComponent<ObstacleLooper>();
-        if (looper != null)
-            looper.enabled = false;
-        
-        ObstacleSpawner spawner = obj.GetComponent<ObstacleSpawner>();
-        if (spawner != null)
-        {
-            StartCoroutine(ApplySpeedToSpawnedObstacles(obj, currentSpeed));
+            ObstacleLooper looper = obj.GetComponent<ObstacleLooper>();
+            if (looper != null)
+                looper.enabled = false;
+            
+            ObstacleSpawner spawner = obj.GetComponent<ObstacleSpawner>();
+            if (spawner != null)
+            {
+                StartCoroutine(ApplySpeedToSpawnedObstacles(obj, currentSpeed));
+            }
         }
     }
     
@@ -306,7 +277,74 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ========== SPAWNING LOGIC ==========
+    // ===== TẠO GROUPS TỪ CÁC VẬT CẢN =====
+    void CreateGroupsFromObstacles()
+    {
+        if (obstacleTypes.Count == 0)
+        {
+            Debug.LogError("[ImprovedSpawner] No obstacle types detected!");
+            return;
+        }
+        
+        // Tính số groups tối đa
+        int maxGroups = 0;
+        foreach (var type in obstacleTypes)
+        {
+            int groupsForType = Mathf.CeilToInt((float)type.objects.Count / obstaclesPerType);
+            maxGroups = Mathf.Max(maxGroups, groupsForType);
+        }
+        
+        // Tạo từng group
+        for (int groupIndex = 0; groupIndex < maxGroups; groupIndex++)
+        {
+            ObstacleGroup group = new ObstacleGroup();
+            group.name = $"Group_{groupIndex}";
+            
+            // Thêm obstacles từ mỗi loại vào group
+            foreach (var type in obstacleTypes)
+            {
+                List<GameObject> objectsForThisGroup = new List<GameObject>();
+                
+                int startIndex = groupIndex * obstaclesPerType;
+                int endIndex = Mathf.Min(startIndex + obstaclesPerType, type.objects.Count);
+                
+                for (int i = startIndex; i < endIndex; i++)
+                {
+                    objectsForThisGroup.Add(type.objects[i]);
+                }
+                
+                if (objectsForThisGroup.Count > 0)
+                {
+                    group.obstaclesByType[type.name] = objectsForThisGroup;
+                }
+            }
+            
+            if (group.TotalCount > 0)
+            {
+                group.SetActive(false);
+                inactiveGroups.Enqueue(group);
+            }
+        }
+        
+        Debug.Log($"[ImprovedSpawner] 🎯 Created {maxGroups} groups");
+    }
+    
+    void InitializeFirstGroups()
+    {
+        float currentY = nextSpawnY;
+        
+        int groupsToSpawn = Mathf.Min(maxActiveGroups, inactiveGroups.Count);
+        
+        for (int i = 0; i < groupsToSpawn; i++)
+        {
+            SpawnGroup(currentY);
+            currentY += CalculateGroupHeight() + groupGap;
+        }
+        
+        Debug.Log($"[ImprovedSpawner] 🚀 Spawned {groupsToSpawn} initial groups");
+    }
+    
+    // ========== SPAWNING ==========
     
     void SpawnGroup(float yPosition)
     {
@@ -324,108 +362,88 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         group.SetActive(true);
         
         activeGroups.Add(group);
-        nextSpawnY = yPosition + CalculateGroupHeight() + groupSpacing;
+        nextSpawnY = yPosition + CalculateGroupHeight() + groupGap;
         
         if (showDebugInfo)
-            Debug.Log($"[ImprovedSpawner] Spawned {group.name} at Y={yPosition:F1}");
+            Debug.Log($"[ImprovedSpawner] 📍 Spawned {group.name} at Y={yPosition:F1}");
     }
     
     void PositionGroup(ObstacleGroup group, float startY)
     {
         float currentY = startY;
         
-        foreach (var fireLine in group.fireLines)
+        // Duyệt qua từng loại vật cản theo thứ tự priority
+        foreach (var type in obstacleTypes)
         {
-            if (fireLine == null) continue;
+            if (!group.obstaclesByType.ContainsKey(type.name))
+                continue;
             
-            Vector3 pos = fireLine.transform.position;
-            pos.y = currentY;
-            fireLine.transform.position = pos;
+            List<GameObject> objectsOfThisType = group.obstaclesByType[type.name];
             
-            currentY += obstacleSpacing;
-        }
-        
-        currentY += groupSpacing;
-        
-        float circleCenterY = currentY;
-        foreach (var circle in group.circles)
-        {
-            if (circle == null) continue;
-            
-            Vector3 pos = circle.transform.position;
-            pos.y = circleCenterY;
-            circle.transform.position = pos;
-        }
-        
-        float flyingFireStartY;
-        if (spawnFireAboveCircle)
-        {
-            flyingFireStartY = circleCenterY + circleRadius + circleToFireSpacing;
-        }
-        else
-        {
-            flyingFireStartY = circleCenterY - circleRadius - circleToFireSpacing;
-        }
-        
-        currentY = flyingFireStartY;
-        foreach (var flyingFire in group.flyingFires)
-        {
-            if (flyingFire == null) continue;
-            
-            Vector3 pos = flyingFire.transform.position;
-            pos.y = currentY;
-            flyingFire.transform.position = pos;
-            
-            if (spawnFireAboveCircle)
+            // Đặt vị trí cho từng obstacle trong loại này
+            for (int i = 0; i < objectsOfThisType.Count; i++)
+            {
+                GameObject obj = objectsOfThisType[i];
+                if (obj == null) continue;
+                
+                Vector3 pos = obj.transform.position;
+                pos.y = currentY;
+                obj.transform.position = pos;
+                
                 currentY += obstacleSpacing;
-            else
-                currentY -= obstacleSpacing;
+            }
+            
+            // Thêm khoảng cách giữa các loại
+            currentY += typeGap - obstacleSpacing; // Bù lại vì đã cộng obstacleSpacing ở trên
+        }
+        
+        if (showDebugInfo)
+        {
+            Debug.Log($"[Group Layout] 📐 {group.name}: Start={startY:F1}, End={currentY:F1}");
         }
     }
     
     float CalculateGroupHeight()
     {
         float height = 0;
-        height += fireLinesPerGroup * obstacleSpacing;
-        height += groupSpacing;
-        height += circleRadius * 2;
-        height += circleToFireSpacing;
-        height += flyingFiresPerGroup * obstacleSpacing;
+        
+        foreach (var type in obstacleTypes)
+        {
+            // Khoảng cách giữa các obstacles cùng loại
+            height += (obstaclesPerType - 1) * obstacleSpacing;
+            
+            // Khoảng cách đến loại tiếp theo
+            height += typeGap;
+        }
+        
+        // Bỏ typeGap cuối cùng
+        if (obstacleTypes.Count > 0)
+            height -= typeGap;
+        
         return height;
     }
     
-    // ========== UPDATE LOGIC ==========
+    // ========== UPDATE ==========
     
     void CheckSpawnNewGroup()
     {
         if (player == null) return;
         
-        float playerY = player.position.y;
-        
-        if (nextSpawnY < playerY + spawnDistance && inactiveGroups.Count > 0)
-        {
+        if (nextSpawnY < player.position.y + spawnDistance && inactiveGroups.Count > 0)
             SpawnGroup(nextSpawnY);
-        }
     }
     
     void CheckDespawnOldGroups()
     {
         if (player == null) return;
         
-        float playerY = player.position.y;
-        
         for (int i = activeGroups.Count - 1; i >= 0; i--)
         {
-            ObstacleGroup group = activeGroups[i];
-            
-            if (group.centerY < playerY + despawnDistance)
+            if (activeGroups[i].centerY < player.position.y + despawnDistance)
             {
-                group.SetActive(false);
+                activeGroups[i].SetActive(false);
+                inactiveGroups.Enqueue(activeGroups[i]);
                 activeGroups.RemoveAt(i);
-                inactiveGroups.Enqueue(group);
-                
-                if (showDebugInfo)
-                    Debug.Log($"[ImprovedSpawner] Despawned {group.name}");
             }
         }
     }
@@ -434,62 +452,49 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         if (player == null) return;
         
-        float playerY = player.position.y;
-        
         foreach (var group in activeGroups)
         {
-            if (!group.isPassed && playerY > group.centerY + CalculateGroupHeight() * 0.5f)
+            if (!group.isPassed && player.position.y > group.centerY + CalculateGroupHeight() * 0.5f)
             {
                 group.isPassed = true;
                 totalGroupsPassed++;
                 
-                if (showDebugInfo)
-                    Debug.Log($"[ImprovedSpawner] Passed {group.name}, Total: {totalGroupsPassed}");
-                
                 if (totalGroupsPassed % groupsPerSpeedIncrease == 0)
-                {
                     IncreaseSpeed();
-                }
             }
         }
     }
     
-    // ========== SPEED PROGRESSION ==========
+    // ========== SPEED ==========
     
     void IncreaseSpeed()
     {
         currentSpeed = Mathf.Min(currentSpeed + speedIncrement, maxSpeed);
         currentRotationSpeed = Mathf.Min(currentRotationSpeed + rotationSpeedIncrement, maxRotationSpeed);
-        
         ApplySpeedToAllActive();
-        
-        if (showDebugInfo)
-            Debug.Log($"[ImprovedSpawner] Speed: {currentSpeed:F2}, Rotation: {currentRotationSpeed:F0}°/s");
     }
     
     void ApplySpeedToAllActive()
     {
         foreach (var group in activeGroups)
         {
-            foreach (var fireLine in group.fireLines)
+            foreach (var typeList in group.obstaclesByType.Values)
             {
-                if (fireLine == null) continue;
-                ApplySpeedToObstacle(fireLine, currentSpeed);
-            }
-            
-            foreach (var circle in group.circles)
-            {
-                if (circle == null) continue;
-                
-                FlyingCircleController controller = circle.GetComponent<FlyingCircleController>();
-                if (controller != null)
-                    controller.SetRotationSpeed(currentRotationSpeed);
-            }
-            
-            foreach (var flyingFire in group.flyingFires)
-            {
-                if (flyingFire == null) continue;
-                ApplySpeedToObstacle(flyingFire, currentSpeed);
+                foreach (var obj in typeList)
+                {
+                    if (obj == null) continue;
+                    
+                    // Check if Circle
+                    FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
+                    if (controller != null)
+                    {
+                        controller.SetRotationSpeed(currentRotationSpeed);
+                    }
+                    else
+                    {
+                        ApplySpeedToObstacle(obj, currentSpeed);
+                    }
+                }
             }
         }
     }
@@ -497,20 +502,17 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     void ApplySpeedToObstacle(GameObject obj, float speed)
     {
         ObstacleSpawner spawner = obj.GetComponent<ObstacleSpawner>();
-        if (spawner != null && spawner.SpawnedObstacles != null)
+        if (spawner?.SpawnedObstacles == null) return;
+        
+        foreach (var spawnedObj in spawner.SpawnedObstacles)
         {
-            foreach (var spawnedObj in spawner.SpawnedObstacles)
-            {
-                if (spawnedObj == null) continue;
-                
-                ObstacleMovement movement = spawnedObj.GetComponent<ObstacleMovement>();
-                if (movement != null)
-                    movement.SetSpeed(speed);
-            }
+            if (spawnedObj == null) continue;
+            ObstacleMovement m = spawnedObj.GetComponent<ObstacleMovement>();
+            if (m != null) m.SetSpeed(speed);
         }
     }
     
-    // ========== DEBUG & GIZMOS ==========
+    // ========== GIZMOS ==========
     
     void OnDrawGizmos()
     {
@@ -529,13 +531,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         foreach (var group in activeGroups)
         {
             Gizmos.color = group.isPassed ? Color.yellow : Color.cyan;
-            float height = CalculateGroupHeight();
             Gizmos.DrawWireCube(new Vector3(0, group.centerY, 0),
-                               new Vector3(10, height, 0.1f));
+                               new Vector3(10, CalculateGroupHeight(), 0.1f));
         }
     }
     
-    // ========== PUBLIC METHODS ==========
+    // ========== PUBLIC ==========
     
     public void ResetGame()
     {
@@ -554,7 +555,5 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             nextSpawnY = player.position.y + screenHeight * 0.5f;
         
         InitializeFirstGroups();
-        
-        Debug.Log("[ImprovedSpawner] Game reset!");
     }
 }
