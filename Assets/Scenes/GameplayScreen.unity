@@ -211,22 +211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &39093434
 SpriteRenderer:
   serializedVersion: 2
@@ -391,22 +375,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 0
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!61 &45679216
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -601,22 +569,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 0
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &121551577
 SpriteRenderer:
   serializedVersion: 2
@@ -833,43 +785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955b9d9294855484ebdda382f2deb186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressiveObstacleSpawner
-  fireLinePrefab: {fileID: 0}
-  flyingCirclePrefab: {fileID: 0}
-  flyingFirePrefab: {fileID: 0}
-  fireLinesPerGroup: 4
-  circlesPerGroup: 1
-  flyingFiresPerGroup: 4
-  baseSpawnDistance: 12
-  velocityMultiplier: 1.5
-  maxSpawnDistance: 30
-  spacingY: 1
-  groupSpacing: 2
-  circleRadius: 2.5
-  circleToFireSpacing: -8
-  spawnFireAboveCircle: 1
-  startY: 15
-  initialSpeed: 1
-  speedIncrement: 0.2
-  maxSpeed: 5
-  obstaclesPerSpeedIncrease: 3
-  initialRotationSpeed: 120
-  rotationSpeedIncrement: 20
-  maxRotationSpeed: 360
-  mainCamera: {fileID: 0}
-  player: {fileID: 0}
-  useExistingObstacles: 1
-  loopThreshold: 0.5
-  randomizeOnLoop: 1
-  showDebugInfo: 1
-  showGizmos: 1
-  allObstacles: []
-  screenHeight: 0
-  totalLooped: 0
-  currentWave: 0
-  currentSpeed: 0
-  currentRotationSpeed: 0
-  obstaclesPassed: 0
-  lastSpeedIncreaseAt: 0
 --- !u!114 &140615577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -886,7 +801,6 @@ MonoBehaviour:
   obstacleSpacing: 6
   typeGap: 12
   groupGap: 15
-  circleRadius: 2.5
   spawnDistance: -10
   despawnDistance: -30
   maxActiveGroups: 5
@@ -1426,22 +1340,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &290739354
 SpriteRenderer:
   serializedVersion: 2
@@ -1808,22 +1706,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &350213867
 SpriteRenderer:
   serializedVersion: 2
@@ -2133,22 +2015,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &522977059
 SpriteRenderer:
   serializedVersion: 2
@@ -2300,22 +2166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 180
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &535028341
 SpriteRenderer:
   serializedVersion: 2
@@ -2779,22 +2629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!61 &631642709
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3441,22 +3275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 0
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &753118744
 SpriteRenderer:
   serializedVersion: 2
@@ -3608,22 +3426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &757423950
 SpriteRenderer:
   serializedVersion: 2
@@ -3957,22 +3759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &815426922
 SpriteRenderer:
   serializedVersion: 2
@@ -4124,22 +3910,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 180
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &844810204
 SpriteRenderer:
   serializedVersion: 2
@@ -4541,22 +4311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 0
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &964471164
 SpriteRenderer:
   serializedVersion: 2
@@ -4708,22 +4462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &989233407
 SpriteRenderer:
   serializedVersion: 2
@@ -5203,22 +4941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1097855503
 SpriteRenderer:
   serializedVersion: 2
@@ -5370,22 +5092,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1131692529
 SpriteRenderer:
   serializedVersion: 2
@@ -6195,22 +5901,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1236899278
 SpriteRenderer:
   serializedVersion: 2
@@ -6947,22 +6637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 180
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1462831745
 SpriteRenderer:
   serializedVersion: 2
@@ -7251,22 +6925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1526556651
 SpriteRenderer:
   serializedVersion: 2
@@ -7418,22 +7076,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1570977215
 SpriteRenderer:
   serializedVersion: 2
@@ -7585,22 +7227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1681668381
 SpriteRenderer:
   serializedVersion: 2
@@ -8135,22 +7761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: 180
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1773904577
 SpriteRenderer:
   serializedVersion: 2
@@ -8419,22 +8029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -60
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1902137267
 SpriteRenderer:
   serializedVersion: 2
@@ -8687,22 +8281,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86e6e1b072c4a6cab2cc6a71133773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleRotation
-  rotationSpeed: 180
-  radius: 3
-  startAngle: -120
-  centerPoint: {fileID: 0}
-  rotateSprite: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  keepOriginalFlip: 1
-  showDebugLine: 1
-  <CurrentAngle>k__BackingField: 0
-  <CenterPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  spriteRenderer: {fileID: 0}
-  originalFlipX: 0
-  originalFlipY: 0
-  isManagedByController: 0
 --- !u!212 &1979169802
 SpriteRenderer:
   serializedVersion: 2
