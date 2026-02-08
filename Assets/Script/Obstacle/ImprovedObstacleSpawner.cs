@@ -4,8 +4,7 @@ using System.Linq;
 
 /// <summary>
 /// IMPROVED Obstacle Spawner V3 - HỖ TRỢ CHỒNG VẬT CẢN
-/// Tự động phát hiện và sắp xếp theo TAG
-/// Hỗ trợ chồng các obstacles cùng loại lên nhau
+/// FIX: Khoảng cách giữa Fire&Line và Circle
 /// </summary>
 public class ImprovedObstacleSpawner : MonoBehaviour
 {
@@ -22,8 +21,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     
     [Tooltip("Khoảng cách giữa các groups")]
     [SerializeField] private float groupGap = 15f;
-    
-    // ⭐ RADIUS được quản lý bởi FlyingCircleController, KHÔNG cần config ở đây
     
     [Header("=== SPAWN/DESPAWN ===")]
     [Tooltip("Khoảng cách spawn trước player")]
@@ -56,14 +53,13 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     
     // ========== PRIVATE VARIABLES ==========
     
-    // Loại vật cản (được tự động phát hiện)
     private class ObstacleType
     {
-        public string name;              // FireLine, Circle, FlyingFire...
+        public string name;
         public List<GameObject> objects = new List<GameObject>();
-        public bool isCircle;            // Có phải Circle không (để apply rotation)
-        public int priority;             // Thứ tự hiển thị (0 = đầu tiên)
-        public bool stackable;           // ⭐ CÓ THỂ CHỒNG LÊN NHAU KHÔNG
+        public bool isCircle;
+        public int priority;
+        public bool stackable;
     }
     
     private class ObstacleGroup
@@ -101,9 +97,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     private List<ObstacleType> obstacleTypes = new List<ObstacleType>();
     private Queue<ObstacleGroup> inactiveGroups = new Queue<ObstacleGroup>();
     private List<ObstacleGroup> activeGroups = new List<ObstacleGroup>();
-    
-    // ⭐ LƯU RADIUS GỐC CỦA TỪNG CIRCLE (để không bị ghi đè)
-    private Dictionary<GameObject, float> originalRadiusMap = new Dictionary<GameObject, float>();
     
     private float currentSpeed;
     private float currentRotationSpeed;
@@ -157,7 +150,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         Debug.Log($"[ImprovedSpawner] Initialized");
     }
     
-    // ===== TỰ ĐỘNG PHÁT HIỆN CÁC LOẠI VẬT CẢN =====
     void AutoDetectObstacleTypes()
     {
         obstacleTypes.Clear();
@@ -167,103 +159,80 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             if (child == null) continue;
             
             string tag = child.tag;
-            
-            // Chỉ xử lý các tag có đuôi "Obstacle"
             if (!tag.EndsWith("Obstacle")) continue;
             
-            // Tách tên loại (bỏ đuôi "Obstacle")
             string typeName = tag.Replace("Obstacle", "");
-            
-            // Tìm xem loại này đã tồn tại chưa
             ObstacleType existingType = obstacleTypes.Find(t => t.name == typeName);
             
             if (existingType == null)
             {
-                // Tạo loại mới
                 ObstacleType newType = new ObstacleType
                 {
                     name = typeName,
                     isCircle = typeName.ToLower().Contains("circle"),
                     priority = GetPriority(typeName),
-                    stackable = IsStackable(typeName)  // ⭐ XÁC ĐỊNH CÓ THỂ CHỒNG KHÔNG
+                    stackable = IsStackable(typeName)
                 };
                 
                 newType.objects.Add(child.gameObject);
                 obstacleTypes.Add(newType);
-                
                 SetupObstacle(child.gameObject, newType.isCircle);
                 
                 if (showDebugInfo)
-                    Debug.Log($"[Spawner] 🆕 New type: {typeName} (Circle: {newType.isCircle}, Stackable: {newType.stackable})");
+                    Debug.Log($"[Spawner] 🆕 {typeName} (Circle: {newType.isCircle}, Stackable: {newType.stackable})");
             }
             else
             {
-                // Thêm vào loại đã có
                 existingType.objects.Add(child.gameObject);
                 SetupObstacle(child.gameObject, existingType.isCircle);
             }
         }
         
-        // Sắp xếp theo priority (FireLine → Circle → FlyingFire)
         obstacleTypes = obstacleTypes.OrderBy(t => t.priority).ToList();
         
         if (showDebugInfo)
         {
-            Debug.Log($"[ImprovedSpawner] 📊 Detected {obstacleTypes.Count} obstacle types:");
+            Debug.Log($"[ImprovedSpawner] 📊 {obstacleTypes.Count} types:");
             foreach (var type in obstacleTypes)
-            {
-                Debug.Log($"  • {type.name}: {type.objects.Count} objects (Priority: {type.priority}, Stackable: {type.stackable})");
-            }
+                Debug.Log($"  • {type.name}: {type.objects.Count} (P:{type.priority}, S:{type.stackable})");
         }
     }
     
-    // ⭐ XÁC ĐỊNH LOẠI NÀO CÓ THỂ CHỒNG LÊN NHAU
     bool IsStackable(string typeName)
     {
         string lower = typeName.ToLower();
-        
-        // ✅ Các loại này sẽ chồng lên nhau (cùng tag = cùng vị trí Y)
-        if (lower.Contains("circle")) return true;           // Vòng tròn chồng lên nhau
-        if (lower.Contains("flyingfire")) return true;       // FlyingFire có thể chồng
-        
-        // ❌ Các loại khác KHÔNG chồng (cách xa nhau)
+        if (lower.Contains("circle")) return true;
+        if (lower.Contains("flyingfire")) return true;
         return false;
     }
     
-    // Xác định thứ tự hiển thị
     int GetPriority(string typeName)
     {
         string lower = typeName.ToLower();
         
         if (lower.Contains("fireline") || lower.Contains("firenline"))
-            return 0; // FireLine đầu tiên
+            return 0;
         else if (lower.Contains("circle"))
         {
-            // Circle1, Circle2, Circle3...
             if (lower.Contains("1")) return 1;
             if (lower.Contains("2")) return 2;
             if (lower.Contains("3")) return 3;
-            return 10; // Circle không số
+            return 10;
         }
         else if (lower.Contains("flyingfire"))
-            return 100; // FlyingFire cuối cùng
+            return 100;
         else
-            return 50; // Loại khác ở giữa
+            return 50;
     }
     
     void SetupObstacle(GameObject obj, bool isCircle)
     {
         if (isCircle)
         {
-            // ⭐ CHỈ set rotation speed, KHÔNG động vào radius
-            // Radius được quản lý bởi FlyingCircleController
             FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
             if (controller != null)
             {
                 controller.SetRotationSpeed(currentRotationSpeed);
-                
-                if (showDebugInfo)
-                    Debug.Log($"[Circle Setup] {obj.name} → Rotation Speed = {currentRotationSpeed}");
             }
         }
         else
@@ -298,7 +267,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ===== TẠO GROUPS TỪ CÁC VẬT CẢN =====
     void CreateGroupsFromObstacles()
     {
         if (obstacleTypes.Count == 0)
@@ -307,7 +275,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             return;
         }
         
-        // Tính số groups tối đa
         int maxGroups = 0;
         foreach (var type in obstacleTypes)
         {
@@ -315,13 +282,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             maxGroups = Mathf.Max(maxGroups, groupsForType);
         }
         
-        // Tạo từng group
         for (int groupIndex = 0; groupIndex < maxGroups; groupIndex++)
         {
             ObstacleGroup group = new ObstacleGroup();
             group.name = $"Group_{groupIndex}";
             
-            // Thêm obstacles từ mỗi loại vào group
             foreach (var type in obstacleTypes)
             {
                 List<GameObject> objectsForThisGroup = new List<GameObject>();
@@ -389,12 +354,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             Debug.Log($"[ImprovedSpawner] 📍 Spawned {group.name} at Y={yPosition:F1}");
     }
     
-    // ⭐ QUAN TRỌNG: HÀM ĐẶT VỊ TRÍ CÓ HỖ TRỢ STACKABLE
+    // ✅ FIX: HÀM ĐẶT VỊ TRÍ
     void PositionGroup(ObstacleGroup group, float startY)
     {
         float currentY = startY;
         
-        // Duyệt qua từng loại vật cản theo thứ tự priority
         foreach (var type in obstacleTypes)
         {
             if (!group.obstaclesByType.ContainsKey(type.name))
@@ -404,25 +368,22 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             if (type.stackable)
             {
-                // ⭐ NẾU STACKABLE: Tất cả obstacles cùng loại này ở CÙNG VỊ TRÍ Y
+                // Chồng lên nhau - cùng Y
                 foreach (var obj in objectsOfThisType)
                 {
                     if (obj == null) continue;
                     
                     Vector3 pos = obj.transform.position;
-                    pos.y = currentY;  // Tất cả cùng Y
+                    pos.y = currentY;
                     obj.transform.position = pos;
                 }
                 
-                // Chỉ tăng Y một lần cho cả nhóm stackable
-                currentY += obstacleSpacing;
-                
                 if (showDebugInfo)
-                    Debug.Log($"  🔗 Stacked {objectsOfThisType.Count}x {type.name} at Y={currentY - obstacleSpacing:F1}");
+                    Debug.Log($"  🔗 Stacked {objectsOfThisType.Count}x {type.name} at Y={currentY:F1}");
             }
             else
             {
-                // ⭐ NẾU KHÔNG STACKABLE: Cách xa nhau như cũ
+                // Không chồng - cách nhau obstacleSpacing
                 for (int i = 0; i < objectsOfThisType.Count; i++)
                 {
                     GameObject obj = objectsOfThisType[i];
@@ -436,16 +397,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 }
             }
             
-            // Thêm khoảng cách giữa các loại
-            currentY += typeGap - obstacleSpacing;
-        }
-        
-        if (showDebugInfo)
-        {
-            Debug.Log($"[Group Layout] 📐 {group.name}: Start={startY:F1}, End={currentY:F1}");
+            // ✅ FIX: Thêm typeGap trực tiếp
+            currentY += typeGap;
         }
     }
     
+    // ✅ FIX: TÍNH CHIỀU CAO
     float CalculateGroupHeight()
     {
         float height = 0;
@@ -454,16 +411,16 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         {
             if (type.stackable)
             {
-                // Nếu stackable, chỉ tính 1 lần obstacleSpacing (vì chồng lên nhau)
-                height += obstacleSpacing;
+                // Stackable: không cộng gì (vì chồng lên nhau)
+                // Chỉ cộng typeGap
             }
             else
             {
-                // Nếu không stackable, tính khoảng cách giữa các obstacles
+                // Non-stackable: cộng khoảng cách giữa các obstacles
                 height += (obstaclesPerType - 1) * obstacleSpacing;
             }
             
-            // Khoảng cách đến loại tiếp theo
+            // Cộng typeGap cho mọi loại
             height += typeGap;
         }
         
@@ -535,7 +492,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 {
                     if (obj == null) continue;
                     
-                    // Check if Circle
                     FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
                     if (controller != null)
                     {

@@ -10,6 +10,9 @@ TagManager:
   - FlyingCircleObstacle
   - FlyingCircleReverseObstacle
   - FlyingCircleCombineObstacle
+  - BlackHoleObstacle
+  - Lightning
+  - LightningObstacle
   layers:
   - Default
   - TransparentFX
