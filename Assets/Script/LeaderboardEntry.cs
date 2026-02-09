@@ -27,19 +27,24 @@ public void ApplyGradient()
 }
     
     public void SetEntry(int rank, string playerName, float score)
-    {
-        rankText.text = "#" + rank;
-        nameText.text = playerName;
-        scoreText.text = score.ToString("F2");
-        
-        // Đổi màu cho top 3
-        if (rank == 1)
-            backgroundImage.color = firstPlaceColor;
-        else if (rank == 2)
-            backgroundImage.color = secondPlaceColor;
-        else if (rank == 3)
-            backgroundImage.color = thirdPlaceColor;
-        else
-            backgroundImage.color = normalColor;
-    }
+{
+    string rankIcon = "";
+    if (rank == 1) rankIcon = "🥇 ";
+    else if (rank == 2) rankIcon = "🥈 ";
+    else if (rank == 3) rankIcon = "🥉 ";
+    
+    rankText.text = rankIcon + "#" + rank;
+    nameText.text = playerName;
+    scoreText.text = score.ToString("F2");
+    
+    // Đổi màu cho top 3
+    if (rank == 1)
+        backgroundImage.color = firstPlaceColor;
+    else if (rank == 2)
+        backgroundImage.color = secondPlaceColor;
+    else if (rank == 3)
+        backgroundImage.color = thirdPlaceColor;
+    else
+        backgroundImage.color = normalColor;
+}
 }
