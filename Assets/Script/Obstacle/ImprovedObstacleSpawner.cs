@@ -203,6 +203,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         string lower = typeName.ToLower();
         if (lower.Contains("circle")) return true;
         if (lower.Contains("flyingfire")) return true;
+        if (lower.Contains("lightning")) return true;
         return false;
     }
     
@@ -214,11 +215,13 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             return 0;
         else if (lower.Contains("circle"))
         {
-            if (lower.Contains("1")) return 1;
-            if (lower.Contains("2")) return 2;
-            if (lower.Contains("3")) return 3;
+            // if (lower.Contains("1")) return 1;
+            // if (lower.Contains("2")) return 2;
+            // if (lower.Contains("3")) return 3;
             return 10;
         }
+        else if (lower.Contains("lightning"))
+            return 30;
         else if (lower.Contains("flyingfire"))
             return 100;
         else
