@@ -64,13 +64,16 @@
     <Compile Include="Assets\Script\LeaderboardEntry.cs" />
     <Compile Include="Assets\Script\Ghost\GameEnvironment.cs" />
     <Compile Include="Assets\Script\GameOverController.cs" />
+    <Compile Include="Assets\Script\SceneTransition.cs" />
     <Compile Include="Assets\Script\Ghost\GhostController.cs" />
     <Compile Include="Assets\Script\Obstacle\ObstacleController.cs" />
+    <Compile Include="Assets\Script\PlayerInfoPopup.cs" />
     <Compile Include="Assets\Script\ScoreManager.cs" />
     <Compile Include="Assets\Script\Obstacle\FlyingCircleController.cs" />
     <Compile Include="Assets\Script\system\LineSystem.cs" />
     <Compile Include="Assets\Script\ImageSwitcher.cs" />
     <Compile Include="Assets\Script\background\ScrollingBackground.cs" />
+    <Compile Include="Assets\Script\RoundedCorners.cs" />
     <Compile Include="Assets\Script\FloatingAnimation.cs" />
     <Compile Include="Assets\Script\camera\CameraFollow.cs" />
     <Compile Include="Assets\Script\ameManagerSceneTransition.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Assets\Script\AdsManager\AdsManager.cs" />
     <Compile Include="Assets\Script\Obstacle\FireNew.cs" />
     <Compile Include="Assets\Script\CountdownTimer.cs" />
+    <Compile Include="Assets\Script\UIGradient.cs" />
     <Compile Include="Assets\Script\Obstacle\ObstacleSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
