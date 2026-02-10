@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 39093432}
   m_Layer: 0
   m_Name: Circle (3)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleReverseObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 45679216}
   m_Layer: 0
   m_Name: Circle (1)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -640,7 +640,7 @@ GameObject:
   - component: {fileID: 122564651}
   m_Layer: 0
   m_Name: FlyingCircleCombine (1)
-  m_TagString: FlyingCircleCombineObstacle
+  m_TagString: FlyingCircleCombine4Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -745,6 +745,7 @@ GameObject:
   - component: {fileID: 140615573}
   - component: {fileID: 140615577}
   - component: {fileID: 140615578}
+  - component: {fileID: 140615579}
   m_Layer: 0
   m_Name: ObstacleManager
   m_TagString: Obstacle
@@ -765,11 +766,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1730702269}
   - {fileID: 88398412}
   - {fileID: 233200289}
   - {fileID: 1222891608}
   - {fileID: 122564650}
-  - {fileID: 1730702269}
   - {fileID: 2012609580}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -780,7 +781,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140615572}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5ca4ea8c628e4776bb7369afb36e24d, type: 3}
   m_Name: 
@@ -789,8 +790,8 @@ MonoBehaviour:
   obstacleSpacing: 6
   typeGap: 12
   groupGap: 15
-  spawnDistance: -10
-  despawnDistance: -30
+  spawnDistance: 30
+  despawnDistance: -20
   maxActiveGroups: 5
   initialSpeed: 1
   speedIncrement: 0.2
@@ -799,8 +800,8 @@ MonoBehaviour:
   initialRotationSpeed: 120
   rotationSpeedIncrement: 20
   maxRotationSpeed: 360
-  player: {fileID: 1173831014}
-  mainCamera: {fileID: 519420031}
+  player: {fileID: 0}
+  mainCamera: {fileID: 0}
   showDebugInfo: 1
   showGizmos: 1
 --- !u!114 &140615578
@@ -810,7 +811,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140615572}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d87c5880f6a64afaaf6ed16e795ad96, type: 3}
   m_Name: 
@@ -832,6 +833,33 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   showDebugInfo: 1
   showGizmos: 1
+--- !u!114 &140615579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140615572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbac371b12bc945b6b3283e470369ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleTagSpawnerGroup
+  obstacleGroups:
+  - tagName: FireNLineObstacle
+    obstaclePrefab: {fileID: 1730702268}
+  - tagName: FlyingCircleObstacle
+    obstaclePrefab: {fileID: 88398411}
+  - tagName: FlyingCricleReverseObstacle
+    obstaclePrefab: {fileID: 233200288}
+  - tagName: 
+    obstaclePrefab: {fileID: 0}
+  - tagName: 
+    obstaclePrefab: {fileID: 0}
+  distanceBetweenDifferentTags: 5
+  startY: 1
+  startX: 0
+  startZ: 0
 --- !u!1 &228254056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,7 +1092,7 @@ GameObject:
   - component: {fileID: 290739352}
   m_Layer: 0
   m_Name: Circle (5)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleReverseObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1215,7 +1243,7 @@ GameObject:
   - component: {fileID: 350213865}
   m_Layer: 0
   m_Name: Circle (5)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1524,7 +1552,7 @@ GameObject:
   - component: {fileID: 522977057}
   m_Layer: 0
   m_Name: Circle (4)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleReverseObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1824,7 +1852,7 @@ GameObject:
   - component: {fileID: 547337565}
   m_Layer: 0
   m_Name: Root
-  m_TagString: LightningObstacle
+  m_TagString: Lightning5Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2001,7 +2029,7 @@ GameObject:
   - component: {fileID: 631642709}
   m_Layer: 0
   m_Name: Circle
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2811,7 +2839,7 @@ GameObject:
   - component: {fileID: 757423948}
   m_Layer: 0
   m_Name: Circle (3)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3445,7 +3473,7 @@ GameObject:
   - component: {fileID: 927401100}
   m_Layer: 0
   m_Name: LightningLine (1)
-  m_TagString: LightningObstacle
+  m_TagString: Lightning5Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3557,7 +3585,7 @@ GameObject:
   - component: {fileID: 964471162}
   m_Layer: 0
   m_Name: Circle (1)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleReverseObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3708,7 +3736,7 @@ GameObject:
   - component: {fileID: 989233405}
   m_Layer: 0
   m_Name: Circle
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleReverseObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5089,7 +5117,7 @@ GameObject:
   - component: {fileID: 1222891609}
   m_Layer: 0
   m_Name: FlyingCircleCombine
-  m_TagString: FlyingCircleCombineObstacle
+  m_TagString: FlyingCircleCombine4Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5147,7 +5175,7 @@ GameObject:
   - component: {fileID: 1236899276}
   m_Layer: 0
   m_Name: Circle (4)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5883,7 +5911,7 @@ GameObject:
   - component: {fileID: 1462831743}
   m_Layer: 0
   m_Name: Circle (2)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6815,7 +6843,7 @@ GameObject:
   - component: {fileID: 1749875522}
   m_Layer: 0
   m_Name: Root (1)
-  m_TagString: Untagged
+  m_TagString: Lightning5Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7098,7 +7126,7 @@ GameObject:
   - component: {fileID: 1773904575}
   m_Layer: 0
   m_Name: Circle (2)
-  m_TagString: Obstacle
+  m_TagString: FlyingCircleReverseObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7365,7 +7393,7 @@ GameObject:
   - component: {fileID: 1837158570}
   m_Layer: 0
   m_Name: LightningLine
-  m_TagString: LightningObstacle
+  m_TagString: Lightning5Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7879,7 +7907,7 @@ GameObject:
   - component: {fileID: 2012609580}
   m_Layer: 0
   m_Name: Lightning
-  m_TagString: LightningObstacle
+  m_TagString: Lightning5Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

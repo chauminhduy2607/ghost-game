@@ -5,6 +5,7 @@ using System.Linq;
 /// <summary>
 /// IMPROVED Obstacle Spawner V3 - HỖ TRỢ CHỒNG VẬT CẢN
 /// FIX: Khoảng cách giữa Fire&Line và Circle
+/// FIX: Force Y position để bỏ qua vị trí Y ban đầu từ Editor
 /// </summary>
 public class ImprovedObstacleSpawner : MonoBehaviour
 {
@@ -14,13 +15,13 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     
     [Header("=== SPACING SETTINGS ===")]
     [Tooltip("Khoảng cách giữa các obstacles cùng loại (nếu KHÔNG stackable)")]
-    [SerializeField] private float obstacleSpacing = 6f;
+    [SerializeField] private float obstacleSpacing = 3f;
     
     [Tooltip("Khoảng cách giữa các loại vật cản khác nhau")]
-    [SerializeField] private float typeGap = 12f;
+    [SerializeField] private float typeGap = 2f;
     
     [Tooltip("Khoảng cách giữa các groups")]
-    [SerializeField] private float groupGap = 15f;
+    [SerializeField] private float groupGap = 6f;
     
     [Header("=== SPAWN/DESPAWN ===")]
     [Tooltip("Khoảng cách spawn trước player")]
@@ -357,7 +358,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             Debug.Log($"[ImprovedSpawner] 📍 Spawned {group.name} at Y={yPosition:F1}");
     }
     
-    // ✅ FIX: HÀM ĐẶT VỊ TRÍ
+    // ✅ FIX 1: HÀM ĐẶT VỊ TRÍ - FIRENLINE GIỮ Y CŨ
     void PositionGroup(ObstacleGroup group, float startY)
     {
         float currentY = startY;
@@ -369,6 +370,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             List<GameObject> objectsOfThisType = group.obstaclesByType[type.name];
             
+            // ✅ Check nếu là FireNLine
+            bool isFireNLine = type.name.ToLower().Contains("fireline") || type.name.ToLower().Contains("firenline");
+            
             if (type.stackable)
             {
                 // Chồng lên nhau - cùng Y
@@ -376,9 +380,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 {
                     if (obj == null) continue;
                     
-                    Vector3 pos = obj.transform.position;
-                    pos.y = currentY;
-                    obj.transform.position = pos;
+                    if (!isFireNLine)
+                    {
+                        // Các obstacle khác: Force Y
+                        ForceYPosition(obj.transform, currentY);
+                    }
+                    // FireNLine: Giữ nguyên Y cũ, không làm gì
                 }
                 
                 if (showDebugInfo)
@@ -392,9 +399,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                     GameObject obj = objectsOfThisType[i];
                     if (obj == null) continue;
                     
-                    Vector3 pos = obj.transform.position;
-                    pos.y = currentY;
-                    obj.transform.position = pos;
+                    if (!isFireNLine)
+                    {
+                        // Các obstacle khác: Force Y
+                        ForceYPosition(obj.transform, currentY);
+                    }
                     
                     currentY += obstacleSpacing;
                 }
@@ -402,6 +411,37 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             // ✅ FIX: Thêm typeGap trực tiếp
             currentY += typeGap;
+        }
+    }
+    
+    // ✅ HÀM FORCE VỊ TRÍ Y CHO OBJECT VÀ TẤT CẢ CON
+    void ForceYPosition(Transform obj, float targetY)
+    {
+        // Đặt Y cho chính object
+        Vector3 pos = obj.position;
+        pos.y = targetY;
+        obj.position = pos;
+        
+        // Đặt Y cho tất cả children (đệ quy)
+        if (obj.childCount > 0)
+        {
+            ForceYPositionRecursive(obj, targetY);
+        }
+    }
+
+    // Hàm đệ quy để xử lý nhiều cấp children
+    void ForceYPositionRecursive(Transform parent, float targetY)
+    {
+        foreach (Transform child in parent)
+        {
+            Vector3 childPos = child.position;
+            childPos.y = targetY;
+            child.position = childPos;
+            
+            if (child.childCount > 0)
+            {
+                ForceYPositionRecursive(child, targetY);
+            }
         }
     }
     
@@ -444,13 +484,17 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             SpawnGroup(nextSpawnY);
     }
     
+    // ✅ FIX 2: DESPAWN LOGIC
     void CheckDespawnOldGroups()
     {
         if (player == null) return;
         
         for (int i = activeGroups.Count - 1; i >= 0; i--)
         {
-            if (activeGroups[i].centerY < player.position.y + despawnDistance)
+            // ✅ Dùng groupBottomY thay vì centerY
+            float groupBottomY = activeGroups[i].centerY + CalculateGroupHeight();
+            
+            if (groupBottomY < player.position.y + despawnDistance)
             {
                 activeGroups[i].SetActive(false);
                 inactiveGroups.Enqueue(activeGroups[i]);
