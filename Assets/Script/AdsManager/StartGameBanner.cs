@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-/// <summary>
-/// Hiện Banner Ads trên màn hình Start Game
-/// </summary>
 public class StartGameBanner : MonoBehaviour
 {
     [Header("=== VỊ TRÍ BANNER ===")]
@@ -11,27 +8,35 @@ public class StartGameBanner : MonoBehaviour
 
     void Start()
     {
-        ShowBanner();
-    }
+        if (AdsManager.Instance == null)
+        {
+            Invoke(nameof(Start), 0.5f);
+            return;
+        }
 
-    void ShowBanner()
-    {
-        if (AdsManager.Instance != null)
+        // Nếu đã init rồi → show luôn
+        if (Advertisement.isInitialized)
         {
             AdsManager.Instance.ShowBanner(bannerPosition);
         }
         else
         {
-            // AdsManager chưa sẵn sàng, thử lại sau 1 giây
-            Invoke(nameof(ShowBanner), 1f);
+            // Chờ init xong mới show
+            AdsManager.Instance.OnInitialized += OnAdsReady;
         }
+    }
+
+    void OnAdsReady()
+    {
+        AdsManager.Instance.OnInitialized -= OnAdsReady;
+        AdsManager.Instance.ShowBanner(bannerPosition);
     }
 
     void OnDestroy()
     {
-        // Ẩn banner khi rời màn hình start
         if (AdsManager.Instance != null)
         {
+            AdsManager.Instance.OnInitialized -= OnAdsReady;
             AdsManager.Instance.HideBanner();
         }
     }
