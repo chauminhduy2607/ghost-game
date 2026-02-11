@@ -1,34 +1,34 @@
 using UnityEngine;
 
 /// <summary>
-/// Camera follow với logic khác nhau khi ma rơi vs bay lên
+/// Camera follow - Ghost luôn cố định ở phía dưới màn hình (~1/4)
+/// Freeze hoàn toàn khi chạm obstacle hoặc chết
 /// </summary>
 public class CameraFollow : MonoBehaviour
 {
     [Header("=== TARGET ===")]
     [SerializeField] private Transform target;
     
+    [Header("=== VỊ TRÍ GHOST TRÊN MÀN HÌNH ===")]
+    [Tooltip("0 = dưới cùng, 1 = trên cùng. 0.33 = 1/3 từ dưới")]
+    [SerializeField] private float ghostScreenYRatio = 0.33f;
+    
     [Header("=== TỐC ĐỘ THEO ===")]
-    [SerializeField] private float smoothSpeed = 3f;
-    
-    [Header("=== DEAD ZONE ===")]
-    [SerializeField] private float deadZoneHeight = 0f;
-    
-    [Header("=== OFFSET ===")]
-    [SerializeField] private float yOffset = 5f;
-    
+    [SerializeField] private float smoothSpeed = 8f;
+
     [Header("=== GIỚI HẠN ===")]
     [SerializeField] private bool useMinY = false;
     [SerializeField] private float minY = -10f;
-    [SerializeField] private bool useMaxY = false;
-    [SerializeField] private float maxY = 100f;
     
     private float initialZ;
-    private Rigidbody2D targetRb;
     private GhostController ghostController;
+    private Camera cam;
     
     void Start()
     {
+        cam = GetComponent<Camera>();
+        if (cam == null) cam = Camera.main;
+        
         if (target == null)
         {
             GhostController ghost = FindObjectOfType<GhostController>();
@@ -43,77 +43,51 @@ public class CameraFollow : MonoBehaviour
                 return;
             }
         }
+        else
+        {
+            ghostController = target.GetComponent<GhostController>();
+        }
         
-        targetRb = target.GetComponent<Rigidbody2D>();
         initialZ = transform.position.z;
+        SnapToTarget();
     }
     
     void LateUpdate()
     {
         if (target == null) return;
         
-        if (ghostController != null && ghostController.HitObstacle)
+        // Freeze ngay khi chạm obstacle, không chờ game over
+        if (ghostController != null && (ghostController.HitObstacle || ghostController.IsGameOver))
             return;
         
-        bool isFalling = false;
-        if (targetRb != null)
-        {
-            isFalling = targetRb.linearVelocity.y < -0.1f;
-        }
+        // Tính camY sao cho ghost luôn ở ghostScreenYRatio
+        // ghostWorldY = camY - halfHeight + ratio * fullHeight
+        // => camY = ghostWorldY + halfHeight - ratio * fullHeight
+        float halfHeight = cam.orthographicSize;
+        float targetCamY = target.position.y + halfHeight - ghostScreenYRatio * (halfHeight * 2f);
         
-        float targetY;
-        if (isFalling)
-        {
-            targetY = target.position.y;
-        }
-        else
-        {
-            targetY = target.position.y + yOffset;
-            
-            float distanceToTarget = targetY - transform.position.y;
-            
-            if (Mathf.Abs(distanceToTarget) < deadZoneHeight)
-            {
-                // Trong dead zone
-            }
-        }
-        
-        Vector3 desiredPosition = new Vector3(
-            transform.position.x,
-            targetY,
-            initialZ
-        );
-        
-        Vector3 smoothedPosition = Vector3.Lerp(
-            transform.position,
-            desiredPosition,
-            smoothSpeed * Time.deltaTime
-        );
+        Vector3 desired = new Vector3(transform.position.x, targetCamY, initialZ);
+        Vector3 smoothed = Vector3.Lerp(transform.position, desired, smoothSpeed * Time.deltaTime);
         
         if (useMinY)
-            smoothedPosition.y = Mathf.Max(smoothedPosition.y, minY);
+            smoothed.y = Mathf.Max(smoothed.y, minY);
         
-        if (useMaxY)
-            smoothedPosition.y = Mathf.Min(smoothedPosition.y, maxY);
-        
-        transform.position = smoothedPosition;
+        transform.position = smoothed;
     }
-    
-    public void SetSmoothSpeed(float speed) => smoothSpeed = speed;
-    public void SetDeadZone(float height) => deadZoneHeight = height;
     
     public void SnapToTarget()
     {
-        if (target == null) return;
-        
-        Vector3 pos = transform.position;
-        pos.y = target.position.y + yOffset;
-        transform.position = pos;
+        if (target == null || cam == null) return;
+        float halfHeight = cam.orthographicSize;
+        float targetCamY = target.position.y + halfHeight - ghostScreenYRatio * (halfHeight * 2f);
+        transform.position = new Vector3(transform.position.x, targetCamY, initialZ);
     }
     
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
-        targetRb = newTarget.GetComponent<Rigidbody2D>();
+        ghostController = newTarget.GetComponent<GhostController>();
     }
+    
+    public void SetSmoothSpeed(float speed) => smoothSpeed = speed;
 }

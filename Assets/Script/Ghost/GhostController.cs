@@ -164,19 +164,32 @@ public class GhostController : MonoBehaviour
         if (isGameOver) return;
         ApplyMovement();
     }
-    
+
+    // ✅ Ghost dùng Is Trigger = true → dùng OnTriggerEnter2D
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag(obstacleTag))
+        {
+            if (!hitObstacle)
+            {
+                OnObstacleHit(other.transform);
+            }
+        }
+    }
+
+    // ✅ Giữ lại phòng khi bỏ trigger sau này
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(obstacleTag))
         {
             if (!hitObstacle)
             {
-                OnObstacleHit(collision);
+                OnObstacleHit(collision.transform);
             }
         }
     }
     
-    void OnObstacleHit(Collision2D collision)
+    void OnObstacleHit(Transform obstacleTransform)
     {
         hitObstacle = true;
         isFalling = true;
@@ -187,20 +200,17 @@ public class GhostController : MonoBehaviour
         PlayerPrefs.SetFloat("RespawnVelocityY", rb.linearVelocity.y);
         PlayerPrefs.Save();
         
-        Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+        Vector2 knockbackDirection = (transform.position - obstacleTransform.position).normalized;
+        if (knockbackDirection == Vector2.zero) knockbackDirection = Vector2.up;
         
         rb.linearVelocity = Vector2.zero;
         rb.AddForce(knockbackDirection * obstacleKnockbackForce, ForceMode2D.Impulse);
         
         if (enableColorChange && spriteRenderer != null)
-        {
             spriteRenderer.color = new Color(0.8f, 0f, 0f, 1f);
-        }
         
         if (enableRotation)
-        {
             targetRotation = Quaternion.Euler(0, 0, 180);
-        }
     }
     
     void TriggerGameOver()

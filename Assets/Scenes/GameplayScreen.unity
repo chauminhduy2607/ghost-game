@@ -790,9 +790,7 @@ MonoBehaviour:
   obstacleSpacing: 6
   typeGap: 12
   groupGap: 15
-  spawnDistance: 30
-  despawnDistance: -20
-  maxActiveGroups: 5
+  spawnTriggerDistance: 4
   initialSpeed: 1
   speedIncrement: 0.2
   maxSpeed: 5
@@ -816,23 +814,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d87c5880f6a64afaaf6ed16e795ad96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TagBasedObstacleSpawner
-  obstaclesPerTag: 4
-  tagGap: 12
-  groupGap: 15
-  spawnDistance: 30
-  despawnDistance: -20
-  maxActiveGroups: 5
-  initialSpeed: 1
-  speedIncrement: 0.2
-  maxSpeed: 5
-  groupsPerSpeedIncrease: 2
-  initialRotationSpeed: 120
-  rotationSpeedIncrement: 20
-  maxRotationSpeed: 360
-  player: {fileID: 0}
-  mainCamera: {fileID: 0}
-  showDebugInfo: 1
-  showGizmos: 1
 --- !u!114 &140615579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -845,21 +826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbac371b12bc945b6b3283e470369ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleTagSpawnerGroup
-  obstacleGroups:
-  - tagName: FireNLineObstacle
-    obstaclePrefab: {fileID: 1730702268}
-  - tagName: FlyingCircleObstacle
-    obstaclePrefab: {fileID: 88398411}
-  - tagName: FlyingCricleReverseObstacle
-    obstaclePrefab: {fileID: 233200288}
-  - tagName: 
-    obstaclePrefab: {fileID: 0}
-  - tagName: 
-    obstaclePrefab: {fileID: 0}
-  distanceBetweenDifferentTags: 5
-  startY: 1
-  startX: 0
-  startZ: 0
 --- !u!1 &228254056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,13 +1497,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 0}
+  ghostScreenYRatio: 0.1
   smoothSpeed: 3
-  deadZoneHeight: 2
-  yOffset: 5
   useMinY: 0
   minY: -10
-  useMaxY: 0
-  maxY: 100
 --- !u!1 &522977055
 GameObject:
   m_ObjectHideFlags: 0
@@ -4915,7 +4878,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173831011}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -4938,7 +4901,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
