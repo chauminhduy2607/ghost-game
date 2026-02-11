@@ -22,11 +22,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     [SerializeField] private float typeGap = 2f;
     
     [Tooltip("Khoảng cách giữa các groups")]
-    [SerializeField] private float groupGap = 2f;
+    [SerializeField] private float groupGap = 0.5f;
     
     [Header("=== SPAWN/DESPAWN ===")]
     [Tooltip("Khoảng cách sau vật cản cuối để spawn group mới")]
-    [SerializeField] private float spawnTriggerDistance = 4f;
+    [SerializeField] private float spawnTriggerDistance = 0f;
     
     [Header("=== SPEED PROGRESSION ===")]
     [SerializeField] private float initialSpeed = 1.0f;
@@ -369,16 +369,24 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             List<GameObject> objectsOfThisType = group.obstaclesByType[type.name];
             
+            // ✅ Check nếu là FireNLine
             bool isFireNLine = type.name.ToLower().Contains("fireline") || type.name.ToLower().Contains("firenline");
             
             if (type.stackable)
             {
+                // Chồng lên nhau - cùng Y
                 foreach (var obj in objectsOfThisType)
                 {
                     if (obj == null) continue;
                     
-                    if (!isFireNLine)
+                    if (isFireNLine)
                     {
+                        // ✅ FireNLine: Di chuyển cả parent lên vị trí mới (giữ nguyên offset giữa lửa và thanh)
+                        MoveFireNLineToY(obj.transform, currentY);
+                    }
+                    else
+                    {
+                        // Các obstacle khác: Force Y bình thường
                         ForceYPosition(obj.transform, currentY);
                     }
                 }
@@ -388,13 +396,20 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             }
             else
             {
+                // Không chồng - cách nhau obstacleSpacing
                 for (int i = 0; i < objectsOfThisType.Count; i++)
                 {
                     GameObject obj = objectsOfThisType[i];
                     if (obj == null) continue;
                     
-                    if (!isFireNLine)
+                    if (isFireNLine)
                     {
+                        // ✅ FireNLine: Di chuyển cả parent lên vị trí mới
+                        MoveFireNLineToY(obj.transform, currentY);
+                    }
+                    else
+                    {
+                        // Các obstacle khác: Force Y bình thường
                         ForceYPosition(obj.transform, currentY);
                     }
                     
@@ -404,6 +419,18 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             currentY += typeGap;
         }
+    }
+    
+    // ✅ HÀM MỚI: Di chuyển FireNLine lên vị trí mới NHƯNG giữ nguyên offset giữa lửa và thanh
+    void MoveFireNLineToY(Transform fireNLineParent, float targetY)
+    {
+        // Chỉ di chuyển parent object lên vị trí mới
+        // Children (lửa và thanh) sẽ tự động theo và giữ nguyên khoảng cách relative
+        Vector3 pos = fireNLineParent.position;
+        pos.y = targetY;
+        fireNLineParent.position = pos;
+        
+        // KHÔNG gọi ForceYPositionRecursive vì nó sẽ làm mất offset!
     }
     
     void ForceYPosition(Transform obj, float targetY)
