@@ -122,6 +122,24 @@ public class GhostController : MonoBehaviour
         }
     }
     
+    void OnMouseDown()
+    {
+        // Play SFX khi tap
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayGhostTap();
+        }
+        
+        // Logic khi tap ghost
+        DestroyGhost();
+    }
+    
+    void DestroyGhost()
+    {
+        // Destroy ghost
+        Destroy(gameObject);
+    }
+    
     void Start()
     {
         if (AdsManager.Instance != null)

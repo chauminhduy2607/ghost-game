@@ -148,6 +148,27 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         Debug.Log($"[ImprovedSpawner] Initialized");
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Play SFX khi đụng
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayObstacleHit();
+            }
+            
+            // Game Over logic
+            GameOver();
+        }
+    }
+    
+    void GameOver()
+    {
+        Debug.Log("Game Over!");
+        // Chuyển scene...
+    }
     
     void AutoDetectObstacleTypes()
     {
