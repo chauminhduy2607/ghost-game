@@ -118,7 +118,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         if (player == null) return;
         
         CheckSpawnNewGroup();
-        // ✅ KHÔNG XÓA GROUPS - chỉ spawn thêm
+        CheckDespawnOldGroups(); // ✅ Bật lại despawn
         CheckGroupsPassed();
     }
     
@@ -486,46 +486,40 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     
     // ========== UPDATE ==========
     
-    // ✅ Spawn khi Ghost bay qua vật cản cuối + spawnTriggerDistance (4 đơn vị)
+    // ✅ Spawn khi Ghost bay qua vật cản cuối (SÁT LUÔN, không cộng thêm)
     void CheckSpawnNewGroup()
     {
         if (player == null) return;
         
         float playerY = player.position.y;
         
-        // ✅ Kiểm tra xem Ghost đã qua vật cản cuối + 4 đơn vị chưa
-        if (playerY > lastObstacleEndY + spawnTriggerDistance)
+        // ✅ Trigger ĐÚNG tại vật cản cuối, không cộng thêm gì
+        if (playerY > lastObstacleEndY)
         {
             SpawnGroup(nextSpawnY);
             
             if (showDebugInfo)
-                Debug.Log($"[ImprovedSpawner] ✨ Ghost passed last obstacle + {spawnTriggerDistance} | Ghost Y={playerY:F1} | Last obstacle end={lastObstacleEndY:F1}");
+                Debug.Log($"[ImprovedSpawner] ✨ Ghost passed last obstacle | Ghost Y={playerY:F1} | Last obstacle end={lastObstacleEndY:F1}");
         }
     }
     
-    // ✅ KHÔNG CẦN DESPAWN - Giữ tất cả groups active
-    /*
+    // ✅ GIỮ ĐÚNG 2 GROUPS - Xóa group cũ nhất khi có 3 groups
     void CheckDespawnOldGroups()
     {
         if (player == null) return;
         
-        float playerY = player.position.y;
-        
-        // Despawn groups cũ khi Ghost đã qua xa (để tránh lag)
-        for (int i = activeGroups.Count - 1; i >= 0; i--)
+        // ✅ Nếu có nhiều hơn 2 groups → Xóa group cũ nhất
+        while (activeGroups.Count > 2)
         {
-            if (playerY > activeGroups[i].endY + despawnDistance)
-            {
-                if (showDebugInfo)
-                    Debug.Log($"[ImprovedSpawner] 🗑️ Despawned {activeGroups[i].name}");
-                
-                activeGroups[i].SetActive(false);
-                activeGroups.RemoveAt(i);
-            }
+            ObstacleGroup oldestGroup = activeGroups[0];
+            
+            if (showDebugInfo)
+                Debug.Log($"[ImprovedSpawner] 🗑️ Despawned {oldestGroup.name} | Keeping only 2 groups for performance");
+            
+            oldestGroup.SetActive(false);
+            activeGroups.RemoveAt(0);
         }
     }
-    */
-
     
     void CheckGroupsPassed()
     {
@@ -606,8 +600,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         float playerY = player.position.y;
         
-        // ✅ Vẽ spawn trigger line (vật cản cuối + 4 đơn vị)
-        float spawnTriggerY = lastObstacleEndY + spawnTriggerDistance;
+        // ✅ Vẽ spawn trigger line (SÁT vật cản cuối)
+        float spawnTriggerY = lastObstacleEndY;
         
         Gizmos.color = Color.green;
         Gizmos.DrawLine(new Vector3(-15, spawnTriggerY, 0),
@@ -615,7 +609,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         #if UNITY_EDITOR
         UnityEditor.Handles.Label(new Vector3(0, spawnTriggerY, 0), 
-            $"SPAWN TRIGGER\nLast obstacle end: {lastObstacleEndY:F1}\nTrigger: {spawnTriggerY:F1}");
+            $"SPAWN TRIGGER\nY={spawnTriggerY:F1}\nGroups: {activeGroups.Count}/2");
         #endif
         
         // ✅ Vẽ vị trí Ghost
@@ -623,9 +617,15 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         Gizmos.DrawWireSphere(player.position, 0.5f);
         
         // ✅ Vẽ groups
-        foreach (var group in activeGroups)
+        for (int i = 0; i < activeGroups.Count; i++)
         {
-            Gizmos.color = group.isPassed ? Color.yellow : Color.cyan;
+            var group = activeGroups[i];
+            
+            // Group 0 = cũ (đỏ), Group 1 = mới (xanh)
+            if (i == 0)
+                Gizmos.color = new Color(1f, 0.5f, 0.5f); // Đỏ nhạt - sắp xóa
+            else
+                Gizmos.color = Color.cyan; // Xanh - đang chơi
             
             float groupHeight = group.endY - group.startY;
             float groupCenter = group.startY + groupHeight * 0.5f;
@@ -634,8 +634,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                                new Vector3(10, groupHeight, 0.1f));
             
             #if UNITY_EDITOR
+            string label = i == 0 ? "(OLD - Will despawn)" : "(CURRENT)";
             UnityEditor.Handles.Label(new Vector3(0, group.startY, 0), 
-                $"{group.name}\nStart: {group.startY:F1}\nEnd: {group.endY:F1}");
+                $"{group.name} {label}\nStart: {group.startY:F1}\nEnd: {group.endY:F1}");
             #endif
         }
     }
