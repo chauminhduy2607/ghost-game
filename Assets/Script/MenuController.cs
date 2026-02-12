@@ -1,76 +1,60 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 /// <summary>
-/// ⭐ MENU CHÍNH - Giống Swing Copters
-/// - Nút Start: Chơi game
-/// - Nút Score: Xem bảng điểm
-/// - Background tự động
+/// Menu Controller - Kết hợp đầy đủ chức năng
 /// </summary>
 public class MenuController : MonoBehaviour
 {
     [Header("=== BUTTONS ===")]
-    [SerializeField] private GameObject startButton;
-    [SerializeField] private GameObject scoreButton;
+    [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject settingButton;
+    [SerializeField] private GameObject adsButton;
     
-    [Header("=== PANELS ===")]
-    [SerializeField] private GameObject menuPanel;
-    [SerializeField] private GameObject scorePanel;
-    [SerializeField] private TMP_Text highScoreText;
+    [Header("=== SCENE NAMES ===")]
+    [SerializeField] private string gameplaySceneName = "GameplayScreen";
+    [SerializeField] private string settingSceneName = "SettingScreen";
+    [SerializeField] private string adsSceneName = "StartGameScreen";
     
-    [Header("=== SETTINGS ===")]
-    [SerializeField] private string gameSceneName = "SampleScene";
-    
-    void Start()
+    // ==================== NÚT PLAY ====================
+    public void OnPlayButton()
     {
-        // Hiển thị menu, ẩn score panel
-        ShowMenu();
+        Debug.Log("🎮 Play Game!");
         
-        // Load high score
-        UpdateHighScore();
-    }
-    
-    // ==================== NÚT START ====================
-    public void OnStartButton()
-    {
-        Debug.Log("🎮 Start Game!");
-        SceneManager.LoadScene(gameSceneName);
-    }
-    
-    // ==================== NÚT SCORE ====================
-    public void OnScoreButton()
-    {
-        Debug.Log("🏆 Show Score!");
-        menuPanel.SetActive(false);
-        scorePanel.SetActive(true);
-        UpdateHighScore();
-    }
-    
-    // ==================== NÚT BACK ====================
-    public void OnBackButton()
-    {
-        Debug.Log("⬅️ Back to Menu!");
-        ShowMenu();
-    }
-    
-    // ==================== HIỂN THỊ MENU ====================
-    void ShowMenu()
-    {
-        if (menuPanel != null)
-            menuPanel.SetActive(true);
+        // Set PlayerPrefs như MenuPlayButton cũ
+        PlayerPrefs.SetInt("SkipCountdown", 1);
+        PlayerPrefs.SetInt("IsContinue", 0);
+        PlayerPrefs.Save();
         
-        if (scorePanel != null)
-            scorePanel.SetActive(false);
+        // Load scene
+        LoadScene(gameplaySceneName);
     }
     
-    // ==================== CẬP NHẬT HIGH SCORE ====================
-    void UpdateHighScore()
+    // ==================== NÚT SETTING ====================
+    public void OnSettingButton()
     {
-        if (highScoreText == null) return;
+        Debug.Log("⚙️ Loading Setting!");
+        LoadScene(settingSceneName);
+    }
+    
+    // ==================== NÚT ADS ====================
+    public void OnAdsButton()
+    {
+        Debug.Log("📺 Loading Ads!");
+        LoadScene(adsSceneName);
+    }
+    
+    // ==================== LOAD SCENE AN TOÀN ====================
+    void LoadScene(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogError("❌ Scene name is empty!");
+            return;
+        }
         
-        int highScore = PlayerPrefs.GetInt("HighScore", 0);
-        highScoreText.text = "High Score: " + highScore;
+        Debug.Log($"Loading scene: {sceneName}");
+        SceneManager.LoadScene(sceneName);
     }
     
     // ==================== NÚT QUIT ====================
