@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;
 
 /// <summary>
 /// 🎮 GAME OVER SCENE CONTROLLER
-/// Hiển thị điểm và best score + Leaderboard
+/// Hiển thị điểm và best score
 /// </summary>
 public class GameOverSceneController : MonoBehaviour
 {
@@ -13,27 +12,15 @@ public class GameOverSceneController : MonoBehaviour
     [SerializeField] private TMP_Text currentScoreText;
     [SerializeField] private TMP_Text bestScoreText;
     
-    [Header("=== BUTTONS ===")]
-    [SerializeField] private Button retryButton;
-    [SerializeField] private Button continueButton;
-    [SerializeField] private Button menuButton;
-    [SerializeField] private Button leaderboardButton; // ⭐ MỚI
-    
     [Header("=== SETTINGS ===")]
-    [SerializeField] private string gameSceneName = "GameplayScreen";
-    [SerializeField] private string menuSceneName = "StartGameScreen";
+    [SerializeField] private string gameSceneName = "SampleScene";
+    [SerializeField] private string menuSceneName = "MenuScene";
     
     void Start()
     {
-        // Lấy điểm từ PlayerPrefs
+        // Lấy điểm từ PlayerPrefs (được lưu từ SampleScene)
         int finalScore = PlayerPrefs.GetInt("FinalScore", 0);
         int bestScore = PlayerPrefs.GetInt("BestScore", 0);
-        
-        // ⭐ THÊM ĐIỂM VÀO LEADERBOARD
-        if (LeaderboardManager.Instance != null)
-        {
-            LeaderboardManager.Instance.AddScore(finalScore);
-        }
         
         // Hiển thị điểm
         if (currentScoreText != null)
@@ -44,12 +31,6 @@ public class GameOverSceneController : MonoBehaviour
         if (bestScoreText != null)
         {
             bestScoreText.text = bestScore.ToString();
-        }
-        
-        // ⭐ GÁN SỰ KIỆN CHO NÚT LEADERBOARD
-        if (leaderboardButton != null)
-        {
-            leaderboardButton.onClick.AddListener(OnLeaderboardButton);
         }
         
         Debug.Log("💀 Game Over Scene Loaded!");
@@ -64,9 +45,11 @@ public class GameOverSceneController : MonoBehaviour
     {
         Debug.Log("🔄 RETRY - Chơi lại từ đầu!");
         
+        // Xóa flag Continue
         PlayerPrefs.SetInt("IsContinue", 0);
         PlayerPrefs.Save();
         
+        // Load lại SampleScene
         SceneManager.LoadScene(gameSceneName);
     }
     
@@ -77,11 +60,15 @@ public class GameOverSceneController : MonoBehaviour
     {
         Debug.Log("▶️ CONTINUE - Tiếp tục chơi!");
         
+        // Lưu điểm hiện tại để khôi phục
         int currentScore = PlayerPrefs.GetInt("FinalScore", 0);
         PlayerPrefs.SetInt("ContinueScore", currentScore);
+        
+        // Đánh dấu là Continue
         PlayerPrefs.SetInt("IsContinue", 1);
         PlayerPrefs.Save();
         
+        // Load lại SampleScene
         SceneManager.LoadScene(gameSceneName);
     }
     
@@ -92,26 +79,10 @@ public class GameOverSceneController : MonoBehaviour
     {
         Debug.Log("🏠 GO TO MENU!");
         
+        // Xóa flag Continue
         PlayerPrefs.SetInt("IsContinue", 0);
         PlayerPrefs.Save();
         
         SceneManager.LoadScene(menuSceneName);
-    }
-    
-    /// <summary>
-    /// ⭐ MỚI: Nút Leaderboard - Hiện bảng xếp hạng
-    /// </summary>
-    public void OnLeaderboardButton()
-    {
-        Debug.Log("🏆 SHOW LEADERBOARD!");
-        
-        if (LeaderboardManager.Instance != null)
-        {
-            LeaderboardManager.Instance.ShowLeaderboard();
-        }
-        else
-        {
-            Debug.LogError("❌ LeaderboardManager not found!");
-        }
     }
 }
