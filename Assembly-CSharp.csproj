@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\AddButtonSound.cs" />
+    <Compile Include="Assets\Script\StartGameAudioController.cs" />
     <Compile Include="Assets\Script\GhostAI.cs" />
     <Compile Include="Assets\Script\TapToStartController.cs" />
     <Compile Include="Assets\Script\caigai.cs" />
