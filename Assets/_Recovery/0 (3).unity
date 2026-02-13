@@ -1674,12 +1674,12 @@ MonoBehaviour:
   musicSource: {fileID: 1334754812}
   sfxSource: {fileID: 1334754811}
   menuMusic: {fileID: 0}
-  gameplayMusic: {fileID: 8300000, guid: 270ba806f75efea48a55505a81844338, type: 3}
-  gameOverMusic: {fileID: 8300000, guid: db14bfb83537a6140855ad00bf4d74f1, type: 3}
+  gameplayMusic: {fileID: 8300000, guid: 4e848d8bdb9cd584b858889356b6839e, type: 3}
+  gameOverMusic: {fileID: 8300000, guid: e81481c4271f94941b9d3484a71f9b21, type: 3}
   buttonClickSFX: {fileID: 8300000, guid: cbbd6fd6a0c7168459deae016c966f8a, type: 3}
   ghostTapSFX: {fileID: 8300000, guid: 8a537b3e1fc4a4e4da2744d86ef94e16, type: 3}
-  obstacleHitSFX: {fileID: 0}
-  musicVolume: 0.114
+  obstacleHitSFX: {fileID: 8300000, guid: 8be92530ad6a685458224c8d2904f297, type: 3}
+  musicVolume: 0.106
   sfxVolume: 1
 --- !u!4 &1334754814
 Transform:

@@ -53,6 +53,7 @@
     <Compile Include="Assets\Script\TapToStartController.cs" />
     <Compile Include="Assets\Script\caigai.cs" />
     <Compile Include="Assets\Script\TryAgainButton.cs" />
+    <Compile Include="Assets\Script\AudioCollisionListener.cs" />
     <Compile Include="Assets\Script\AudioManager.cs" />
     <Compile Include="Assets\Script\Obstacle\ImprovedObstacleSpawner.cs" />
     <Compile Include="Assets\Script\RotateParent.cs" />
@@ -70,12 +71,14 @@
     <Compile Include="Assets\Script\Obstacle\ObstacleController.cs" />
     <Compile Include="Assets\Script\ScoreManager.cs" />
     <Compile Include="Assets\Script\Obstacle\FlyingCircleController.cs" />
+    <Compile Include="Assets\Script\GhostAudioOnClick.cs" />
     <Compile Include="Assets\Script\system\LineSystem.cs" />
     <Compile Include="Assets\Script\ImageSwitcher.cs" />
     <Compile Include="Assets\Script\background\ScrollingBackground.cs" />
     <Compile Include="Assets\Script\FloatingAnimation.cs" />
     <Compile Include="Assets\Script\camera\CameraFollow.cs" />
     <Compile Include="Assets\Script\ameManagerSceneTransition.cs" />
+    <Compile Include="Assets\Script\AudioTrigger.cs" />
     <Compile Include="Assets\Script\Count5s.cs" />
     <Compile Include="Assets\Script\MenuPlayButton.cs" />
     <Compile Include="Assets\Script\PositiveSaver.cs" />
