@@ -2146,7 +2146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &631954420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4780,7 +4780,6 @@ GameObject:
   - component: {fileID: 1173831012}
   - component: {fileID: 1173831016}
   - component: {fileID: 1173831019}
-  - component: {fileID: 1173831022}
   - component: {fileID: 1173831023}
   m_Layer: 0
   m_Name: ghost
@@ -4948,7 +4947,6 @@ MonoBehaviour:
   fallForceMultiplier: 30
   obstacleKnockbackForce: 1
   timeBeforeGameOver: 0.5
-  obstacleTag: Obstacle
   enableRotation: 1
   rotationSpeed: 8
   swipeForceMultiplier: 100
@@ -4964,22 +4962,6 @@ MonoBehaviour:
   enableTrail: 1
   enableColorChange: 1
   gameOverPanelName: GameOverPanel
---- !u!114 &1173831022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fde8dd64ed6d2d349a1f0f3becd73983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TryAgainButton
-  tryAgainButton: {fileID: 0}
-  gameUI: {fileID: 0}
-  scoreUI: {fileID: 0}
-  obstacleManager: {fileID: 0}
 --- !u!114 &1173831023
 MonoBehaviour:
   m_ObjectHideFlags: 0

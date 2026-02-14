@@ -21,7 +21,6 @@ public class GhostController : MonoBehaviour
     [Header("=== VẬT CẢN - GAME OVER ===")]
     [SerializeField] private float obstacleKnockbackForce = 15f;
     [SerializeField] private float timeBeforeGameOver = 3f;
-    [SerializeField] private string obstacleTag = "Obstacle";
     
     [Header("=== XOAY ĐẦU KHI RỚT ===")]
     [SerializeField] private bool enableRotation = true;
@@ -168,7 +167,8 @@ public class GhostController : MonoBehaviour
     // ✅ Ghost dùng Is Trigger = true → dùng OnTriggerEnter2D
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(obstacleTag))
+        // ✅ Kiểm tra tag có chứa "Obstacle" không
+        if (other.tag.Contains("Obstacle"))
         {
             if (!hitObstacle)
             {
@@ -180,7 +180,8 @@ public class GhostController : MonoBehaviour
     // ✅ Giữ lại phòng khi bỏ trigger sau này
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(obstacleTag))
+        // ✅ Kiểm tra tag có chứa "Obstacle" không
+        if (collision.gameObject.tag.Contains("Obstacle"))
         {
             if (!hitObstacle)
             {
