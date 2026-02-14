@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// Simple Performance Optimizer - Tắt/bật objects dựa vào khoảng cách camera
-/// </summary>
 public class SimplePerformanceOptimizer : MonoBehaviour
 {
     [Header("=== CULLING DISTANCES ===")]
@@ -25,7 +22,7 @@ public class SimplePerformanceOptimizer : MonoBehaviour
     [SerializeField] private bool cullColliders = true;
     
     [Tooltip("Có tắt Scripts không (ObstacleMovement, FlyingCircleController...)")]
-    [SerializeField] private bool cullScripts = false; // Tắt mặc định vì có thể gây lỗi
+    [SerializeField] private bool cullScripts = false;
     
     [Header("=== REFERENCES ===")]
     [SerializeField] private Camera mainCamera;
@@ -33,8 +30,6 @@ public class SimplePerformanceOptimizer : MonoBehaviour
     
     [Header("=== DEBUG ===")]
     [SerializeField] private bool enableOptimization = true;
-    
-    // ========== PRIVATE VARIABLES ==========
     
     private class OptimizableObject
     {
@@ -50,18 +45,14 @@ public class SimplePerformanceOptimizer : MonoBehaviour
             gameObject = obj;
             transform = obj.transform;
             
-            // Cache components
             renderers = obj.GetComponentsInChildren<SpriteRenderer>();
             colliders = obj.GetComponentsInChildren<Collider2D>();
             
-            // Cache scripts có thể tắt
             List<MonoBehaviour> scriptList = new List<MonoBehaviour>();
             
-            // ObstacleMovement
             ObstacleMovement[] movements = obj.GetComponentsInChildren<ObstacleMovement>();
             scriptList.AddRange(movements);
             
-            // FlyingCircleController (THAY CHO CircleRotation)
             FlyingCircleController[] controllers = obj.GetComponentsInChildren<FlyingCircleController>();
             scriptList.AddRange(controllers);
             
@@ -108,8 +99,6 @@ public class SimplePerformanceOptimizer : MonoBehaviour
     private int culledCount = 0;
     private float screenHeight;
     
-    // ========== UNITY LIFECYCLE ==========
-    
     void Start()
     {
         InitializeReferences();
@@ -127,8 +116,6 @@ public class SimplePerformanceOptimizer : MonoBehaviour
             PerformCulling();
         }
     }
-    
-    // ========== INITIALIZATION ==========
     
     void InitializeReferences()
     {
@@ -153,7 +140,6 @@ public class SimplePerformanceOptimizer : MonoBehaviour
         GameObject obstacleManager = GameObject.Find("ObstacleManager");
         if (obstacleManager == null)
         {
-            Debug.LogWarning("[SimpleOptimizer] Không tìm thấy ObstacleManager!");
             return;
         }
         
@@ -169,11 +155,7 @@ public class SimplePerformanceOptimizer : MonoBehaviour
                 allObjects.Add(obj);
             }
         }
-        
-        Debug.Log($"[SimpleOptimizer] Cached {allObjects.Count} objects");
     }
-    
-    // ========== CULLING LOGIC ==========
     
     void PerformCulling()
     {
@@ -231,7 +213,6 @@ public class SimplePerformanceOptimizer : MonoBehaviour
     public void RefreshCache()
     {
         CacheAllObjects();
-        Debug.Log("[SimpleOptimizer] Cache refreshed!");
     }
 
     public void EnableAll()
@@ -240,6 +221,5 @@ public class SimplePerformanceOptimizer : MonoBehaviour
         {
             obj.SetEnabled(true, cullRenderers, cullColliders, cullScripts);
         }
-        Debug.Log("[SimpleOptimizer] All objects enabled!");
     }
 }

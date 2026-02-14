@@ -8,7 +8,6 @@ public class MenuSettingButton : MonoBehaviour
 
     public void OnSetting()
     {
-        Debug.Log("⚙️ Opening Settings!");
         SceneManager.LoadScene(settingSceneName);
     }
 }
