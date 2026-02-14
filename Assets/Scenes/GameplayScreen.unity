@@ -3903,14 +3903,12 @@ MonoBehaviour:
   - {fileID: -6237533776912823390, guid: 604b517d1bf0e4a32a4aa2ec12e57c08, type: 3}
   - {fileID: -3615576595085785558, guid: 17645d0e9f9bb478db12020b3ff0467b, type: 3}
   - {fileID: -5947941649137844415, guid: 435f2ed953734493aba893cb3d51a15f, type: 3}
-  - {fileID: 3486239572346179421, guid: 6cc897ec15f874aa19338fb9451e2ef6, type: 3}
   - {fileID: 9088319885221454887, guid: bfa3cd021e003467c98836a727717322, type: 3}
   - {fileID: -4244838125944909753, guid: 7c3396955510b48bd9f9b8fd6009a7db, type: 3}
   - {fileID: 5865694633592810904, guid: a75ce19e212a64537b3f068a6cfb60f3, type: 3}
   - {fileID: 5725014794505860005, guid: 0ff004ec4cd3d476f87cb0ddfece5844, type: 3}
   - {fileID: 410226644299653958, guid: d5ba03d680e004c8ca7e22f701d6a9ad, type: 3}
   backgroundScales:
-  - {x: 0.1252648, y: 0.1252648, z: 0}
   - {x: 0.1252648, y: 0.1252648, z: 0}
   - {x: 0.1252648, y: 0.1252648, z: 0}
   - {x: 0.1252648, y: 0.1252648, z: 0}
@@ -4781,12 +4779,9 @@ GameObject:
   - component: {fileID: 1173831013}
   - component: {fileID: 1173831012}
   - component: {fileID: 1173831016}
-  - component: {fileID: 1173831020}
   - component: {fileID: 1173831019}
   - component: {fileID: 1173831022}
   - component: {fileID: 1173831023}
-  - component: {fileID: 1173831024}
-  - component: {fileID: 1173831025}
   m_Layer: 0
   m_Name: ghost
   m_TagString: Player
@@ -4868,7 +4863,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1683481306891379883, guid: fc43e25c0ab574789a2bfedfff4f459b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4969,21 +4964,6 @@ MonoBehaviour:
   enableTrail: 1
   enableColorChange: 1
   gameOverPanelName: GameOverPanel
---- !u!114 &1173831020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173831011}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acabb8080911a4b0fa36193228c04460, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameEnvironment
-  ghost: {fileID: 0}
-  groundY: -4
-  constrainX: 1
 --- !u!114 &1173831022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5021,30 +5001,6 @@ MonoBehaviour:
   showDebug: 1
   minHeight: 0.5
   emergencySwipeForce: 35
---- !u!114 &1173831024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c3fa76b58f6a4ad8b4bd9b3ce036e67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SimpleAdsManager
---- !u!114 &1173831025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b92a95d2971f41a4a0d4412fe1b5ed2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
 --- !u!1 &1198876091
 GameObject:
   m_ObjectHideFlags: 0
