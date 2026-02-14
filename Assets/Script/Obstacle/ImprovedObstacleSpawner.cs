@@ -2,12 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-/// <summary>
-/// IMPROVED Obstacle Spawner V4 - INFINITE LOOP + SPAWN FIX
-/// ✅ Spawn khi Ghost qua vật cản cuối + 4 đơn vị
-/// ✅ Loop vô hạn các groups
-/// ✅ Hỗ trợ chồng vật cản (stackable)
-/// </summary>
 public class ImprovedObstacleSpawner : MonoBehaviour
 {
     [Header("=== GROUP CONFIGURATION ===")]
@@ -17,10 +11,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     [Header("=== SPACING SETTINGS ===")]
     [Tooltip("Khoảng cách giữa các obstacles cùng loại (nếu KHÔNG stackable)")]
     [SerializeField] private float obstacleSpacing = 3f;
-    
     [Tooltip("Khoảng cách giữa các loại vật cản khác nhau")]
     [SerializeField] private float typeGap = 2f;
-    
     [Tooltip("Khoảng cách giữa các groups")]
     [SerializeField] private float groupGap = 0.5f;
     
@@ -47,8 +39,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     [SerializeField] private bool showDebugInfo = true;
     [SerializeField] private bool showGizmos = true;
     
-    // ========== PRIVATE VARIABLES ==========
-    
     private class ObstacleType
     {
         public string name;
@@ -62,8 +52,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         public string name;
         public Dictionary<string, List<GameObject>> obstaclesByType = new Dictionary<string, List<GameObject>>();
-        public float startY;      // ✅ Vị trí Y của vật cản ĐẦU TIÊN
-        public float endY;        // ✅ Vị trí Y của vật cản CUỐI CÙNG
+        public float startY;
+        public float endY;
         public bool isActive;
         public bool isPassed;
         
@@ -92,8 +82,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     }
     
     private List<ObstacleType> obstacleTypes = new List<ObstacleType>();
-    private List<ObstacleGroup> allGroups = new List<ObstacleGroup>(); // ✅ Lưu TẤT CẢ groups để loop
-    private int nextGroupIndex = 0; // ✅ Index của group tiếp theo cần spawn
+    private List<ObstacleGroup> allGroups = new List<ObstacleGroup>();
+    private int nextGroupIndex = 0;
     private List<ObstacleGroup> activeGroups = new List<ObstacleGroup>();
     
     private float currentSpeed;
@@ -101,9 +91,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     private int totalGroupsPassed;
     private float nextSpawnY;
     private float screenHeight;
-    private float lastObstacleEndY = 0f; // ✅ Vị trí Y cuối cùng của vật cản cuối
-    
-    // ========== UNITY LIFECYCLE ==========
+    private float lastObstacleEndY = 0f;
     
     void Start()
     {
@@ -118,11 +106,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         if (player == null) return;
         
         CheckSpawnNewGroup();
-        CheckDespawnOldGroups(); // ✅ Bật lại despawn
+        CheckDespawnOldGroups();
         CheckGroupsPassed();
     }
-    
-    // ========== INITIALIZATION ==========
     
     void InitializeReferences()
     {
@@ -145,8 +131,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         if (player != null)
             nextSpawnY = player.position.y + screenHeight * 0.5f;
-        
-        Debug.Log($"[ImprovedSpawner] Initialized");
     }
     
     void AutoDetectObstacleTypes()
@@ -176,9 +160,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 newType.objects.Add(child.gameObject);
                 obstacleTypes.Add(newType);
                 SetupObstacle(child.gameObject, newType.isCircle);
-                
-                if (showDebugInfo)
-                    Debug.Log($"[Spawner] 🆕 {typeName} (Circle: {newType.isCircle}, Stackable: {newType.stackable})");
             }
             else
             {
@@ -188,13 +169,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
         
         obstacleTypes = obstacleTypes.OrderBy(t => t.priority).ToList();
-        
-        if (showDebugInfo)
-        {
-            Debug.Log($"[ImprovedSpawner] 📊 {obstacleTypes.Count} types:");
-            foreach (var type in obstacleTypes)
-                Debug.Log($"  • {type.name}: {type.objects.Count} (P:{type.priority}, S:{type.stackable})");
-        }
     }
     
     bool IsStackable(string typeName)
@@ -245,7 +219,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             }
         }
         
-        // ✅ Disable tất cả obstacles ban đầu
         obj.SetActive(false);
     }
     
@@ -271,7 +244,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         if (obstacleTypes.Count == 0)
         {
-            Debug.LogError("[ImprovedSpawner] No obstacle types detected!");
             return;
         }
         
@@ -282,7 +254,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             maxGroups = Mathf.Max(maxGroups, groupsForType);
         }
         
-        allGroups.Clear(); // ✅ Lưu vào allGroups thay vì queue
+        allGroups.Clear();
         
         for (int groupIndex = 0; groupIndex < maxGroups; groupIndex++)
         {
@@ -310,11 +282,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             if (group.TotalCount > 0)
             {
                 group.SetActive(false);
-                allGroups.Add(group); // ✅ Thêm vào list thay vì queue
+                allGroups.Add(group);
             }
         }
-        
-        Debug.Log($"[ImprovedSpawner] 🎯 Created {allGroups.Count} groups for infinite loop");
     }
     
     void InitializeFirstGroup()
@@ -325,21 +295,16 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ========== SPAWNING ==========
-    
     void SpawnGroup(float yPosition)
     {
         if (allGroups.Count == 0)
         {
-            Debug.LogWarning("[ImprovedSpawner] No groups available!");
             return;
         }
         
-        // ✅ Lấy group theo vòng lặp (loop infinitely)
         ObstacleGroup group = allGroups[nextGroupIndex];
-        nextGroupIndex = (nextGroupIndex + 1) % allGroups.Count; // ✅ Wrap around
+        nextGroupIndex = (nextGroupIndex + 1) % allGroups.Count;
         
-        // ✅ Tính startY và endY
         group.startY = yPosition;
         float groupHeight = CalculateGroupHeight();
         group.endY = yPosition + groupHeight;
@@ -350,12 +315,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         activeGroups.Add(group);
         
-        // ✅ Cập nhật vị trí vật cản cuối
         lastObstacleEndY = group.endY;
-        nextSpawnY = group.endY + groupGap; // ✅ Update nextSpawnY
-        
-        if (showDebugInfo)
-            Debug.Log($"[ImprovedSpawner] 📍 Spawned {group.name} | Start Y={group.startY:F1} | End Y={group.endY:F1}");
+        nextSpawnY = group.endY + groupGap;
     }
     
     void PositionGroup(ObstacleGroup group, float startY)
@@ -369,34 +330,26 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             List<GameObject> objectsOfThisType = group.obstaclesByType[type.name];
             
-            // ✅ Check nếu là FireNLine
             bool isFireNLine = type.name.ToLower().Contains("fireline") || type.name.ToLower().Contains("firenline");
             
             if (type.stackable)
             {
-                // Chồng lên nhau - cùng Y
                 foreach (var obj in objectsOfThisType)
                 {
                     if (obj == null) continue;
                     
                     if (isFireNLine)
                     {
-                        // ✅ FireNLine: Di chuyển cả parent lên vị trí mới (giữ nguyên offset giữa lửa và thanh)
                         MoveFireNLineToY(obj.transform, currentY);
                     }
                     else
                     {
-                        // Các obstacle khác: Force Y bình thường
                         ForceYPosition(obj.transform, currentY);
                     }
                 }
-                
-                if (showDebugInfo)
-                    Debug.Log($"  🔗 Stacked {objectsOfThisType.Count}x {type.name} at Y={currentY:F1}");
             }
             else
             {
-                // Không chồng - cách nhau obstacleSpacing
                 for (int i = 0; i < objectsOfThisType.Count; i++)
                 {
                     GameObject obj = objectsOfThisType[i];
@@ -404,12 +357,10 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                     
                     if (isFireNLine)
                     {
-                        // ✅ FireNLine: Di chuyển cả parent lên vị trí mới
                         MoveFireNLineToY(obj.transform, currentY);
                     }
                     else
                     {
-                        // Các obstacle khác: Force Y bình thường
                         ForceYPosition(obj.transform, currentY);
                     }
                     
@@ -421,16 +372,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ✅ HÀM MỚI: Di chuyển FireNLine lên vị trí mới NHƯNG giữ nguyên offset giữa lửa và thanh
     void MoveFireNLineToY(Transform fireNLineParent, float targetY)
     {
-        // Chỉ di chuyển parent object lên vị trí mới
-        // Children (lửa và thanh) sẽ tự động theo và giữ nguyên khoảng cách relative
         Vector3 pos = fireNLineParent.position;
         pos.y = targetY;
         fireNLineParent.position = pos;
-        
-        // KHÔNG gọi ForceYPositionRecursive vì nó sẽ làm mất offset!
     }
     
     void ForceYPosition(Transform obj, float targetY)
@@ -468,7 +414,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         {
             if (type.stackable)
             {
-                // Stackable: không cộng gì
             }
             else
             {
@@ -484,37 +429,25 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         return height;
     }
     
-    // ========== UPDATE ==========
-    
-    // ✅ Spawn khi Ghost bay qua vật cản cuối (SÁT LUÔN, không cộng thêm)
     void CheckSpawnNewGroup()
     {
         if (player == null) return;
         
         float playerY = player.position.y;
         
-        // ✅ Trigger ĐÚNG tại vật cản cuối, không cộng thêm gì
         if (playerY > lastObstacleEndY)
         {
             SpawnGroup(nextSpawnY);
-            
-            if (showDebugInfo)
-                Debug.Log($"[ImprovedSpawner] ✨ Ghost passed last obstacle | Ghost Y={playerY:F1} | Last obstacle end={lastObstacleEndY:F1}");
         }
     }
     
-    // ✅ GIỮ ĐÚNG 2 GROUPS - Xóa group cũ nhất khi có 3 groups
     void CheckDespawnOldGroups()
     {
         if (player == null) return;
         
-        // ✅ Nếu có nhiều hơn 2 groups → Xóa group cũ nhất
         while (activeGroups.Count > 2)
         {
             ObstacleGroup oldestGroup = activeGroups[0];
-            
-            if (showDebugInfo)
-                Debug.Log($"[ImprovedSpawner] 🗑️ Despawned {oldestGroup.name} | Keeping only 2 groups for performance");
             
             oldestGroup.SetActive(false);
             activeGroups.RemoveAt(0);
@@ -529,7 +462,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         foreach (var group in activeGroups)
         {
-            // Đánh dấu passed khi qua NỬA chiều cao group
             float groupMidY = group.startY + (group.endY - group.startY) * 0.5f;
             
             if (!group.isPassed && playerY > groupMidY)
@@ -543,16 +475,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ========== SPEED ==========
-    
     void IncreaseSpeed()
     {
         currentSpeed = Mathf.Min(currentSpeed + speedIncrement, maxSpeed);
         currentRotationSpeed = Mathf.Min(currentRotationSpeed + rotationSpeedIncrement, maxRotationSpeed);
         ApplySpeedToAllActive();
-        
-        if (showDebugInfo)
-            Debug.Log($"[ImprovedSpawner] ⚡ Speed increased | Speed: {currentSpeed:F1} | Rotation: {currentRotationSpeed:F0}");
     }
     
     void ApplySpeedToAllActive()
@@ -592,15 +519,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ========== GIZMOS ==========
-    
     void OnDrawGizmos()
     {
         if (!showGizmos || !Application.isPlaying || player == null) return;
         
         float playerY = player.position.y;
         
-        // ✅ Vẽ spawn trigger line (SÁT vật cản cuối)
         float spawnTriggerY = lastObstacleEndY;
         
         Gizmos.color = Color.green;
@@ -612,20 +536,17 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             $"SPAWN TRIGGER\nY={spawnTriggerY:F1}\nGroups: {activeGroups.Count}/2");
         #endif
         
-        // ✅ Vẽ vị trí Ghost
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(player.position, 0.5f);
         
-        // ✅ Vẽ groups
         for (int i = 0; i < activeGroups.Count; i++)
         {
             var group = activeGroups[i];
             
-            // Group 0 = cũ (đỏ), Group 1 = mới (xanh)
             if (i == 0)
-                Gizmos.color = new Color(1f, 0.5f, 0.5f); // Đỏ nhạt - sắp xóa
+                Gizmos.color = new Color(1f, 0.5f, 0.5f);
             else
-                Gizmos.color = Color.cyan; // Xanh - đang chơi
+                Gizmos.color = Color.cyan;
             
             float groupHeight = group.endY - group.startY;
             float groupCenter = group.startY + groupHeight * 0.5f;
@@ -641,8 +562,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ========== PUBLIC ==========
-    
     public void ResetGame()
     {
         foreach (var group in activeGroups)
@@ -651,7 +570,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
         
         activeGroups.Clear();
-        nextGroupIndex = 0; // ✅ Reset index
+        nextGroupIndex = 0;
         totalGroupsPassed = 0;
         currentSpeed = initialSpeed;
         currentRotationSpeed = initialRotationSpeed;
@@ -663,7 +582,5 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
         
         InitializeFirstGroup();
-        
-        Debug.Log("[ImprovedSpawner] 🔄 Game Reset");
     }
 }

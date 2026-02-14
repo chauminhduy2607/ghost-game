@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// Background loop vô hạn với parallax
-/// </summary>
 public class InfiniteBackground : MonoBehaviour
 {
     [Header("=== CAMERA ===")]

@@ -1,8 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Background scroll với texture offset
-/// </summary>
 public class ScrollingBackground : MonoBehaviour
 {
     [Header("=== CÀI ĐẶT CUỘN ===")]

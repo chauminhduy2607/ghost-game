@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Camera follow - Ghost luôn cố định ở phía dưới màn hình (~1/4)
-/// Freeze hoàn toàn khi chạm obstacle hoặc chết
-/// </summary>
 public class CameraFollow : MonoBehaviour
 {
     [Header("=== TARGET ===")]
@@ -56,13 +52,9 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null) return;
         
-        // Freeze ngay khi chạm obstacle, không chờ game over
         if (ghostController != null && (ghostController.HitObstacle || ghostController.IsGameOver))
             return;
         
-        // Tính camY sao cho ghost luôn ở ghostScreenYRatio
-        // ghostWorldY = camY - halfHeight + ratio * fullHeight
-        // => camY = ghostWorldY + halfHeight - ratio * fullHeight
         float halfHeight = cam.orthographicSize;
         float targetCamY = target.position.y + halfHeight - ghostScreenYRatio * (halfHeight * 2f);
         

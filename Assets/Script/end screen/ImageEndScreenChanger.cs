@@ -2,9 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Đổi hình ảnh end screen theo trình tự
-/// </summary>
 public class ImageEndScreenChanger : MonoBehaviour
 {
     [Header("=== IMAGES ===")]

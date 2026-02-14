@@ -14,14 +14,12 @@ public class StartGameBanner : MonoBehaviour
             return;
         }
 
-        // Nếu đã init rồi → show luôn
         if (Advertisement.isInitialized)
         {
             AdsManager.Instance.ShowBanner(bannerPosition);
         }
         else
         {
-            // Chờ init xong mới show
             AdsManager.Instance.OnInitialized += OnAdsReady;
         }
     }

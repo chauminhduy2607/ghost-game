@@ -2,10 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Controller cho Ghost - DELAY GAME OVER CHO ĐẾN KHI ADS ĐÓNG
-/// Flow mới: Ghost chết → Show ads → Ads đóng → MỚI set IsGameOver = true
-/// </summary>
 public class GhostController : MonoBehaviour
 {
     [Header("=== VẬT LÝ GHOST ===")]
@@ -79,7 +75,6 @@ public class GhostController : MonoBehaviour
     
     private Quaternion targetRotation;
     
-    // ✅ PUBLIC PROPERTIES
     public bool IsGameOver => isGameOver;
     public bool HitObstacle => hitObstacle;
     public bool IsWaitingForAds => isWaitingForAds;
@@ -130,26 +125,17 @@ public class GhostController : MonoBehaviour
     
     void Start()
     {
-        // Preload ads
         if (AdsManager.Instance != null)
         {
             AdsManager.Instance.LoadInterstitial();
             
-            // ✅ ĐĂNG KÝ CALLBACKS
             AdsManager.Instance.OnAdShowComplete += OnAdsComplete;
             AdsManager.Instance.OnAdShowFailed += OnAdsFailed;
-            
-            Debug.Log("👻 Ghost: Đã đăng ký ads callbacks");
-        }
-        else
-        {
-            Debug.LogWarning("👻 Ghost: AdsManager.Instance NULL!");
         }
     }
     
     void Update()
     {
-        // ✅ CHỈ update visuals khi chưa game over
         if (!isGameOver)
         {
             HandleSwipeInput();
@@ -199,163 +185,101 @@ public class GhostController : MonoBehaviour
     {
         if (hitObstacle) return;
         
-        Debug.Log("👻 GHOST HIT OBSTACLE!");
-        
         hitObstacle = true;
         isFalling = true;
         
-        // Lưu vị trí respawn
         PlayerPrefs.SetFloat("RespawnX", transform.position.x);
         PlayerPrefs.SetFloat("RespawnY", transform.position.y);
         PlayerPrefs.SetFloat("RespawnVelocityY", rb.linearVelocity.y);
         PlayerPrefs.Save();
         
-        // Knockback
         Vector2 knockbackDirection = (transform.position - obstacleTransform.position).normalized;
         if (knockbackDirection == Vector2.zero) knockbackDirection = Vector2.up;
         
         rb.linearVelocity = Vector2.zero;
         rb.AddForce(knockbackDirection * obstacleKnockbackForce, ForceMode2D.Impulse);
         
-        // Visual effects
         if (enableColorChange && spriteRenderer != null)
             spriteRenderer.color = new Color(0.8f, 0f, 0f, 1f);
         
         if (enableRotation)
             targetRotation = Quaternion.Euler(0, 0, 180);
         
-        // ✅ BẮT ĐẦU SEQUENCE: Delay → Ads → GameOver
         StartCoroutine(DeathSequence());
     }
     
-    /// <summary>
-    /// ✅ FLOW MỚI: Đợi → Show ads → Đợi ads đóng → GameOver
-    /// </summary>
     IEnumerator DeathSequence()
     {
-        Debug.Log($"👻 [1/4] Đợi {delayBeforeAds}s trước khi show ads...");
-        
-        // Đợi trước khi show ads (để player thấy hiệu ứng chết)
         yield return new WaitForSeconds(delayBeforeAds);
         
-        Debug.Log("👻 [2/4] Show ads...");
         isWaitingForAds = true;
         
-        // Show ads
         bool hasAds = ShowAds();
         
         if (!hasAds)
         {
-            Debug.Log("👻 [3/4] Không có ads → trigger GameOver ngay");
             TriggerGameOver();
             yield break;
         }
         
-        Debug.Log("👻 [3/4] Đang đợi ads đóng...");
-        
-        // Đợi ads đóng hoặc timeout
         float timeWaited = 0f;
         while (!adsClosed && timeWaited < adsTimeout)
         {
             yield return new WaitForSeconds(0.5f);
             timeWaited += 0.5f;
-            
-            if (Mathf.Approximately(timeWaited % 2f, 0f))
-            {
-                Debug.Log($"👻 ⏳ Vẫn đang đợi ads... ({timeWaited:F1}s / {adsTimeout}s)");
-            }
-        }
-        
-        if (adsClosed)
-        {
-            Debug.Log("👻 [4/4] ✅ Ads đã đóng! Trigger GameOver ngay bây giờ");
-        }
-        else
-        {
-            Debug.LogWarning($"👻 [4/4] ⏰ Timeout {adsTimeout}s - trigger GameOver anyway");
         }
         
         isWaitingForAds = false;
         TriggerGameOver();
     }
     
-    /// <summary>
-    /// Show ads và return true nếu có ads
-    /// </summary>
     bool ShowAds()
     {
         if (AdsManager.Instance == null)
         {
-            Debug.LogWarning("👻 AdsManager NULL");
             return false;
         }
         
         if (!AdsManager.Instance.CanShowInterstitial())
         {
-            Debug.Log("👻 Ads không available");
             return false;
         }
         
-        Debug.Log("👻 Ads available - SHOW NOW!");
         bool shown = AdsManager.Instance.ShowInterstitial();
         
         if (shown)
         {
-            Debug.Log("👻 ✅ Ads đang hiển thị");
             return true;
         }
         else
         {
-            Debug.LogWarning("👻 ❌ ShowInterstitial() failed");
             return false;
         }
     }
     
-    /// <summary>
-    /// Callback khi ads complete
-    /// </summary>
     void OnAdsComplete(string unitId)
     {
-        Debug.Log($"👻 📢 ADS COMPLETE callback! Unit: {unitId}");
-        
         if (adsClosed)
         {
-            Debug.LogWarning("👻 ⚠️ Callback đã gọi rồi");
             return;
         }
         
         adsClosed = true;
-        
-        // ✅ KHÔNG CẦN reload - AdsManager tự reload rồi!
     }
     
-    /// <summary>
-    /// Callback khi ads failed
-    /// </summary>
     void OnAdsFailed(string unitId, string message)
     {
-        Debug.Log($"👻 📢 ADS FAILED callback! Unit: {unitId}, Message: {message}");
-        
         if (adsClosed)
         {
-            Debug.LogWarning("👻 ⚠️ Callback đã gọi rồi");
             return;
         }
         
         adsClosed = true;
-        
-        // ✅ KHÔNG CẦN reload - AdsManager tự reload rồi!
     }
     
-    /// <summary>
-    /// ✅ CHỈ SET FLAG isGameOver = true
-    /// GameManagerSceneTransition sẽ detect và chuyển scene
-    /// </summary>
     void TriggerGameOver()
     {
         if (isGameOver) return;
-        
-        Debug.Log("👻 💀 TRIGGER GAME OVER - isGameOver = true");
         
         isGameOver = true;
         rb.linearVelocity = Vector2.zero;
@@ -365,8 +289,6 @@ public class GhostController : MonoBehaviour
         {
             spriteRenderer.color = Color.black;
         }
-        
-        // GameManagerSceneTransition sẽ detect IsGameOver = true và chuyển scene
     }
     
     void HandleSwipeInput()
@@ -637,7 +559,6 @@ public class GhostController : MonoBehaviour
     
     void OnDestroy()
     {
-        // Unregister callbacks
         if (AdsManager.Instance != null)
         {
             AdsManager.Instance.OnAdShowComplete -= OnAdsComplete;

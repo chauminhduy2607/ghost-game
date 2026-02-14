@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// Object quay quanh điểm tâm với hiệu ứng co giãn (Animated Version)
-/// </summary>
 public class CircleRotationAnimated : MonoBehaviour
 {
     [Header("=== ROTATION SETTINGS ===")]
@@ -22,11 +19,11 @@ public class CircleRotationAnimated : MonoBehaviour
     
     [Header("=== SHRINK/EXPAND ANIMATION ===")]
     [SerializeField] private bool enableShrinkExpand = true;
-    [SerializeField] private float shrinkRadius = 0.5f; // Bán kính khi co lại
-    [SerializeField] private float shrinkDuration = 1f; // Thời gian rút vào: 1s
-    [SerializeField] private float shrinkHoldTime = 2f; // Giữ ở trong: 2s
-    [SerializeField] private float expandDuration = 1f; // Thời gian đẩy ra: 1s
-    [SerializeField] private float expandHoldTime = 2f; // Giữ ở ngoài: 2s
+    [SerializeField] private float shrinkRadius = 0.5f;
+    [SerializeField] private float shrinkDuration = 1f;
+    [SerializeField] private float shrinkHoldTime = 2f;
+    [SerializeField] private float expandDuration = 1f;
+    [SerializeField] private float expandHoldTime = 2f;
     [SerializeField] private AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     
     [Header("=== DEBUG ===")]
@@ -34,7 +31,6 @@ public class CircleRotationAnimated : MonoBehaviour
     [SerializeField] private Color outerCircleColor = Color.yellow;
     [SerializeField] private Color innerCircleColor = Color.cyan;
     
-    // Private variables
     private float currentAngle;
     private Vector3 centerPosition;
     private Vector3 lastPosition;
@@ -54,7 +50,6 @@ public class CircleRotationAnimated : MonoBehaviour
         UpdatePosition();
         lastPosition = transform.position;
         
-        // Bắt đầu animation co giãn
         if (enableShrinkExpand)
         {
             shrinkExpandCoroutine = StartCoroutine(ShrinkExpandLoop());
@@ -120,7 +115,6 @@ public class CircleRotationAnimated : MonoBehaviour
     {
         currentAngle += rotationSpeed * Time.deltaTime;
         
-        // Normalize angle to 0-360
         if (currentAngle >= 360f)
             currentAngle -= 360f;
         else if (currentAngle < 0f)
@@ -182,24 +176,16 @@ public class CircleRotationAnimated : MonoBehaviour
         }
     }
     
-    // ========================================
-    // SHRINK/EXPAND ANIMATION SYSTEM
-    // ========================================
-    
     IEnumerator ShrinkExpandLoop()
     {
         while (true)
         {
-            // 1. RÚT VÀO: từ radius → shrinkRadius (1s)
             yield return StartCoroutine(AnimateRadius(radius, shrinkRadius, shrinkDuration));
             
-            // 2. GIỮ Ở TRONG: 2s
             yield return new WaitForSeconds(shrinkHoldTime);
             
-            // 3. ĐẨY RA: từ shrinkRadius → radius (1s)
             yield return StartCoroutine(AnimateRadius(shrinkRadius, radius, expandDuration));
             
-            // 4. GIỮ Ở NGOÀI: 2s
             yield return new WaitForSeconds(expandHoldTime);
         }
     }
@@ -213,7 +199,6 @@ public class CircleRotationAnimated : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
             
-            // Sử dụng animation curve để có chuyển động mượt mà
             float curveValue = animationCurve.Evaluate(t);
             currentRadius = Mathf.Lerp(fromRadius, toRadius, curveValue);
             
@@ -222,10 +207,6 @@ public class CircleRotationAnimated : MonoBehaviour
         
         currentRadius = toRadius;
     }
-    
-    // ========================================
-    // PUBLIC API METHODS
-    // ========================================
     
     public void SetRotationSpeed(float speed)
     {
@@ -320,10 +301,6 @@ public class CircleRotationAnimated : MonoBehaviour
         return currentAngle;
     }
     
-    // ========================================
-    // DEBUG VISUALIZATION
-    // ========================================
-    
     void OnDrawGizmos()
     {
         if (!showDebugLine) return;
@@ -331,26 +308,21 @@ public class CircleRotationAnimated : MonoBehaviour
         Vector3 center = Application.isPlaying ? centerPosition : 
                         (transform.parent != null ? transform.parent.position : transform.position);
         
-        // Vẽ vòng tròn ngoài (radius gốc)
         Gizmos.color = outerCircleColor;
         DrawCircle(center, radius, 64);
         
-        // Vẽ vòng tròn trong (shrink radius) nếu bật animation
         if (enableShrinkExpand)
         {
             Gizmos.color = innerCircleColor;
             DrawCircle(center, shrinkRadius, 64);
         }
         
-        // Vẽ đường nối từ tâm đến paddle
         Gizmos.color = Color.green;
         Gizmos.DrawLine(center, transform.position);
         
-        // Vẽ điểm tâm
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(center, 0.15f);
         
-        // Vẽ vị trí hiện tại của paddle
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, 0.1f);
     }
@@ -380,13 +352,8 @@ public class CircleRotationAnimated : MonoBehaviour
         }
     }
     
-    // ========================================
-    // EDITOR HELPERS
-    // ========================================
-    
     void OnValidate()
     {
-        // Đảm bảo các giá trị hợp lệ khi thay đổi trong Inspector
         radius = Mathf.Max(0.1f, radius);
         shrinkRadius = Mathf.Max(0.1f, shrinkRadius);
         shrinkDuration = Mathf.Max(0.1f, shrinkDuration);

@@ -1,8 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Quản lý Flying Circle - PHIÊN BẢN ĐƠN GIẢN
-/// </summary>
 public class FlyingCircleController : MonoBehaviour
 {
     [Header("=== ROTATION ===")]
@@ -17,7 +14,6 @@ public class FlyingCircleController : MonoBehaviour
     [Header("=== DEBUG ===")]
     [SerializeField] private bool showDebugGizmos = true;
     
-    // Data cho mỗi paddle
     private class PaddleData
     {
         public Transform transform;
@@ -37,14 +33,12 @@ public class FlyingCircleController : MonoBehaviour
     {
         if (paddles == null) return;
         
-        // Xoay tất cả paddles
         float deltaAngle = currentRotationSpeed * Time.deltaTime;
         
         foreach (var paddle in paddles)
         {
             if (paddle.transform == null) continue;
             
-            // Cập nhật góc
             paddle.currentAngle += deltaAngle;
             
             if (paddle.currentAngle >= 360f)
@@ -52,7 +46,6 @@ public class FlyingCircleController : MonoBehaviour
             else if (paddle.currentAngle < 0f)
                 paddle.currentAngle += 360f;
             
-            // Tính vị trí mới
             float angleInRadians = paddle.currentAngle * Mathf.Deg2Rad;
             float x = transform.position.x + Mathf.Cos(angleInRadians) * radius;
             float y = transform.position.y + Mathf.Sin(angleInRadians) * radius;
@@ -65,7 +58,6 @@ public class FlyingCircleController : MonoBehaviour
     {
         if (!rotateTowardsCenter || paddles == null) return;
         
-        // Xoay sprite về tâm (như kim đồng hồ)
         foreach (var paddle in paddles)
         {
             if (paddle.transform == null) continue;
@@ -83,13 +75,11 @@ public class FlyingCircleController : MonoBehaviour
         int childCount = transform.childCount;
         if (childCount == 0)
         {
-            Debug.LogWarning("[FlyingCircle] Không có child object nào!");
             return;
         }
         
         paddles = new PaddleData[childCount];
         
-        // Tự động chia đều 360°
         float angleStep = 360f / childCount;
         
         for (int i = 0; i < childCount; i++)
@@ -99,18 +89,15 @@ public class FlyingCircleController : MonoBehaviour
             paddles[i] = new PaddleData
             {
                 transform = child,
-                currentAngle = i * angleStep // 0°, 60°, 120°, 180°, 240°, 300° (nếu 6 paddles)
+                currentAngle = i * angleStep
             };
             
-            // Set vị trí ban đầu
             float angleInRadians = paddles[i].currentAngle * Mathf.Deg2Rad;
             float x = transform.position.x + Mathf.Cos(angleInRadians) * radius;
             float y = transform.position.y + Mathf.Sin(angleInRadians) * radius;
             
             child.position = new Vector3(x, y, child.position.z);
         }
-        
-        Debug.Log($"[FlyingCircle] Setup {paddles.Length} paddles - Góc mỗi cái: {angleStep}° - Chiều: {(clockwise ? "Xuôi ⟳" : "Ngược ⟲")}");
     }
     
     void OnValidate()
@@ -127,7 +114,6 @@ public class FlyingCircleController : MonoBehaviour
         
         Gizmos.color = Color.yellow;
         
-        // Vẽ vòng tròn
         int segments = 50;
         float angleStep = 360f / segments;
         
@@ -151,11 +137,9 @@ public class FlyingCircleController : MonoBehaviour
             Gizmos.DrawLine(point1, point2);
         }
         
-        // Vẽ tâm
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.1f);
         
-        // Vẽ đường nối tới các paddle
         if (Application.isPlaying && paddles != null)
         {
             Gizmos.color = Color.cyan;
@@ -168,8 +152,6 @@ public class FlyingCircleController : MonoBehaviour
             }
         }
     }
-    
-    // ===== PUBLIC METHODS =====
     
     public void SetRotationSpeed(float speed)
     {
