@@ -51,4 +51,25 @@ public class ScoreManager : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(AddScoreRoutine());
     }
+
+    /// <summary>
+    /// ✅ MỚI: Set điểm trực tiếp (dùng cho Continue mode)
+    /// </summary>
+    public void SetScore(int newScore)
+    {
+        score = newScore;
+        UpdateScoreUI();
+        Debug.Log($"📊 Score set to: {score}");
+    }
+
+    /// <summary>
+    /// ✅ MỚI: Resume tính điểm từ điểm hiện tại (dùng cho Continue)
+    /// </summary>
+    public void ResumeScore()
+    {
+        isRunning = true;
+        StopAllCoroutines();
+        StartCoroutine(AddScoreRoutine());
+        Debug.Log($"▶️ Score resumed from: {score}");
+    }
 }

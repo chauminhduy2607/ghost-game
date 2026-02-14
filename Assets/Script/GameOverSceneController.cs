@@ -123,21 +123,25 @@ public class GameOverSceneController : MonoBehaviour
     /// </summary>
     void OnRewardedAdSuccess()
     {
-        Debug.Log("✅ REWARDED AD COMPLETE - User earned second chance!");
+        Debug.Log("✅ REWARDED AD SUCCESS - User earned second chance!");
         
         isWatchingAd = false;
         
-        // Lưu điểm hiện tại để khôi phục
+        // ✅ Lưu TOÀN BỘ thông tin để continue
         int currentScore = PlayerPrefs.GetInt("FinalScore", 0);
         PlayerPrefs.SetInt("ContinueScore", currentScore);
         
-        // Đánh dấu là Continue mode
+        // ✅ Đánh dấu Continue mode
         PlayerPrefs.SetInt("IsContinue", 1);
+        
+        // ✅ Respawn data đã được lưu trong GhostController.OnObstacleHit()
+        // Chỉ cần set flag IsContinue = 1 là đủ
+        
         PlayerPrefs.Save();
         
-        Debug.Log($"💾 Continue data saved: Score={currentScore}");
+        Debug.Log($"💾 Continue enabled | Score={currentScore} | Respawn data ready");
         
-        // Load lại game để tiếp tục chơi
+        // Load lại game
         SceneManager.LoadScene(gameSceneName);
     }
     
