@@ -4946,7 +4946,8 @@ MonoBehaviour:
   maxAutoRiseSpeed: 0.6
   fallForceMultiplier: 30
   obstacleKnockbackForce: 1
-  timeBeforeGameOver: 0.5
+  delayBeforeAds: 1
+  adsTimeout: 30
   enableRotation: 1
   rotationSpeed: 8
   swipeForceMultiplier: 100
@@ -4961,9 +4962,6 @@ MonoBehaviour:
   groundSquashDuration: 0.35
   enableTrail: 1
   enableColorChange: 1
-  gameOverPanelName: GameOverPanel
-  useSceneTransition: 0
-  gameOverSceneName: GameOverScene
 --- !u!114 &1173831023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7629,8 +7627,7 @@ MonoBehaviour:
   ghostController: {fileID: 1173831019}
   scoreCycle: {fileID: 1143897738}
   gameOverSceneName: GameOverScene
-  delayAfterAdsClosed: 1
-  adsTimeout: 1
+  delayBeforeTransition: 0.5
 --- !u!4 &1950429202
 Transform:
   m_ObjectHideFlags: 0

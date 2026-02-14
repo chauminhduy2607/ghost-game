@@ -1868,7 +1868,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1472064608}
         m_TargetAssemblyTypeName: GameOverSceneController, Assembly-CSharp
-        m_MethodName: OnRetryButton
+        m_MethodName: OnTryAgainButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2024,6 +2024,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverSceneController
   currentScoreText: {fileID: 43024688}
   bestScoreText: {fileID: 206379828}
+  continueButton: {fileID: 1690892081}
+  tryAgainButton: {fileID: 1091788237}
   gameSceneName: GameplayScreen
   menuSceneName: StartGameScreen
 --- !u!4 &1472064609
