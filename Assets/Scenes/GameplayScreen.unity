@@ -4962,6 +4962,8 @@ MonoBehaviour:
   enableTrail: 1
   enableColorChange: 1
   gameOverPanelName: GameOverPanel
+  useSceneTransition: 0
+  gameOverSceneName: GameOverScene
 --- !u!114 &1173831023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7627,7 +7629,8 @@ MonoBehaviour:
   ghostController: {fileID: 1173831019}
   scoreCycle: {fileID: 1143897738}
   gameOverSceneName: GameOverScene
-  delayBeforeTransition: 0.5
+  delayAfterAdsClosed: 1
+  adsTimeout: 1
 --- !u!4 &1950429202
 Transform:
   m_ObjectHideFlags: 0
