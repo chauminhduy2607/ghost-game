@@ -195,6 +195,8 @@ public class GhostController : MonoBehaviour
         }
     }
 
+    
+
     // ✅ Giữ lại phòng khi bỏ trigger sau này
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -212,6 +214,10 @@ public class GhostController : MonoBehaviour
         hitObstacle = true;
         isFalling = true;
         obstacleTimer = 0f;
+        if (AudioManager.Instance != null)
+{
+    AudioManager.Instance.PlayObstacleHit();
+}
         
         PlayerPrefs.SetFloat("RespawnX", transform.position.x);
         PlayerPrefs.SetFloat("RespawnY", transform.position.y);

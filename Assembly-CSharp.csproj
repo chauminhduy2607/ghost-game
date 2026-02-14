@@ -54,6 +54,7 @@
     <Compile Include="Assets\Script\caigai.cs" />
     <Compile Include="Assets\Script\TryAgainButton.cs" />
     <Compile Include="Assets\Script\AudioCollisionListener.cs" />
+    <Compile Include="Assets\Script\GhostAudio.cs" />
     <Compile Include="Assets\Script\AudioManager.cs" />
     <Compile Include="Assets\Script\Obstacle\ImprovedObstacleSpawner.cs" />
     <Compile Include="Assets\Script\RotateParent.cs" />

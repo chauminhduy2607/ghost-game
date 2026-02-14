@@ -4788,6 +4788,7 @@ GameObject:
   - component: {fileID: 1173831024}
   - component: {fileID: 1173831025}
   - component: {fileID: 1173831028}
+  - component: {fileID: 1173831029}
   m_Layer: 0
   m_Name: ghost
   m_TagString: Player
@@ -4957,7 +4958,7 @@ MonoBehaviour:
   maxAutoRiseSpeed: 0.6
   fallForceMultiplier: 30
   obstacleKnockbackForce: 1
-  timeBeforeGameOver: 0.2
+  timeBeforeGameOver: 0.1
   obstacleTag: Obstacle
   enableRotation: 1
   rotationSpeed: 8
@@ -5073,6 +5074,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1173831029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173831011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a919e59787636cf469266e5463a88c51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostAudio
 --- !u!1 &1198876091
 GameObject:
   m_ObjectHideFlags: 0
