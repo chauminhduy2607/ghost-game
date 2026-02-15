@@ -744,8 +744,6 @@ GameObject:
   m_Component:
   - component: {fileID: 140615573}
   - component: {fileID: 140615577}
-  - component: {fileID: 140615578}
-  - component: {fileID: 140615579}
   m_Layer: 0
   m_Name: ObstacleManager
   m_TagString: Obstacle
@@ -802,30 +800,6 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   showDebugInfo: 1
   showGizmos: 1
---- !u!114 &140615578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140615572}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d87c5880f6a64afaaf6ed16e795ad96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TagBasedObstacleSpawner
---- !u!114 &140615579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140615572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbac371b12bc945b6b3283e470369ca4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObstacleTagSpawnerGroup
 --- !u!1 &228254056
 GameObject:
   m_ObjectHideFlags: 0

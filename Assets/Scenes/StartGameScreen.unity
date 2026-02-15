@@ -425,6 +425,7 @@ GameObject:
   - component: {fileID: 335267521}
   - component: {fileID: 335267524}
   - component: {fileID: 335267523}
+  - component: {fileID: 335267525}
   m_Layer: 5
   m_Name: Dare click button
   m_TagString: Untagged
@@ -619,6 +620,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f0d2a4ca46c7438eafd5f9eddbdaf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuAdsButton
+--- !u!114 &335267525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335267519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2deb59d3c41b74502991daf6f806af0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  clickSound: {fileID: 8300000, guid: fd157b8479f0b4c59907f886eb3ce240, type: 3}
 --- !u!1 &706682063
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,6 +723,7 @@ GameObject:
   - component: {fileID: 772823649}
   - component: {fileID: 772823652}
   - component: {fileID: 772823651}
+  - component: {fileID: 772823653}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -764,8 +779,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294311680
-  m_fontColor: {r: 0, g: 1, b: 0.9616327, a: 1}
+    rgba: 4294638335
+  m_fontColor: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -904,6 +919,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &772823653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772823647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2deb59d3c41b74502991daf6f806af0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  clickSound: {fileID: 8300000, guid: fd157b8479f0b4c59907f886eb3ce240, type: 3}
 --- !u!1 &782024732
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,6 +1157,7 @@ GameObject:
   - component: {fileID: 1294140810}
   - component: {fileID: 1294140813}
   - component: {fileID: 1294140812}
+  - component: {fileID: 1294140814}
   m_Layer: 5
   m_Name: Setting button
   m_TagString: Untagged
@@ -1324,6 +1353,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1294140814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294140808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2deb59d3c41b74502991daf6f806af0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  clickSound: {fileID: 8300000, guid: fd157b8479f0b4c59907f886eb3ce240, type: 3}
 --- !u!1 &1325828461
 GameObject:
   m_ObjectHideFlags: 0
