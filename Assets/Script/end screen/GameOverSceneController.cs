@@ -22,14 +22,14 @@ public class GameOverSceneController : MonoBehaviour
     [SerializeField] private string menuSceneName = "MenuScene";
     
     [Header("=== SCOREBOARD TRANSITION ===")]
+    [Tooltip("Màn hình đếm ngược 3s")]
+    [SerializeField] private GameObject countdownPanel;
+    
     [Tooltip("Panel hiển thị CurrentScore")]
     [SerializeField] private GameObject currentScorePanel;
     
-    [Tooltip("Panel hiển thị bảng điểm")]
-    [SerializeField] private GameObject scoreboardPanel;
-    
-    [Tooltip("Thời gian chờ trước khi chuyển sang bảng điểm (giây)")]
-    [SerializeField] private float transitionDelay = 2f;
+    [Tooltip("Thời gian chờ sau khi hiện điểm trước khi hiện popup (giây)")]
+    [SerializeField] private float popupDelay = 2f;
     
     private bool isWatchingAd = false;
     
@@ -46,48 +46,41 @@ public class GameOverSceneController : MonoBehaviour
         
         UpdateContinueButton();
         
-        // Bắt đầu chuyển đổi sang bảng điểm
-        StartScoreboardTransition();
+        // Bắt đầu flow: countdown → score → popup → scoreboard
+        StartCoroutine(GameOverFlow());
     }
     
-    void StartScoreboardTransition()
+    IEnumerator GameOverFlow()
     {
-        // Đảm bảo ban đầu CurrentScore hiển thị, Scoreboard ẩn
-        if (currentScorePanel != null)
-            currentScorePanel.SetActive(true);
-            
-        if (scoreboardPanel != null)
-            scoreboardPanel.SetActive(false);
-        
-        // Bắt đầu đếm ngược
-        StartCoroutine(TransitionToScoreboard());
-    }
-    
-    IEnumerator TransitionToScoreboard()
-    {
-        // Chờ X giây
-        yield return new WaitForSeconds(transitionDelay);
-        
-        // Tắt CurrentScore
+        // Ẩn score panel trước
         if (currentScorePanel != null)
             currentScorePanel.SetActive(false);
         
-        // Bật Scoreboard
-        if (scoreboardPanel != null)
-        {
-            scoreboardPanel.SetActive(true);
-            
-            // TODO: Load data cho bảng điểm
-            LoadScoreboardData();
-        }
-    }
-    
-    void LoadScoreboardData()
-    {
-        // Tạm thời để trống, sẽ implement sau khi có data source
-        Debug.Log("Loading scoreboard data...");
+        // Đợi countdown hoàn thành (không cần tắt thủ công)
+        yield return new WaitForSeconds(3f);
         
-        // Example: Bạn có thể load từ PlayerPrefs, file, hoặc server
+        // Hiện điểm NGAY SAU KHI countdown xong
+        Debug.Log("📊 Showing score...");
+        if (currentScorePanel != null)
+            currentScorePanel.SetActive(true);
+        
+        // Chờ 2 giây
+        yield return new WaitForSeconds(popupDelay);
+        
+        // Ẩn điểm
+        if (currentScorePanel != null)
+            currentScorePanel.SetActive(false);
+        
+        // Hiện popup
+        Debug.Log("✏️ Showing nickname popup...");
+        if (LeaderboardManager.Instance != null)
+        {
+            int finalScore = PlayerPrefs.GetInt("FinalScore", 0);
+            string gameTime = "00:45";
+            int gameDay = 1;
+            
+            LeaderboardManager.Instance.ShowNicknamePopup(finalScore, gameTime, gameDay);
+        }
     }
     
     void UpdateContinueButton()
