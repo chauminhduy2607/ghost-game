@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameOverSceneController : MonoBehaviour
 {
@@ -20,6 +21,16 @@ public class GameOverSceneController : MonoBehaviour
     [SerializeField] private string gameSceneName = "SampleScene";
     [SerializeField] private string menuSceneName = "MenuScene";
     
+    [Header("=== SCOREBOARD TRANSITION ===")]
+    [Tooltip("Panel hiển thị CurrentScore")]
+    [SerializeField] private GameObject currentScorePanel;
+    
+    [Tooltip("Panel hiển thị bảng điểm")]
+    [SerializeField] private GameObject scoreboardPanel;
+    
+    [Tooltip("Thời gian chờ trước khi chuyển sang bảng điểm (giây)")]
+    [SerializeField] private float transitionDelay = 2f;
+    
     private bool isWatchingAd = false;
     
     void Start()
@@ -34,6 +45,49 @@ public class GameOverSceneController : MonoBehaviour
             bestScoreText.text = bestScore.ToString();
         
         UpdateContinueButton();
+        
+        // Bắt đầu chuyển đổi sang bảng điểm
+        StartScoreboardTransition();
+    }
+    
+    void StartScoreboardTransition()
+    {
+        // Đảm bảo ban đầu CurrentScore hiển thị, Scoreboard ẩn
+        if (currentScorePanel != null)
+            currentScorePanel.SetActive(true);
+            
+        if (scoreboardPanel != null)
+            scoreboardPanel.SetActive(false);
+        
+        // Bắt đầu đếm ngược
+        StartCoroutine(TransitionToScoreboard());
+    }
+    
+    IEnumerator TransitionToScoreboard()
+    {
+        // Chờ X giây
+        yield return new WaitForSeconds(transitionDelay);
+        
+        // Tắt CurrentScore
+        if (currentScorePanel != null)
+            currentScorePanel.SetActive(false);
+        
+        // Bật Scoreboard
+        if (scoreboardPanel != null)
+        {
+            scoreboardPanel.SetActive(true);
+            
+            // TODO: Load data cho bảng điểm
+            LoadScoreboardData();
+        }
+    }
+    
+    void LoadScoreboardData()
+    {
+        // Tạm thời để trống, sẽ implement sau khi có data source
+        Debug.Log("Loading scoreboard data...");
+        
+        // Example: Bạn có thể load từ PlayerPrefs, file, hoặc server
     }
     
     void UpdateContinueButton()
