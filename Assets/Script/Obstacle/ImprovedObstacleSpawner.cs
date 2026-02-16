@@ -435,8 +435,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         float playerY = player.position.y;
         
-        // Sửa: Spawn khi player gần đến cuối obstacle cuối cùng
-        // Thay vì so sánh trực tiếp, ta cộng thêm khoảng nhìn trước
         if (playerY + (screenHeight * 0.5f) > lastObstacleEndY)
         {
             SpawnGroup(nextSpawnY);
@@ -449,12 +447,10 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         float playerY = player.position.y;
         
-        // Sửa: Chỉ despawn khi có nhiều hơn 2 groups VÀ player đã vượt qua group cũ nhất
         while (activeGroups.Count > 2)
         {
             ObstacleGroup oldestGroup = activeGroups[0];
             
-            // Kiểm tra player đã vượt qua group này chưa
             if (playerY > oldestGroup.endY)
             {
                 oldestGroup.SetActive(false);
@@ -462,7 +458,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             }
             else
             {
-                break; // Dừng lại nếu chưa vượt qua
+                break;
             }
         }
     }
@@ -530,6 +526,50 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             ObstacleMovement m = spawnedObj.GetComponent<ObstacleMovement>();
             if (m != null) m.SetSpeed(speed);
         }
+    }
+    
+    // ===== THÊM METHOD MỚI ĐỂ MUSIC PLAYER SỬ DỤNG =====
+    
+    /// <summary>
+    /// Kiểm tra xem có obstacle type nào đang active trong tầm nhìn camera không
+    /// </summary>
+    public bool HasActiveObstacleType(string obstacleTypeName, float detectionRange)
+    {
+        if (mainCamera == null || player == null) return false;
+        
+        float cameraY = player.position.y;
+        float minY = cameraY - detectionRange;
+        float maxY = cameraY + detectionRange;
+        
+        foreach (var group in activeGroups)
+        {
+            if (!group.isActive) continue;
+            
+            // Kiểm tra group có nằm trong tầm nhìn không
+            if (group.endY < minY || group.startY > maxY) continue;
+            
+            // Kiểm tra group có chứa obstacle type này không
+            foreach (var kvp in group.obstaclesByType)
+            {
+                string typeName = kvp.Key.ToLower();
+                string searchName = obstacleTypeName.ToLower();
+                
+                // Kiểm tra tên có khớp không (hỗ trợ partial match)
+                if (typeName.Contains(searchName) || searchName.Contains(typeName))
+                {
+                    // Kiểm tra ít nhất 1 obstacle trong list đang active
+                    foreach (var obj in kvp.Value)
+                    {
+                        if (obj != null && obj.activeInHierarchy)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false;
     }
     
     void OnDrawGizmos()

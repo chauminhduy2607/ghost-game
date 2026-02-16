@@ -684,56 +684,6 @@ MonoBehaviour:
   rotateTowardsCenter: 1
   spriteRotationOffset: 90
   showDebugGizmos: 1
---- !u!1 &136408985
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 136408987}
-  - component: {fileID: 136408986}
-  m_Layer: 0
-  m_Name: CountdownManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &136408986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136408985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6633c14162696247aad6309a24a909f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Count5s
-  countdownPanel: {fileID: 1281642055}
-  countdownText: {fileID: 1172404996}
-  countdownFrom: 5
-  ghostController: {fileID: 1173831019}
-  scoreCycle: {fileID: 1143897738}
-  ghostAI: {fileID: 0}
---- !u!4 &136408987
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136408985}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.889, y: -1.59867, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &140615572
 GameObject:
   m_ObjectHideFlags: 0
@@ -4941,7 +4891,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173831011}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -5043,6 +4993,7 @@ GameObject:
   - component: {fileID: 1185947161}
   - component: {fileID: 1185947159}
   - component: {fileID: 1185947162}
+  - component: {fileID: 1185947163}
   m_Layer: 0
   m_Name: BackgroundMusic
   m_TagString: Untagged
@@ -5169,7 +5120,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185947158}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb7f0241621704efaa7c1ba4a70eae44, type: 3}
   m_Name: 
@@ -5183,6 +5134,27 @@ MonoBehaviour:
   - 0.6
   - 0.6
   loops: 010000
+--- !u!114 &1185947163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185947158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fa30f1432cd43c9a80dcfc9c426547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DynamicBackgroundMusicPlayer
+  windClip: {fileID: 8300000, guid: 9ab71167b19054c0e8dc936a8fa2314f, type: 3}
+  fireClip: {fileID: 8300000, guid: 47ea49c3984f949fa9a0ec0281735e8d, type: 3}
+  lightningClip: {fileID: 8300000, guid: 32945d43c6c5f4a95b6e16557af311c9, type: 3}
+  windVolume: 0.8
+  fireVolume: 0.6
+  lightningVolume: 0.6
+  fadeSpeed: 0.5
+  detectionBuffer: 5
+  mainCamera: {fileID: 519420031}
 --- !u!1 &1198876091
 GameObject:
   m_ObjectHideFlags: 0
@@ -8589,7 +8561,6 @@ SceneRoots:
   - {fileID: 140615573}
   - {fileID: 1143897737}
   - {fileID: 1950429202}
-  - {fileID: 136408987}
   - {fileID: 1198876093}
   - {fileID: 661725226}
   - {fileID: 631954422}
