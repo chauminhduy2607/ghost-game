@@ -20,10 +20,11 @@ public class ImageEndScreenChanger : MonoBehaviour
     public GameObject bgEndNotContinue;
     public GameObject timeObject;
     public GameObject endGameText;
+    public EndScreenLoopSound loopSoundController;
     
     private Image uiImage;
     private int currentIndex = 0;
-    private GameObject soundObject;
+    private GameObject clockSoundObject;
     
     void Start()
     {
@@ -52,7 +53,7 @@ public class ImageEndScreenChanger : MonoBehaviour
     
     IEnumerator ChangeImageRoutine()
     {
-        // PHÁT ÂM THANH NGAY TỪ ĐẦU
+        // PHÁT ÂM THANH CLOCK NGAY TỪ ĐẦU
         PlayClockSound();
         
         while (currentIndex < images.Length - 1)
@@ -63,8 +64,14 @@ public class ImageEndScreenChanger : MonoBehaviour
             uiImage.sprite = images[currentIndex];
         }
         
-        // DỪNG ÂM THANH SAU KHI ĐẾM XONG
+        // DỪNG ÂM THANH CLOCK SAU KHI ĐẾM XONG
         StopClockSound();
+        
+        // BẬT LOOP SOUND - VÀ ĐỂ NÓ PHÁT SUỐT
+        if (loopSoundController != null)
+        {
+            loopSoundController.PlayLoop();
+        }
         
         yield return new WaitForSeconds(delayBeforeNotContinue);
         
@@ -92,24 +99,43 @@ public class ImageEndScreenChanger : MonoBehaviour
         {
             notContinue.SetActive(true);
         }
+        
+        // KHÔNG TẮT LOOP SOUND Ở ĐÂY NỮA - ĐỂ NÓ PHÁT TIẾP
+        // Loop sound sẽ tắt khi người chơi thoát màn hình hoặc restart game
     }
     
     void PlayClockSound()
     {
         if (clockSound != null)
         {
-            soundObject = new GameObject("ClockSound");
-            AudioSource audio = soundObject.AddComponent<AudioSource>();
+            clockSoundObject = new GameObject("ClockSound");
+            AudioSource audio = clockSoundObject.AddComponent<AudioSource>();
             audio.clip = clockSound;
+            audio.loop = false;
             audio.Play();
         }
     }
     
     void StopClockSound()
     {
-        if (soundObject != null)
+        if (clockSoundObject != null)
         {
-            Destroy(soundObject);
+            Destroy(clockSoundObject);
         }
+    }
+    
+    // HÀM NÀY CÓ THỂ GỌI TỪ NÚT "PLAY AGAIN" HOẶC KHI THOÁT SCENE
+    public void StopLoopSound()
+    {
+        if (loopSoundController != null)
+        {
+            loopSoundController.StopLoop();
+        }
+    }
+    
+    // TẮT LOOP SOUND KHI OBJECT BỊ DESTROY
+    void OnDestroy()
+    {
+        StopLoopSound();
     }
 }
