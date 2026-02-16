@@ -11,6 +11,9 @@ public class ImageEndScreenChanger : MonoBehaviour
     public float changeInterval = 1f;
     public float delayBeforeNotContinue = 1f;
     
+    [Header("=== AUDIO ===")]
+    public AudioClip clockSound;
+    
     [Header("=== REFERENCES ===")]
     public GameObject notContinue;
     public GameObject bgRevive;
@@ -20,6 +23,7 @@ public class ImageEndScreenChanger : MonoBehaviour
     
     private Image uiImage;
     private int currentIndex = 0;
+    private GameObject soundObject;
     
     void Start()
     {
@@ -48,6 +52,9 @@ public class ImageEndScreenChanger : MonoBehaviour
     
     IEnumerator ChangeImageRoutine()
     {
+        // PHÁT ÂM THANH NGAY TỪ ĐẦU
+        PlayClockSound();
+        
         while (currentIndex < images.Length - 1)
         {
             yield return new WaitForSeconds(changeInterval);
@@ -55,6 +62,9 @@ public class ImageEndScreenChanger : MonoBehaviour
             currentIndex++;
             uiImage.sprite = images[currentIndex];
         }
+        
+        // DỪNG ÂM THANH SAU KHI ĐẾM XONG
+        StopClockSound();
         
         yield return new WaitForSeconds(delayBeforeNotContinue);
         
@@ -81,6 +91,25 @@ public class ImageEndScreenChanger : MonoBehaviour
         if (notContinue != null)
         {
             notContinue.SetActive(true);
+        }
+    }
+    
+    void PlayClockSound()
+    {
+        if (clockSound != null)
+        {
+            soundObject = new GameObject("ClockSound");
+            AudioSource audio = soundObject.AddComponent<AudioSource>();
+            audio.clip = clockSound;
+            audio.Play();
+        }
+    }
+    
+    void StopClockSound()
+    {
+        if (soundObject != null)
+        {
+            Destroy(soundObject);
         }
     }
 }

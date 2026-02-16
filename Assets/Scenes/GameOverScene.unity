@@ -450,6 +450,7 @@ MonoBehaviour:
   - {fileID: 4565449861219673537, guid: 39c42b2a78bd04998ada47a613111078, type: 3}
   changeInterval: 1
   delayBeforeNotContinue: 1
+  clockSound: {fileID: 8300000, guid: 9b150aa0e84d04b0ab6e123bd8c55f1b, type: 3}
   notContinue: {fileID: 1793851605}
   bgRevive: {fileID: 1954496055}
   bgEndNotContinue: {fileID: 653779622}

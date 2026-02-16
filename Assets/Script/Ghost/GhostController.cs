@@ -51,11 +51,24 @@ public class GhostController : MonoBehaviour
     [SerializeField] private bool enableTrail = true;
     [SerializeField] private bool enableColorChange = true;
     
+    [Header("=== ÂM THANH ===")]
+    [Tooltip("Âm thanh khi vuốt con ma (swipe sound)")]
+    [SerializeField] private AudioClip swipeSound;
+    
+    [Tooltip("Âm lượng của swipe sound (0-1)")]
+    [SerializeField] private float swipeSoundVolume = 0.7f;
+    
+    [Tooltip("Pitch ngẫu nhiên cho swipe sound")]
+    [SerializeField] private bool randomizePitch = true;
+    [SerializeField] private float minPitch = 0.9f;
+    [SerializeField] private float maxPitch = 1.1f;
+    
     private Rigidbody2D rb;
     private Camera mainCamera;
     private SpriteRenderer spriteRenderer;
     private TrailRenderer trail;
     private Color originalColor;
+    private AudioSource audioSource;
     
     private bool isDragging = false;
     private Vector2 dragStartPos;
@@ -88,6 +101,16 @@ public class GhostController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        // Thêm hoặc lấy AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        // Cấu hình AudioSource
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0f; // 2D sound
         
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.mass = mass;
@@ -332,6 +355,9 @@ public class GhostController : MonoBehaviour
                 rb.AddForce(Vector2.up * swipeForce, ForceMode2D.Impulse);
                 isFalling = false;
                 
+                // PHÁT ÂM THANH KHI VUỐT
+                PlaySwipeSound(swipeForce);
+                
                 if (enableRotation)
                 {
                     targetRotation = Quaternion.Euler(0, 0, 0);
@@ -352,6 +378,32 @@ public class GhostController : MonoBehaviour
                     spriteRenderer.color = originalColor;
             }
         }
+    }
+    
+    void PlaySwipeSound(float swipeForce)
+    {
+        if (swipeSound == null || audioSource == null) return;
+        
+        // Kiểm tra setting âm thanh từ PlayerPrefs
+        bool isSoundOn = PlayerPrefs.GetInt("IsSoundOn", 1) == 1;
+        if (!isSoundOn) return;
+        
+        // Set volume dựa trên cường độ vuốt
+        float intensity = swipeForce / maxSwipeForce;
+        float volume = swipeSoundVolume * Mathf.Lerp(0.7f, 1f, intensity);
+        
+        // Random pitch nếu bật
+        if (randomizePitch)
+        {
+            audioSource.pitch = Random.Range(minPitch, maxPitch);
+        }
+        else
+        {
+            audioSource.pitch = 1f;
+        }
+        
+        // Phát âm thanh
+        audioSource.PlayOneShot(swipeSound, volume);
     }
     
     void ApplyMovement()

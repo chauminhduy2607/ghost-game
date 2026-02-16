@@ -435,7 +435,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         float playerY = player.position.y;
         
-        if (playerY > lastObstacleEndY)
+        // Sửa: Spawn khi player gần đến cuối obstacle cuối cùng
+        // Thay vì so sánh trực tiếp, ta cộng thêm khoảng nhìn trước
+        if (playerY + (screenHeight * 0.5f) > lastObstacleEndY)
         {
             SpawnGroup(nextSpawnY);
         }
@@ -445,12 +447,23 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         if (player == null) return;
         
+        float playerY = player.position.y;
+        
+        // Sửa: Chỉ despawn khi có nhiều hơn 2 groups VÀ player đã vượt qua group cũ nhất
         while (activeGroups.Count > 2)
         {
             ObstacleGroup oldestGroup = activeGroups[0];
             
-            oldestGroup.SetActive(false);
-            activeGroups.RemoveAt(0);
+            // Kiểm tra player đã vượt qua group này chưa
+            if (playerY > oldestGroup.endY)
+            {
+                oldestGroup.SetActive(false);
+                activeGroups.RemoveAt(0);
+            }
+            else
+            {
+                break; // Dừng lại nếu chưa vượt qua
+            }
         }
     }
     
