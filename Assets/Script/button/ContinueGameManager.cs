@@ -52,6 +52,8 @@ public class ContinueGameManager : MonoBehaviour
         
         ghost.ResetGame();
         ghost.EnablePhysics(true);
+
+        ghost.MarkContinueUsed();
         
         CameraFollow cameraFollow = FindAnyObjectByType<CameraFollow>();
         if (cameraFollow != null)

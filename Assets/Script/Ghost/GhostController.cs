@@ -97,6 +97,7 @@ public class GhostController : MonoBehaviour
     private bool isGameOver = false;
     private bool isWaitingForAds = false;
     private bool adsClosed = false;
+    private bool hasUsedContinue = false; // THÊM: Track việc đã dùng continue
     
     private Vector3 originalScale;
     private Vector3 targetScale;
@@ -108,6 +109,7 @@ public class GhostController : MonoBehaviour
     public bool IsGameOver => isGameOver;
     public bool HitObstacle => hitObstacle;
     public bool IsWaitingForAds => isWaitingForAds;
+    public bool HasUsedContinue => hasUsedContinue; // THÊM: Property để check
     public Rigidbody2D Rigidbody => rb;
     public Vector2 Velocity => rb.linearVelocity;
     public bool IsDragging => isDragging;
@@ -645,6 +647,12 @@ public class GhostController : MonoBehaviour
         }
     }
     
+    // THÊM: Method để mark đã dùng continue
+    public void MarkContinueUsed()
+    {
+        hasUsedContinue = true;
+    }
+    
     public void ResetGame()
     {
         hitObstacle = false;
@@ -653,6 +661,7 @@ public class GhostController : MonoBehaviour
         adsClosed = false;
         isFalling = false;
         isDragging = false;
+        // KHÔNG reset hasUsedContinue ở đây vì chỉ reset khi bắt đầu game mới
         
         rb.simulated = true;
         rb.linearVelocity = Vector2.zero;
@@ -664,6 +673,13 @@ public class GhostController : MonoBehaviour
         
         transform.rotation = Quaternion.Euler(0, 0, 0);
         targetRotation = Quaternion.Euler(0, 0, 0);
+    }
+    
+    // THÊM: Method để reset hoàn toàn khi bắt đầu game mới
+    public void ResetNewGame()
+    {
+        ResetGame();
+        hasUsedContinue = false; // Reset continue flag khi bắt đầu game mới
     }
     
     void OnDestroy()
