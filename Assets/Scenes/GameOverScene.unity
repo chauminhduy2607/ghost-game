@@ -456,6 +456,7 @@ MonoBehaviour:
   bgEndNotContinue: {fileID: 653779622}
   timeObject: {fileID: 1711524687}
   endGameText: {fileID: 1081282197}
+  loopSoundController: {fileID: 612970395}
 --- !u!114 &128177847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1360,6 +1361,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 544592750}
   m_CullTransparentMesh: 1
+--- !u!1 &612970392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 612970394}
+  - component: {fileID: 612970395}
+  m_Layer: 0
+  m_Name: EndScreenAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &612970394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612970392}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.29468, y: 11.60153, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &612970395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612970392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be209d520f6584c7ca87ec8c1f894422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndScreenLoopSound
+  loopSound: {fileID: 8300000, guid: 6948a6d6988ed48cc9474a5375dad286, type: 3}
+  volume: 1
 --- !u!1 &653779622
 GameObject:
   m_ObjectHideFlags: 0
@@ -4070,7 +4117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your nickname...
+  m_text: "T\xEAn c\xFAng c\u01A1m c\u1EE7a b\u1EA1n .....\n(Your name in real life\u2026)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5089,3 +5136,4 @@ SceneRoots:
   - {fileID: 1754310875}
   - {fileID: 1472064609}
   - {fileID: 511645630}
+  - {fileID: 612970394}
