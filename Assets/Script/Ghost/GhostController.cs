@@ -51,7 +51,7 @@ public class GhostController : MonoBehaviour
     [SerializeField] private bool enableTrail = true;
     [SerializeField] private bool enableColorChange = true;
     
-    [Header("=== ÂM THANH ===")]
+    [Header("=== ÂM THANH VUỐT ===")]
     [Tooltip("Âm thanh khi vuốt con ma (swipe sound)")]
     [SerializeField] private AudioClip swipeSound;
     
@@ -62,6 +62,23 @@ public class GhostController : MonoBehaviour
     [SerializeField] private bool randomizePitch = true;
     [SerializeField] private float minPitch = 0.9f;
     [SerializeField] private float maxPitch = 1.1f;
+    
+    [Header("=== ÂM THANH VA CHẠM ===")]
+    [Tooltip("Âm thanh khi đụng lửa")]
+    [SerializeField] private AudioClip fireHitSound;
+    
+    [Tooltip("Âm thanh khi đụng sấm sét")]
+    [SerializeField] private AudioClip lightningHitSound;
+    
+    [Tooltip("Âm thanh khi đụng vòng tròn")]
+    [SerializeField] private AudioClip circleHitSound;
+    
+    [Tooltip("Âm thanh khi đụng obstacle khác (mặc định)")]
+    [SerializeField] private AudioClip defaultHitSound;
+    
+    [Tooltip("Âm lượng âm thanh va chạm")]
+    [Range(0f, 1f)]
+    [SerializeField] private float hitSoundVolume = 0.8f;
     
     private Rigidbody2D rb;
     private Camera mainCamera;
@@ -188,7 +205,7 @@ public class GhostController : MonoBehaviour
         {
             if (!hitObstacle)
             {
-                OnObstacleHit(other.transform);
+                OnObstacleHit(other.transform, other.tag);
             }
         }
     }
@@ -199,17 +216,20 @@ public class GhostController : MonoBehaviour
         {
             if (!hitObstacle)
             {
-                OnObstacleHit(collision.transform);
+                OnObstacleHit(collision.transform, collision.gameObject.tag);
             }
         }
     }
     
-    void OnObstacleHit(Transform obstacleTransform)
+    void OnObstacleHit(Transform obstacleTransform, string obstacleTag)
     {
         if (hitObstacle) return;
         
         hitObstacle = true;
         isFalling = true;
+        
+        // PHÁT ÂM THANH DỰA TRÊN LOẠI OBSTACLE
+        PlayHitSound(obstacleTag);
         
         PlayerPrefs.SetFloat("RespawnX", transform.position.x);
         PlayerPrefs.SetFloat("RespawnY", transform.position.y);
@@ -229,6 +249,43 @@ public class GhostController : MonoBehaviour
             targetRotation = Quaternion.Euler(0, 0, 180);
         
         StartCoroutine(DeathSequence());
+    }
+    
+    void PlayHitSound(string obstacleTag)
+    {
+        if (audioSource == null) return;
+        
+        // Kiểm tra setting âm thanh
+        bool isSoundOn = PlayerPrefs.GetInt("IsSoundOn", 1) == 1;
+        if (!isSoundOn) return;
+        
+        AudioClip soundToPlay = null;
+        string tagLower = obstacleTag.ToLower();
+        
+        // Xác định âm thanh dựa trên tag
+        if (tagLower.Contains("fire"))
+        {
+            soundToPlay = fireHitSound;
+        }
+        else if (tagLower.Contains("lightning"))
+        {
+            soundToPlay = lightningHitSound;
+        }
+        else if (tagLower.Contains("circle"))
+        {
+            soundToPlay = circleHitSound;
+        }
+        else
+        {
+            soundToPlay = defaultHitSound;
+        }
+        
+        // Phát âm thanh nếu có
+        if (soundToPlay != null)
+        {
+            audioSource.pitch = 1f; // Reset pitch về bình thường
+            audioSource.PlayOneShot(soundToPlay, hitSoundVolume);
+        }
     }
     
     IEnumerator DeathSequence()

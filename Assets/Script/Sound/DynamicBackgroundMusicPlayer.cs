@@ -12,6 +12,9 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
     [Tooltip("Nhạc sấm sét (khi có lightning obstacle)")]
     public AudioClip lightningClip;
     
+    [Tooltip("Nhạc vòng tròn (khi có flying circle)")]
+    public AudioClip circleClip;
+    
     [Header("Volume Settings")]
     [Range(0f, 1f)]
     public float windVolume = 0.8f;
@@ -21,6 +24,9 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
     
     [Range(0f, 1f)]
     public float lightningVolume = 0.6f;
+    
+    [Range(0f, 1f)]
+    public float circleVolume = 0.5f;
     
     [Header("Fade Settings")]
     [Tooltip("Thời gian fade in/out âm thanh (giây)")]
@@ -37,12 +43,14 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
     private AudioSource windSource;
     private AudioSource fireSource;
     private AudioSource lightningSource;
+    private AudioSource circleSource;
     
     private bool isMusicOn = true;
     
     // Target volumes cho fade
     private float fireTargetVolume = 0f;
     private float lightningTargetVolume = 0f;
+    private float circleTargetVolume = 0f;
     
     void Start()
     {
@@ -57,20 +65,22 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
             Debug.LogWarning("DynamicBackgroundMusicPlayer: Không tìm thấy Camera!");
         }
         
-        // Tạo 3 AudioSource
+        // Tạo 4 AudioSource
         windSource = CreateAudioSource("Wind", windClip, windVolume, true);
         fireSource = CreateAudioSource("Fire", fireClip, 0f, true);
         lightningSource = CreateAudioSource("Lightning", lightningClip, 0f, true);
+        circleSource = CreateAudioSource("Circle", circleClip, 0f, true);
         
         // Kiểm tra setting
         isMusicOn = PlayerPrefs.GetInt("IsMusicOn", 1) == 1;
         
         if (isMusicOn)
         {
-            // Phát tất cả (volume = 0 cho fire và lightning)
+            // Phát tất cả (volume = 0 cho fire, lightning, circle)
             windSource.Play();
             fireSource.Play();
             lightningSource.Play();
+            circleSource.Play();
         }
     }
     
@@ -103,14 +113,17 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
         // Kiểm tra obstacles trong tầm nhìn
         bool hasFireOnScreen = HasObstacleInView("Fire", minY, maxY);
         bool hasLightningOnScreen = HasObstacleInView("Lightning", minY, maxY);
+        bool hasCircleOnScreen = HasObstacleInView("Circle", minY, maxY);
         
         // Set target volumes
         fireTargetVolume = hasFireOnScreen ? fireVolume : 0f;
         lightningTargetVolume = hasLightningOnScreen ? lightningVolume : 0f;
+        circleTargetVolume = hasCircleOnScreen ? circleVolume : 0f;
         
         // Fade volumes
         FadeAudioSource(fireSource, fireTargetVolume);
         FadeAudioSource(lightningSource, lightningTargetVolume);
+        FadeAudioSource(circleSource, circleTargetVolume);
     }
     
     bool HasObstacleInView(string obstacleType, float minY, float maxY)
@@ -193,6 +206,14 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
                 "LightningNLineObstacle"
             };
         }
+        else if (obstacleType == "Circle")
+        {
+            return new string[]
+            {
+                "FlyingCircleObstacle",
+                "CircleObstacle"
+            };
+        }
         
         return new string[] { };
     }
@@ -238,6 +259,8 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
                 fireSource.Play();
             if (lightningSource != null && !lightningSource.isPlaying)
                 lightningSource.Play();
+            if (circleSource != null && !circleSource.isPlaying)
+                circleSource.Play();
         }
         else
         {
@@ -247,6 +270,8 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
                 fireSource.Stop();
             if (lightningSource != null)
                 lightningSource.Stop();
+            if (circleSource != null)
+                circleSource.Stop();
         }
     }
     
@@ -255,6 +280,7 @@ public class DynamicBackgroundMusicPlayer : MonoBehaviour
         if (windSource != null) windSource.Stop();
         if (fireSource != null) fireSource.Stop();
         if (lightningSource != null) lightningSource.Stop();
+        if (circleSource != null) circleSource.Stop();
     }
     
     public void SetMasterVolume(float volume)

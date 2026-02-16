@@ -2186,13 +2186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38277f982ab3eed4bba708b8fa4d419a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::caigai
-  moveDistance: 2
-  period: 2
-  phaseOffset: 0
-  speedMultiplier: 1
-  smoothTime: 0.08
-  maxSpeed: 999
-  moveMode: 0
 --- !u!61 &643778458
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2917,13 +2910,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38277f982ab3eed4bba708b8fa4d419a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::caigai
-  moveDistance: 2
-  period: 2
-  phaseOffset: 0
-  speedMultiplier: 1
-  smoothTime: 0.08
-  maxSpeed: 999
-  moveMode: 0
 --- !u!61 &777380555
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4516,10 +4502,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65b560d54ca6d5a4d83fbcd9f057f268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TapToStartController
-  tapToStartUI: {fileID: 1392258851}
-  gameObjects: {fileID: 140615572}
-  obstacleManager: {fileID: 140615572}
-  scoreCycle: {fileID: 0}
 --- !u!114 &1143897734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4901,6 +4883,11 @@ MonoBehaviour:
   randomizePitch: 1
   minPitch: 0.9
   maxPitch: 1.1
+  fireHitSound: {fileID: 8300000, guid: 87a0c49d8f3a44ec189b8b33cbea31f0, type: 3}
+  lightningHitSound: {fileID: 8300000, guid: d17cf9bb85289409081e6ef4f1a24ed1, type: 3}
+  circleHitSound: {fileID: 8300000, guid: 5157fca568bc542378c2a5fd454fc987, type: 3}
+  defaultHitSound: {fileID: 8300000, guid: a1e1ed651c1474572a43f61d986069d6, type: 3}
+  hitSoundVolume: 0.8
 --- !u!114 &1173831023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5089,9 +5076,11 @@ MonoBehaviour:
   windClip: {fileID: 8300000, guid: 9ab71167b19054c0e8dc936a8fa2314f, type: 3}
   fireClip: {fileID: 8300000, guid: 47ea49c3984f949fa9a0ec0281735e8d, type: 3}
   lightningClip: {fileID: 8300000, guid: 32945d43c6c5f4a95b6e16557af311c9, type: 3}
+  circleClip: {fileID: 8300000, guid: ee5e9ddc520414d108fcb82f6e0983c3, type: 3}
   windVolume: 0.8
   fireVolume: 0.6
   lightningVolume: 0.6
+  circleVolume: 0.5
   fadeSpeed: 0.5
   detectionBuffer: 5
   mainCamera: {fileID: 519420031}
@@ -5670,13 +5659,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38277f982ab3eed4bba708b8fa4d419a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::caigai
-  moveDistance: 2
-  period: 2
-  phaseOffset: 0
-  speedMultiplier: 1
-  smoothTime: 0.08
-  maxSpeed: 999
-  moveMode: 0
 --- !u!61 &1377041882
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8486,10 +8468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde8dd64ed6d2d349a1f0f3becd73983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TryAgainButton
-  tryAgainButton: {fileID: 0}
-  gameUI: {fileID: 0}
-  scoreUI: {fileID: 0}
-  obstacleManager: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
