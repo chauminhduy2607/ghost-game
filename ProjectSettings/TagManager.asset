@@ -17,6 +17,7 @@ TagManager:
   - FlyingCircleReverse3Obstacle
   - FlyingCircleCombine4Obstacle
   - Lightning5Obstacle
+  - FireFlying6Obstacle
   layers:
   - Default
   - TransparentFX

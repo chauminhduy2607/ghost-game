@@ -4299,11 +4299,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreCycle
   scoreText: {fileID: 1511060101}
-  startScore: 100
-  secondsPerMinusPoint: 2
-  multiplier: 10
+  secondsPerPlusPoint: 2
   autoStart: 0
-  scoreCycle: {fileID: 1143897738}
 --- !u!1 &1173831011
 GameObject:
   m_ObjectHideFlags: 0
@@ -5268,6 +5265,7 @@ GameObject:
   - component: {fileID: 1511060103}
   - component: {fileID: 1511060102}
   - component: {fileID: 1511060101}
+  - component: {fileID: 1511060104}
   m_Layer: 5
   m_Name: score
   m_TagString: Untagged
@@ -5361,7 +5359,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: -26.0625, z: 0, w: 2.238037}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5391,9 +5389,24 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20, y: -20}
-  m_SizeDelta: {x: 1900, y: 2600}
+  m_AnchoredPosition: {x: 34.493805, y: -44.638428}
+  m_SizeDelta: {x: 851.6561, y: 1875.3616}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1511060104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511060100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9134c67fe586d4e80182da8f3a64d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreCycle
+  scoreText: {fileID: 1511060101}
+  secondsPerPlusPoint: 3
+  autoStart: 1
 --- !u!1 &1526556647
 GameObject:
   m_ObjectHideFlags: 0
