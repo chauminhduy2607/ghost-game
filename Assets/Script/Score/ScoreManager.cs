@@ -2,74 +2,50 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+/// <summary>
+/// ScoreManager chỉ là wrapper delegate sang ScoreCycle.
+/// Không tự chạy logic điểm, tránh trùng lặp.
+/// </summary>
 public class ScoreManager : MonoBehaviour
 {
     public TMP_Text scoreText;
-    public float scoreInterval = 2f; // 2 giây +1 điểm
+    public float scoreInterval = 2f;
 
-    private int score = 0;
-    private bool isRunning = true;
+    private ScoreCycle scoreCycle;
+
+    void Awake()
+    {
+        scoreCycle = FindAnyObjectByType<ScoreCycle>();
+    }
 
     void Start()
     {
-        UpdateScoreUI();
-        StartCoroutine(AddScoreRoutine());
+        // Không tự chạy gì - ScoreCycle lo hết
     }
 
-    IEnumerator AddScoreRoutine()
-    {
-        while (isRunning)
-        {
-            yield return new WaitForSeconds(scoreInterval);
-            score += 1;
-            UpdateScoreUI();
-        }
-    }
-
-    void UpdateScoreUI()
-    {
-        if (scoreText != null)
-            scoreText.text = "Score: " + score;
-    }
-
-    // gọi khi game over
     public void StopScore()
     {
-        isRunning = false;
+        if (scoreCycle != null) scoreCycle.StopScore();
     }
 
     public int GetScore()
     {
-        return score;
+        if (scoreCycle != null) return scoreCycle.GetScore();
+        return 0;
     }
 
     public void ResetScore()
     {
-        score = 0;
-        isRunning = true;
-        UpdateScoreUI();
-        StopAllCoroutines();
-        StartCoroutine(AddScoreRoutine());
+        if (scoreCycle != null) scoreCycle.ResetScore();
     }
 
-    /// <summary>
-    /// ✅ MỚI: Set điểm trực tiếp (dùng cho Continue mode)
-    /// </summary>
     public void SetScore(int newScore)
     {
-        score = newScore;
-        UpdateScoreUI();
-        Debug.Log($"📊 Score set to: {score}");
+        if (scoreCycle != null) scoreCycle.SetScore(newScore);
     }
 
-    /// <summary>
-    /// ✅ MỚI: Resume tính điểm từ điểm hiện tại (dùng cho Continue)
-    /// </summary>
     public void ResumeScore()
     {
-        isRunning = true;
-        StopAllCoroutines();
-        StartCoroutine(AddScoreRoutine());
-        Debug.Log($"▶️ Score resumed from: {score}");
+        if (scoreCycle != null) scoreCycle.StartScore();
     }
 }

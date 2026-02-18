@@ -795,6 +795,9 @@ MonoBehaviour:
   maxRotationSpeed: 360
   pointsPerObstacle: 2
   scoreDetectionOffsetY: 1
+  referenceAspectRatio: 0.462
+  fitObstaclesToScreen: 1
+  scaleMultiplier: 0.85
   player: {fileID: 0}
   mainCamera: {fileID: 0}
   showDebugInfo: 1
@@ -4487,7 +4490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ac1dd54616d945b7a5640b12bbf8342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfiniteBackground
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 519420031}
   parallaxSpeed: 0.1
   spawnThreshold: 0.5
   removeOldBackgrounds: 1
@@ -4504,20 +4507,8 @@ MonoBehaviour:
   - {fileID: 5865694633592810904, guid: a75ce19e212a64537b3f068a6cfb60f3, type: 3}
   - {fileID: 5725014794505860005, guid: 0ff004ec4cd3d476f87cb0ddfece5844, type: 3}
   - {fileID: 410226644299653958, guid: d5ba03d680e004c8ca7e22f701d6a9ad, type: 3}
-  backgroundScales:
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
-  - {x: 0.1252648, y: 0.1252648, z: 0}
   sortingOrder: -1
+  widthMultiplier: 1
   showGizmos: 1
 --- !u!212 &1001781910
 SpriteRenderer:
@@ -8919,6 +8910,7 @@ GameObject:
   - component: {fileID: 1777135015}
   - component: {fileID: 1777135014}
   - component: {fileID: 1777135016}
+  - component: {fileID: 1777135017}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -8963,7 +8955,7 @@ MonoBehaviour:
   enableTilt: 1
   tiltAmount: 5
   tiltSpeed: 0.9
-  enableScalePulse: 0
+  enableScalePulse: 1
   scaleAmount: 0.05
   scaleSpeed: 2
 --- !u!212 &1777135015
@@ -9254,6 +9246,20 @@ PolygonCollider2D:
       - {x: 0.45999998, y: -1.54}
       - {x: 0.44, y: -1.51}
   m_UseDelaunayMesh: 1
+--- !u!114 &1777135017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777135012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de16aecdb9120457abd17f4ce48a4ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostScreenFit
+  referenceAspectRatio: 0.462
+  scaleMultiplier: 0.7
 --- !u!1 &1837158568
 GameObject:
   m_ObjectHideFlags: 0

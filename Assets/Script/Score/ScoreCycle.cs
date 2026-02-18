@@ -7,43 +7,50 @@ public class ScoreCycle : MonoBehaviour
     public TMP_Text scoreText;
 
     [Header("Score Settings")]
-    [Min(0.01f)]
-    public float secondsPerPlusPoint = 1f;
-    
+    public float secondsPerPlusPoint = 3f;
     public bool autoStart = true;
 
     private int score = 0;
     private float timer = 0f;
     private bool running = false;
 
-    public void SetScore(int newScore)
-    {
-        score = newScore;
-        UpdateScoreText();
-        SaveScore();
-    }
-
     void Start()
     {
         score = 0;
-        if (autoStart) running = true;
+        timer = 0f;
+        running = false; // LUÔN false lúc đầu, chờ swipe
         UpdateScoreText();
         SaveScore();
     }
-
     void Update()
     {
         if (!running) return;
 
         timer += Time.deltaTime;
 
-        while (timer >= secondsPerPlusPoint)
+        if (timer >= secondsPerPlusPoint)
         {
-            timer -= secondsPerPlusPoint;
+            timer = 0f; // reset sạch, không dùng while để tránh nhảy nhiều lần
             score++;
             UpdateScoreText();
             SaveScore();
         }
+    }
+
+    /// <summary>Gọi khi ghost đi qua vật cản</summary>
+    public void AddObstacleBonus(int bonus = 2)
+    {
+        score += bonus;
+        UpdateScoreText();
+        SaveScore();
+    }
+
+    public void SetScore(int newScore)
+    {
+        score = newScore;
+        timer = 0f;
+        UpdateScoreText();
+        SaveScore();
     }
 
     void UpdateScoreText()
@@ -57,9 +64,13 @@ public class ScoreCycle : MonoBehaviour
         PlayerPrefs.SetInt("FinalScore", score);
     }
 
-    public void StartScore() => running = true;
-    public void StopScore() => running = false;
+    public void StartScore()
+    {
+        running = true;
+        timer = 0f;
+    }
 
+    public void StopScore() => running = false;
     public int GetScore() => score;
 
     public void ResetScore()

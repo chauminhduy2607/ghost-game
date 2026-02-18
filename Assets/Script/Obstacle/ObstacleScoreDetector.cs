@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Detector được ImprovedObstacleSpawner kiểm soát hoàn toàn.
-/// KHÔNG tự init trong OnEnable — spawner gọi Activate() sau khi đã reposition xong.
-/// </summary>
 public class ObstacleScoreDetector : MonoBehaviour
 {
     [Header("=== CONFIG (set by spawner) ===")]
@@ -18,11 +14,8 @@ public class ObstacleScoreDetector : MonoBehaviour
     private Transform player;
     private ScoreCycle scoreCycle;
     private float passThresholdY;
-    private bool active = false; // chỉ true khi spawner gọi Activate()
+    private bool active = false;
 
-    // ─────────────────────────────────────────────────────────────────────
-    // Gọi từ spawner ngay sau AddComponent() — chỉ lưu config, chưa init threshold
-    // ─────────────────────────────────────────────────────────────────────
     public void Configure(int points, float offsetY, bool placeholder)
     {
         pointsOnPass = points;
@@ -31,9 +24,6 @@ public class ObstacleScoreDetector : MonoBehaviour
         active = false;
     }
 
-    // ─────────────────────────────────────────────────────────────────────
-    // Gọi từ spawner SAU KHI đã SetActive(true) VÀ reposition xong
-    // ─────────────────────────────────────────────────────────────────────
     public void Activate()
     {
         if (isParentPlaceholder)
@@ -44,7 +34,7 @@ public class ObstacleScoreDetector : MonoBehaviour
         }
 
         hasPassed = false;
-        active = false; // tạm false, chờ references
+        active = false;
 
         if (player == null)
         {
@@ -56,7 +46,6 @@ public class ObstacleScoreDetector : MonoBehaviour
             scoreCycle = FindAnyObjectByType<ScoreCycle>();
         }
 
-        // Tính threshold dựa trên vị trí HIỆN TẠI (đã được reposition)
         passThresholdY = GetMyTopY() + detectionOffsetY;
         active = true;
         enabled = true;
@@ -65,7 +54,6 @@ public class ObstacleScoreDetector : MonoBehaviour
             Debug.Log($"[ScoreDetector] ACTIVATED: {gameObject.name} | thresholdY={passThresholdY:F2} | +{pointsOnPass}đ");
     }
 
-    // ─────────────────────────────────────────────────────────────────────
     void Update()
     {
         if (!active || hasPassed || player == null || scoreCycle == null) return;
@@ -73,11 +61,10 @@ public class ObstacleScoreDetector : MonoBehaviour
         if (player.position.y > passThresholdY)
         {
             hasPassed = true;
-            int before = scoreCycle.GetScore();
-            scoreCycle.SetScore(before + pointsOnPass);
+            scoreCycle.AddObstacleBonus(pointsOnPass);
 
             if (showDebugLog)
-                Debug.Log($"[Score +{pointsOnPass}] {gameObject.name} | {before} → {scoreCycle.GetScore()}");
+                Debug.Log($"[Score +{pointsOnPass}] {gameObject.name} | total: {scoreCycle.GetScore()}");
         }
     }
 

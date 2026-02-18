@@ -30,6 +30,14 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     [SerializeField] private int pointsPerObstacle = 2;
     [SerializeField] private float scoreDetectionOffsetY = 1f;
 
+    [Header("=== SCREEN FIT ===")]
+    [Tooltip("Aspect ratio của device bạn thiết kế obstacle ban đầu.")]
+    [SerializeField] private float referenceAspectRatio = 0.462f;
+    [Tooltip("Bật để tự scale obstacle theo màn hình")]
+    [SerializeField] private bool fitObstaclesToScreen = true;
+    [Tooltip("Tinh chỉnh scale thêm. 1 = theo aspect, giảm xuống 0.8~0.9 nếu thấy to quá")]
+    [SerializeField] [Range(0.5f, 1.5f)] private float scaleMultiplier = 0.85f;
+
     [Header("=== REFERENCES ===")]
     [SerializeField] private Transform player;
     [SerializeField] private Camera mainCamera;
@@ -89,7 +97,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     private float screenHeight;
     private float lastObstacleEndY = 0f;
 
-    // ── Track số lần SpawnGroup đã được gọi (group 1 = index 0, group 2 = index 1, ...)
+    // Lưu scale gốc của từng obstacle (trước khi bị nhân scaleFactor)
+    private Dictionary<GameObject, Vector3> originalScales = new Dictionary<GameObject, Vector3>();
+
     private int groupSpawnCount = 0;
     
     void Start()
@@ -127,6 +137,31 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         if (player != null)
             nextSpawnY = player.position.y + screenHeight * 0.5f;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    // SCREEN FIT: scale obstacle theo tỉ lệ aspect ratio
+    // ─────────────────────────────────────────────────────────────────────
+    void ScaleObstacleToScreen(GameObject obj)
+    {
+        if (!fitObstaclesToScreen || mainCamera == null) return;
+
+        Vector3 baseScale;
+        if (originalScales.ContainsKey(obj))
+            baseScale = originalScales[obj];
+        else
+        {
+            baseScale = obj.transform.localScale;
+            originalScales[obj] = baseScale;
+        }
+
+        float scaleFactor = (mainCamera.aspect / referenceAspectRatio) * scaleMultiplier;
+
+        obj.transform.localScale = new Vector3(
+            baseScale.x * scaleFactor,
+            baseScale.y * scaleFactor,
+            baseScale.z
+        );
     }
     
     void AutoDetectObstacleTypes()
@@ -187,19 +222,17 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     }
     
     // ─────────────────────────────────────────────────────────────────────
-    // SETUP LẦN ĐẦU: chỉ gắn component + Configure, KHÔNG Activate
+    // SETUP LẦN ĐẦU: gắn component + Configure + Scale, KHÔNG Activate
     // ─────────────────────────────────────────────────────────────────────
     void SetupObstacleInitial(GameObject obj, ObstacleType type)
     {
         if (type.isFireNLine)
         {
-            // Placeholder trên parent
             ObstacleScoreDetector parentDetector = obj.GetComponent<ObstacleScoreDetector>();
             if (parentDetector == null)
                 parentDetector = obj.AddComponent<ObstacleScoreDetector>();
             parentDetector.Configure(0, 0, true);
 
-            // Detector trên từng child
             foreach (Transform child in obj.transform)
             {
                 ObstacleScoreDetector childDetector = child.GetComponent<ObstacleScoreDetector>();
@@ -213,14 +246,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
         else
         {
-            // 1 detector trên parent
             ObstacleScoreDetector detector = obj.GetComponent<ObstacleScoreDetector>();
             if (detector == null)
                 detector = obj.AddComponent<ObstacleScoreDetector>();
             detector.Configure(pointsPerObstacle, scoreDetectionOffsetY, false);
         }
 
-        // Setup movement
         if (type.isCircle)
         {
             FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
@@ -236,6 +267,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             if (spawner != null)
                 StartCoroutine(ApplySpeedToSpawnedObstacles(obj, currentSpeed));
         }
+
+        // Scale theo màn hình — gọi TRƯỚC SetActive(false) để lưu scale gốc đúng
+        ScaleObstacleToScreen(obj);
         
         obj.SetActive(false);
     }
@@ -312,18 +346,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         group.endY = yPosition + groupHeight;
         group.isPassed = false;
 
-        // groupSpawnCount == 0 → group đầu tiên (group 1): giữ thứ tự cố định
-        // groupSpawnCount >= 1 → group 2 trở đi: random thứ tự obstacle types
         bool randomizeOrder = groupSpawnCount >= 1;
         groupSpawnCount++;
         
-        // 1) Reposition trước
         PositionGroup(group, yPosition, randomizeOrder);
-
-        // 2) SetActive
         group.SetActive(true);
-
-        // 3) Activate detectors SAU KHI đã ở đúng vị trí
         ActivateDetectorsInGroup(group);
         
         activeGroups.Add(group);
@@ -331,9 +358,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         nextSpawnY = group.endY + groupGap;
     }
 
-    // ─────────────────────────────────────────────────────────────────────
-    // Activate tất cả detector trong group — gọi sau reposition + SetActive
-    // ─────────────────────────────────────────────────────────────────────
     void ActivateDetectorsInGroup(ObstacleGroup group)
     {
         foreach (var typeList in group.obstaclesByType.Values)
@@ -342,14 +366,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             {
                 if (obj == null) continue;
 
-                // Tìm loại obstacle này
                 ObstacleType type = obstacleTypes.Find(t =>
                     group.obstaclesByType.ContainsKey(t.name) &&
                     group.obstaclesByType[t.name].Contains(obj));
 
                 if (type != null && type.isFireNLine)
                 {
-                    // Activate từng child detector
                     foreach (Transform child in obj.transform)
                     {
                         ObstacleScoreDetector d = child.GetComponent<ObstacleScoreDetector>();
@@ -358,7 +380,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 }
                 else
                 {
-                    // Activate detector trên parent
                     ObstacleScoreDetector d = obj.GetComponent<ObstacleScoreDetector>();
                     if (d != null) d.Activate();
                 }
@@ -366,9 +387,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ─────────────────────────────────────────────────────────────────────
-    // Fisher-Yates shuffle cho List<T>
-    // ─────────────────────────────────────────────────────────────────────
     List<T> ShuffleList<T>(List<T> list)
     {
         List<T> shuffled = new List<T>(list);
@@ -386,12 +404,10 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         float currentY = startY;
 
-        // Lấy danh sách obstacle types có trong group này
         List<ObstacleType> typesInGroup = obstacleTypes
             .Where(t => group.obstaclesByType.ContainsKey(t.name))
             .ToList();
 
-        // Từ group 2 trở đi → shuffle thứ tự
         if (randomizeOrder)
             typesInGroup = ShuffleList(typesInGroup);
 
@@ -591,7 +607,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         totalGroupsPassed = 0;
         currentSpeed = initialSpeed;
         currentRotationSpeed = initialRotationSpeed;
-        groupSpawnCount = 0; // Reset counter khi restart
+        groupSpawnCount = 0;
         if (player != null)
         {
             nextSpawnY = player.position.y + screenHeight * 0.5f;
