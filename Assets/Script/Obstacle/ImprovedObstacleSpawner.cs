@@ -88,6 +88,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     private float nextSpawnY;
     private float screenHeight;
     private float lastObstacleEndY = 0f;
+
+    // ── Track số lần SpawnGroup đã được gọi (group 1 = index 0, group 2 = index 1, ...)
+    private int groupSpawnCount = 0;
     
     void Start()
     {
@@ -308,9 +311,14 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         float groupHeight = CalculateGroupHeight();
         group.endY = yPosition + groupHeight;
         group.isPassed = false;
+
+        // groupSpawnCount == 0 → group đầu tiên (group 1): giữ thứ tự cố định
+        // groupSpawnCount >= 1 → group 2 trở đi: random thứ tự obstacle types
+        bool randomizeOrder = groupSpawnCount >= 1;
+        groupSpawnCount++;
         
         // 1) Reposition trước
-        PositionGroup(group, yPosition);
+        PositionGroup(group, yPosition, randomizeOrder);
 
         // 2) SetActive
         group.SetActive(true);
@@ -358,14 +366,43 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    void PositionGroup(ObstacleGroup group, float startY)
+    // ─────────────────────────────────────────────────────────────────────
+    // Fisher-Yates shuffle cho List<T>
+    // ─────────────────────────────────────────────────────────────────────
+    List<T> ShuffleList<T>(List<T> list)
+    {
+        List<T> shuffled = new List<T>(list);
+        for (int i = shuffled.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            T temp = shuffled[i];
+            shuffled[i] = shuffled[j];
+            shuffled[j] = temp;
+        }
+        return shuffled;
+    }
+
+    void PositionGroup(ObstacleGroup group, float startY, bool randomizeOrder = false)
     {
         float currentY = startY;
-        
-        foreach (var type in obstacleTypes)
+
+        // Lấy danh sách obstacle types có trong group này
+        List<ObstacleType> typesInGroup = obstacleTypes
+            .Where(t => group.obstaclesByType.ContainsKey(t.name))
+            .ToList();
+
+        // Từ group 2 trở đi → shuffle thứ tự
+        if (randomizeOrder)
+            typesInGroup = ShuffleList(typesInGroup);
+
+        if (showDebugInfo)
         {
-            if (!group.obstaclesByType.ContainsKey(type.name)) continue;
-            
+            string order = string.Join(" → ", typesInGroup.Select(t => t.name));
+            Debug.Log($"[PositionGroup] {group.name} | randomized={randomizeOrder} | order: {order}");
+        }
+
+        foreach (var type in typesInGroup)
+        {
             List<GameObject> objectsOfThisType = group.obstaclesByType[type.name];
             
             if (type.stackable)
@@ -554,6 +591,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         totalGroupsPassed = 0;
         currentSpeed = initialSpeed;
         currentRotationSpeed = initialRotationSpeed;
+        groupSpawnCount = 0; // Reset counter khi restart
         if (player != null)
         {
             nextSpawnY = player.position.y + screenHeight * 0.5f;
