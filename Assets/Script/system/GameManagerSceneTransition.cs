@@ -37,7 +37,6 @@ public class GameManagerSceneTransition : MonoBehaviour
     IEnumerator TransitionToGameOver()
     {
         yield return new WaitForSeconds(delayBeforeTransition);
-        
         SaveScoreAndTransition();
     }
     
@@ -45,9 +44,7 @@ public class GameManagerSceneTransition : MonoBehaviour
     {
         int finalScore = 0;
         if (scoreCycle != null)
-        {
             finalScore = scoreCycle.GetScore();
-        }
         
         PlayerPrefs.SetInt("FinalScore", finalScore);
         PlayerPrefs.SetInt("ContinueScore", finalScore);
@@ -60,7 +57,13 @@ public class GameManagerSceneTransition : MonoBehaviour
         }
         
         PlayerPrefs.Save();
-        
         SceneManager.LoadScene(gameOverSceneName);
+    }
+    
+    public void ForceTransitionToGameOver()
+    {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        SaveScoreAndTransition();
     }
 }

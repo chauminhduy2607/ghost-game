@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7c0f8086209470b8cf5a874a456dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PulsingCircleOrbitController
-  rotationSpeed: 120
+  rotationSpeed: 60
   radius: 2
   clockwise: 1
   rotateTowardsCenter: 1
@@ -786,13 +786,15 @@ MonoBehaviour:
   typeGap: 12
   groupGap: 5
   spawnTriggerDistance: 10
-  initialSpeed: 1
-  speedIncrement: 0.2
-  maxSpeed: 5
-  groupsPerSpeedIncrease: 2
-  initialRotationSpeed: 30
-  rotationSpeedIncrement: 20
+  initialSpeed: 2
+  speedIncrement: 1.5
+  maxSpeed: 10
+  groupsPerSpeedIncrease: 1
+  initialRotationSpeed: 50
+  rotationSpeedIncrement: 50
   maxRotationSpeed: 360
+  pointsPerObstacle: 2
+  scoreDetectionOffsetY: 1
   player: {fileID: 0}
   mainCamera: {fileID: 0}
   showDebugInfo: 1
@@ -1007,7 +1009,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 233200289}
-  - component: {fileID: 233200290}
   - component: {fileID: 233200291}
   m_Layer: 0
   m_Name: FlyingCirclePulsing
@@ -1037,24 +1038,6 @@ Transform:
   - {fileID: 989233404}
   m_Father: {fileID: 140615573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &233200290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233200288}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb8b13316f8f840b091ef753345a8a22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FlyingCircleController
-  rotationSpeed: 1000
-  radius: 3
-  clockwise: 0
-  rotateTowardsCenter: 1
-  spriteRotationOffset: 90
-  showDebugGizmos: 1
 --- !u!114 &233200291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4077,7 +4060,7 @@ MonoBehaviour:
   - sprite: {fileID: -4942475089152614257, guid: 60ee843218ae94f4091aeab5e0a1f5ac, type: 3}
     scale: {x: 0.2, y: 0.2, z: 0}
   normalSwitchTime: 0.5
-  normalPhaseDuration: 5
+  normalPhaseDuration: 3
   syncImage:
     sprite: {fileID: 4618211386267443547, guid: 52842edc34e374ca1832110a43b59b77, type: 3}
     scale: {x: 0.2, y: 0.2, z: 1}
@@ -5786,13 +5769,12 @@ MonoBehaviour:
   linearDrag: 5
   angularDrag: 1
   gravityScale: 0
-  autoRiseForce: 0.3
-  maxAutoRiseSpeed: 0.6
+  autoRiseForce: 0.9
+  maxAutoRiseSpeed: 2
   fallForceMultiplier: 30
   obstacleKnockbackForce: 1
   delayBeforeAds: 1
   adsTimeout: 30
-  adsCooldownSeconds: 60
   enableRotation: 1
   rotationSpeed: 8
   swipeForceMultiplier: 100
@@ -9050,7 +9032,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1777135012}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -9384,7 +9366,7 @@ MonoBehaviour:
   - sprite: {fileID: -4942475089152614257, guid: 60ee843218ae94f4091aeab5e0a1f5ac, type: 3}
     scale: {x: 0.2, y: 0.2, z: 0}
   normalSwitchTime: 0.5
-  normalPhaseDuration: 5
+  normalPhaseDuration: 3
   syncImage:
     sprite: {fileID: 4618211386267443547, guid: 52842edc34e374ca1832110a43b59b77, type: 3}
     scale: {x: 0.2, y: 0.2, z: 1}

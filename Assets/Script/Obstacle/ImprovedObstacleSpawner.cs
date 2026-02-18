@@ -5,19 +5,14 @@ using System.Linq;
 public class ImprovedObstacleSpawner : MonoBehaviour
 {
     [Header("=== GROUP CONFIGURATION ===")]
-    [Tooltip("Số obstacles mỗi loại trong 1 group")]
     [SerializeField] private int obstaclesPerType = 4;
     
     [Header("=== SPACING SETTINGS ===")]
-    [Tooltip("Khoảng cách giữa các obstacles cùng loại (nếu KHÔNG stackable)")]
     [SerializeField] private float obstacleSpacing = 3f;
-    [Tooltip("Khoảng cách giữa các loại vật cản khác nhau")]
     [SerializeField] private float typeGap = 2f;
-    [Tooltip("Khoảng cách giữa các groups")]
     [SerializeField] private float groupGap = 0.5f;
     
     [Header("=== SPAWN/DESPAWN ===")]
-    [Tooltip("Khoảng cách sau vật cản cuối để spawn group mới")]
     [SerializeField] private float spawnTriggerDistance = 0f;
     
     [Header("=== SPEED PROGRESSION ===")]
@@ -30,7 +25,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     [SerializeField] private float initialRotationSpeed = 120f;
     [SerializeField] private float rotationSpeedIncrement = 20f;
     [SerializeField] private float maxRotationSpeed = 360f;
-    
+
+    [Header("=== SCORE SETTINGS ===")]
+    [SerializeField] private int pointsPerObstacle = 2;
+    [SerializeField] private float scoreDetectionOffsetY = 1f;
+
     [Header("=== REFERENCES ===")]
     [SerializeField] private Transform player;
     [SerializeField] private Camera mainCamera;
@@ -46,6 +45,7 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         public bool isCircle;
         public int priority;
         public bool stackable;
+        public bool isFireNLine;
     }
     
     private class ObstacleGroup
@@ -61,12 +61,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         {
             isActive = active;
             foreach (var typeList in obstaclesByType.Values)
-            {
                 foreach (var obj in typeList)
-                {
                     if (obj) obj.SetActive(active);
-                }
-            }
         }
         
         public int TotalCount
@@ -104,7 +100,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     void Update()
     {
         if (player == null) return;
-        
         CheckSpawnNewGroup();
         CheckDespawnOldGroups();
         CheckGroupsPassed();
@@ -112,14 +107,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     
     void InitializeReferences()
     {
-        if (mainCamera == null)
-            mainCamera = Camera.main;
+        if (mainCamera == null) mainCamera = Camera.main;
         
         if (player == null)
         {
             GhostController ghost = FindAnyObjectByType<GhostController>();
-            if (ghost != null)
-                player = ghost.transform;
+            if (ghost != null) player = ghost.transform;
         }
         
         if (mainCamera != null)
@@ -140,7 +133,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         foreach (Transform child in transform)
         {
             if (child == null) continue;
-            
             string tag = child.tag;
             if (!tag.EndsWith("Obstacle")) continue;
             
@@ -149,22 +141,26 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             
             if (existingType == null)
             {
+                bool isFireLine = typeName.ToLower().Contains("fireline")
+                               || typeName.ToLower().Contains("firenline");
+                
                 ObstacleType newType = new ObstacleType
                 {
                     name = typeName,
                     isCircle = typeName.ToLower().Contains("circle"),
                     priority = GetPriority(typeName),
-                    stackable = IsStackable(typeName)
+                    stackable = IsStackable(typeName),
+                    isFireNLine = isFireLine
                 };
                 
                 newType.objects.Add(child.gameObject);
                 obstacleTypes.Add(newType);
-                SetupObstacle(child.gameObject, newType.isCircle);
+                SetupObstacleInitial(child.gameObject, newType);
             }
             else
             {
                 existingType.objects.Add(child.gameObject);
-                SetupObstacle(child.gameObject, existingType.isCircle);
+                SetupObstacleInitial(child.gameObject, existingType);
             }
         }
         
@@ -174,78 +170,91 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     bool IsStackable(string typeName)
     {
         string lower = typeName.ToLower();
-        if (lower.Contains("circle")) return true;
-        if (lower.Contains("flyingfire")) return true;
-        if (lower.Contains("lightning")) return true;
-        return false;
+        return lower.Contains("circle") || lower.Contains("flyingfire") || lower.Contains("lightning");
     }
     
     int GetPriority(string typeName)
     {
         string lower = typeName.ToLower();
-        
-        if (lower.Contains("fireline") || lower.Contains("firenline"))
-            return 0;
-        else if (lower.Contains("circle"))
-            return 10;
-        else if (lower.Contains("lightning"))
-            return 30;
-        else if (lower.Contains("flyingfire"))
-            return 100;
-        else
-            return 50;
+        if (lower.Contains("fireline") || lower.Contains("firenline")) return 0;
+        if (lower.Contains("circle")) return 10;
+        if (lower.Contains("lightning")) return 30;
+        if (lower.Contains("flyingfire")) return 100;
+        return 50;
     }
     
-    void SetupObstacle(GameObject obj, bool isCircle)
+    // ─────────────────────────────────────────────────────────────────────
+    // SETUP LẦN ĐẦU: chỉ gắn component + Configure, KHÔNG Activate
+    // ─────────────────────────────────────────────────────────────────────
+    void SetupObstacleInitial(GameObject obj, ObstacleType type)
     {
-        if (isCircle)
+        if (type.isFireNLine)
+        {
+            // Placeholder trên parent
+            ObstacleScoreDetector parentDetector = obj.GetComponent<ObstacleScoreDetector>();
+            if (parentDetector == null)
+                parentDetector = obj.AddComponent<ObstacleScoreDetector>();
+            parentDetector.Configure(0, 0, true);
+
+            // Detector trên từng child
+            foreach (Transform child in obj.transform)
+            {
+                ObstacleScoreDetector childDetector = child.GetComponent<ObstacleScoreDetector>();
+                if (childDetector == null)
+                    childDetector = child.gameObject.AddComponent<ObstacleScoreDetector>();
+                childDetector.Configure(pointsPerObstacle, scoreDetectionOffsetY, false);
+            }
+
+            if (showDebugInfo)
+                Debug.Log($"[Setup] FireNLine '{obj.name}' → {obj.transform.childCount} child detectors");
+        }
+        else
+        {
+            // 1 detector trên parent
+            ObstacleScoreDetector detector = obj.GetComponent<ObstacleScoreDetector>();
+            if (detector == null)
+                detector = obj.AddComponent<ObstacleScoreDetector>();
+            detector.Configure(pointsPerObstacle, scoreDetectionOffsetY, false);
+        }
+
+        // Setup movement
+        if (type.isCircle)
         {
             FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
             if (controller != null)
-            {
                 controller.SetRotationSpeed(currentRotationSpeed);
-            }
         }
         else
         {
             ObstacleLooper looper = obj.GetComponent<ObstacleLooper>();
-            if (looper != null)
-                looper.enabled = false;
+            if (looper != null) looper.enabled = false;
             
             ObstacleSpawner spawner = obj.GetComponent<ObstacleSpawner>();
             if (spawner != null)
-            {
                 StartCoroutine(ApplySpeedToSpawnedObstacles(obj, currentSpeed));
-            }
         }
         
         obj.SetActive(false);
     }
-    
+
     System.Collections.IEnumerator ApplySpeedToSpawnedObstacles(GameObject parent, float speed)
     {
         yield return new WaitForEndOfFrame();
-        
         ObstacleSpawner spawner = parent.GetComponent<ObstacleSpawner>();
         if (spawner != null && spawner.SpawnedObstacles != null)
         {
             foreach (GameObject obs in spawner.SpawnedObstacles)
             {
                 if (obs == null) continue;
-                
                 ObstacleMovement movement = obs.GetComponent<ObstacleMovement>();
-                if (movement != null)
-                    movement.SetSpeed(speed);
+                if (movement != null) movement.SetSpeed(speed);
             }
         }
     }
     
     void CreateGroupsFromObstacles()
     {
-        if (obstacleTypes.Count == 0)
-        {
-            return;
-        }
+        if (obstacleTypes.Count == 0) return;
         
         int maxGroups = 0;
         foreach (var type in obstacleTypes)
@@ -264,19 +273,14 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             foreach (var type in obstacleTypes)
             {
                 List<GameObject> objectsForThisGroup = new List<GameObject>();
-                
                 int startIndex = groupIndex * obstaclesPerType;
                 int endIndex = Mathf.Min(startIndex + obstaclesPerType, type.objects.Count);
                 
                 for (int i = startIndex; i < endIndex; i++)
-                {
                     objectsForThisGroup.Add(type.objects[i]);
-                }
                 
                 if (objectsForThisGroup.Count > 0)
-                {
                     group.obstaclesByType[type.name] = objectsForThisGroup;
-                }
             }
             
             if (group.TotalCount > 0)
@@ -290,17 +294,12 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     void InitializeFirstGroup()
     {
         if (allGroups.Count > 0)
-        {
             SpawnGroup(nextSpawnY);
-        }
     }
     
     void SpawnGroup(float yPosition)
     {
-        if (allGroups.Count == 0)
-        {
-            return;
-        }
+        if (allGroups.Count == 0) return;
         
         ObstacleGroup group = allGroups[nextGroupIndex];
         nextGroupIndex = (nextGroupIndex + 1) % allGroups.Count;
@@ -310,13 +309,53 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         group.endY = yPosition + groupHeight;
         group.isPassed = false;
         
+        // 1) Reposition trước
         PositionGroup(group, yPosition);
+
+        // 2) SetActive
         group.SetActive(true);
+
+        // 3) Activate detectors SAU KHI đã ở đúng vị trí
+        ActivateDetectorsInGroup(group);
         
         activeGroups.Add(group);
-        
         lastObstacleEndY = group.endY;
         nextSpawnY = group.endY + groupGap;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    // Activate tất cả detector trong group — gọi sau reposition + SetActive
+    // ─────────────────────────────────────────────────────────────────────
+    void ActivateDetectorsInGroup(ObstacleGroup group)
+    {
+        foreach (var typeList in group.obstaclesByType.Values)
+        {
+            foreach (var obj in typeList)
+            {
+                if (obj == null) continue;
+
+                // Tìm loại obstacle này
+                ObstacleType type = obstacleTypes.Find(t =>
+                    group.obstaclesByType.ContainsKey(t.name) &&
+                    group.obstaclesByType[t.name].Contains(obj));
+
+                if (type != null && type.isFireNLine)
+                {
+                    // Activate từng child detector
+                    foreach (Transform child in obj.transform)
+                    {
+                        ObstacleScoreDetector d = child.GetComponent<ObstacleScoreDetector>();
+                        if (d != null) d.Activate();
+                    }
+                }
+                else
+                {
+                    // Activate detector trên parent
+                    ObstacleScoreDetector d = obj.GetComponent<ObstacleScoreDetector>();
+                    if (d != null) d.Activate();
+                }
+            }
+        }
     }
     
     void PositionGroup(ObstacleGroup group, float startY)
@@ -325,27 +364,17 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         
         foreach (var type in obstacleTypes)
         {
-            if (!group.obstaclesByType.ContainsKey(type.name))
-                continue;
+            if (!group.obstaclesByType.ContainsKey(type.name)) continue;
             
             List<GameObject> objectsOfThisType = group.obstaclesByType[type.name];
-            
-            bool isFireNLine = type.name.ToLower().Contains("fireline") || type.name.ToLower().Contains("firenline");
             
             if (type.stackable)
             {
                 foreach (var obj in objectsOfThisType)
                 {
                     if (obj == null) continue;
-                    
-                    if (isFireNLine)
-                    {
-                        MoveFireNLineToY(obj.transform, currentY);
-                    }
-                    else
-                    {
-                        ForceYPosition(obj.transform, currentY);
-                    }
+                    if (type.isFireNLine) MoveFireNLineToY(obj.transform, currentY);
+                    else ForceYPosition(obj.transform, currentY);
                 }
             }
             else
@@ -354,16 +383,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 {
                     GameObject obj = objectsOfThisType[i];
                     if (obj == null) continue;
-                    
-                    if (isFireNLine)
-                    {
-                        MoveFireNLineToY(obj.transform, currentY);
-                    }
-                    else
-                    {
-                        ForceYPosition(obj.transform, currentY);
-                    }
-                    
+                    if (type.isFireNLine) MoveFireNLineToY(obj.transform, currentY);
+                    else ForceYPosition(obj.transform, currentY);
                     currentY += obstacleSpacing;
                 }
             }
@@ -372,11 +393,11 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    void MoveFireNLineToY(Transform fireNLineParent, float targetY)
+    void MoveFireNLineToY(Transform t, float targetY)
     {
-        Vector3 pos = fireNLineParent.position;
+        Vector3 pos = t.position;
         pos.y = targetY;
-        fireNLineParent.position = pos;
+        t.position = pos;
     }
     
     void ForceYPosition(Transform obj, float targetY)
@@ -384,11 +405,8 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         Vector3 pos = obj.position;
         pos.y = targetY;
         obj.position = pos;
-        
         if (obj.childCount > 0)
-        {
             ForceYPositionRecursive(obj, targetY);
-        }
     }
 
     void ForceYPositionRecursive(Transform parent, float targetY)
@@ -398,86 +416,55 @@ public class ImprovedObstacleSpawner : MonoBehaviour
             Vector3 childPos = child.position;
             childPos.y = targetY;
             child.position = childPos;
-            
             if (child.childCount > 0)
-            {
                 ForceYPositionRecursive(child, targetY);
-            }
         }
     }
     
     float CalculateGroupHeight()
     {
         float height = 0;
-        
         foreach (var type in obstacleTypes)
         {
-            if (type.stackable)
-            {
-            }
-            else
-            {
+            if (!type.stackable)
                 height += (obstaclesPerType - 1) * obstacleSpacing;
-            }
-            
             height += typeGap;
         }
-        
-        if (obstacleTypes.Count > 0)
-            height -= typeGap;
-        
+        if (obstacleTypes.Count > 0) height -= typeGap;
         return height;
     }
     
     void CheckSpawnNewGroup()
     {
-        if (player == null) return;
-        
-        float playerY = player.position.y;
-        
-        if (playerY + (screenHeight * 0.5f) > lastObstacleEndY)
-        {
+        if (player.position.y + (screenHeight * 0.5f) > lastObstacleEndY)
             SpawnGroup(nextSpawnY);
-        }
     }
     
     void CheckDespawnOldGroups()
     {
-        if (player == null) return;
-        
         float playerY = player.position.y;
-        
         while (activeGroups.Count > 2)
         {
-            ObstacleGroup oldestGroup = activeGroups[0];
-            
-            if (playerY > oldestGroup.endY)
+            ObstacleGroup oldest = activeGroups[0];
+            if (playerY > oldest.endY)
             {
-                oldestGroup.SetActive(false);
+                oldest.SetActive(false);
                 activeGroups.RemoveAt(0);
             }
-            else
-            {
-                break;
-            }
+            else break;
         }
     }
     
     void CheckGroupsPassed()
     {
-        if (player == null) return;
-        
         float playerY = player.position.y;
-        
         foreach (var group in activeGroups)
         {
-            float groupMidY = group.startY + (group.endY - group.startY) * 0.5f;
-            
-            if (!group.isPassed && playerY > groupMidY)
+            float mid = group.startY + (group.endY - group.startY) * 0.5f;
+            if (!group.isPassed && playerY > mid)
             {
                 group.isPassed = true;
                 totalGroupsPassed++;
-                
                 if (totalGroupsPassed % groupsPerSpeedIncrease == 0)
                     IncreaseSpeed();
             }
@@ -488,11 +475,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         currentSpeed = Mathf.Min(currentSpeed + speedIncrement, maxSpeed);
         currentRotationSpeed = Mathf.Min(currentRotationSpeed + rotationSpeedIncrement, maxRotationSpeed);
-        ApplySpeedToAllActive();
-    }
-    
-    void ApplySpeedToAllActive()
-    {
         foreach (var group in activeGroups)
         {
             foreach (var typeList in group.obstaclesByType.Values)
@@ -500,16 +482,9 @@ public class ImprovedObstacleSpawner : MonoBehaviour
                 foreach (var obj in typeList)
                 {
                     if (obj == null) continue;
-                    
-                    FlyingCircleController controller = obj.GetComponent<FlyingCircleController>();
-                    if (controller != null)
-                    {
-                        controller.SetRotationSpeed(currentRotationSpeed);
-                    }
-                    else
-                    {
-                        ApplySpeedToObstacle(obj, currentSpeed);
-                    }
+                    FlyingCircleController fc = obj.GetComponent<FlyingCircleController>();
+                    if (fc != null) fc.SetRotationSpeed(currentRotationSpeed);
+                    else ApplySpeedToObstacle(obj, currentSpeed);
                 }
             }
         }
@@ -519,7 +494,6 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         ObstacleSpawner spawner = obj.GetComponent<ObstacleSpawner>();
         if (spawner?.SpawnedObstacles == null) return;
-        
         foreach (var spawnedObj in spawner.SpawnedObstacles)
         {
             if (spawnedObj == null) continue;
@@ -528,47 +502,23 @@ public class ImprovedObstacleSpawner : MonoBehaviour
         }
     }
     
-    // ===== THÊM METHOD MỚI ĐỂ MUSIC PLAYER SỬ DỤNG =====
-    
-    /// <summary>
-    /// Kiểm tra xem có obstacle type nào đang active trong tầm nhìn camera không
-    /// </summary>
     public bool HasActiveObstacleType(string obstacleTypeName, float detectionRange)
     {
         if (mainCamera == null || player == null) return false;
-        
         float cameraY = player.position.y;
         float minY = cameraY - detectionRange;
         float maxY = cameraY + detectionRange;
         
         foreach (var group in activeGroups)
         {
-            if (!group.isActive) continue;
-            
-            // Kiểm tra group có nằm trong tầm nhìn không
-            if (group.endY < minY || group.startY > maxY) continue;
-            
-            // Kiểm tra group có chứa obstacle type này không
+            if (!group.isActive || group.endY < minY || group.startY > maxY) continue;
             foreach (var kvp in group.obstaclesByType)
             {
-                string typeName = kvp.Key.ToLower();
-                string searchName = obstacleTypeName.ToLower();
-                
-                // Kiểm tra tên có khớp không (hỗ trợ partial match)
-                if (typeName.Contains(searchName) || searchName.Contains(typeName))
-                {
-                    // Kiểm tra ít nhất 1 obstacle trong list đang active
+                if (kvp.Key.ToLower().Contains(obstacleTypeName.ToLower()))
                     foreach (var obj in kvp.Value)
-                    {
-                        if (obj != null && obj.activeInHierarchy)
-                        {
-                            return true;
-                        }
-                    }
-                }
+                        if (obj != null && obj.activeInHierarchy) return true;
             }
         }
-        
         return false;
     }
     
@@ -576,41 +526,21 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     {
         if (!showGizmos || !Application.isPlaying || player == null) return;
         
-        float playerY = player.position.y;
-        
-        float spawnTriggerY = lastObstacleEndY;
-        
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(new Vector3(-15, spawnTriggerY, 0),
-                       new Vector3(15, spawnTriggerY, 0));
-        
-        #if UNITY_EDITOR
-        UnityEditor.Handles.Label(new Vector3(0, spawnTriggerY, 0), 
-            $"SPAWN TRIGGER\nY={spawnTriggerY:F1}\nGroups: {activeGroups.Count}/2");
-        #endif
-        
+        Gizmos.DrawLine(new Vector3(-15, lastObstacleEndY, 0), new Vector3(15, lastObstacleEndY, 0));
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(player.position, 0.5f);
         
         for (int i = 0; i < activeGroups.Count; i++)
         {
             var group = activeGroups[i];
-            
-            if (i == 0)
-                Gizmos.color = new Color(1f, 0.5f, 0.5f);
-            else
-                Gizmos.color = Color.cyan;
-            
-            float groupHeight = group.endY - group.startY;
-            float groupCenter = group.startY + groupHeight * 0.5f;
-            
-            Gizmos.DrawWireCube(new Vector3(0, groupCenter, 0),
-                               new Vector3(10, groupHeight, 0.1f));
+            Gizmos.color = i == 0 ? new Color(1f, 0.5f, 0.5f) : Color.cyan;
+            float groupCenter = group.startY + (group.endY - group.startY) * 0.5f;
+            Gizmos.DrawWireCube(new Vector3(0, groupCenter, 0), new Vector3(10, group.endY - group.startY, 0.1f));
             
             #if UNITY_EDITOR
-            string label = i == 0 ? "(OLD - Will despawn)" : "(CURRENT)";
-            UnityEditor.Handles.Label(new Vector3(0, group.startY, 0), 
-                $"{group.name} {label}\nStart: {group.startY:F1}\nEnd: {group.endY:F1}");
+            UnityEditor.Handles.Label(new Vector3(0, group.startY, 0),
+                $"{group.name}\nStart:{group.startY:F1} End:{group.endY:F1}");
             #endif
         }
     }
@@ -618,22 +548,17 @@ public class ImprovedObstacleSpawner : MonoBehaviour
     public void ResetGame()
     {
         foreach (var group in activeGroups)
-        {
             group.SetActive(false);
-        }
-        
         activeGroups.Clear();
         nextGroupIndex = 0;
         totalGroupsPassed = 0;
         currentSpeed = initialSpeed;
         currentRotationSpeed = initialRotationSpeed;
-        
         if (player != null)
         {
             nextSpawnY = player.position.y + screenHeight * 0.5f;
             lastObstacleEndY = 0f;
         }
-        
         InitializeFirstGroup();
     }
 }

@@ -8,29 +8,27 @@ public class ScoreCycle : MonoBehaviour
 
     [Header("Score Settings")]
     [Min(0.01f)]
-    public float secondsPerPlusPoint = 1f;  // ✅ Mỗi 1 giây cộng 1 điểm
+    public float secondsPerPlusPoint = 1f;
     
     public bool autoStart = true;
 
-    private int score = 0;  // ✅ Bắt đầu từ 0
+    private int score = 0;
     private float timer = 0f;
     private bool running = false;
 
-    /// <summary>
-    /// ⭐ Set điểm trực tiếp (dùng cho Continue)
-    /// </summary>
     public void SetScore(int newScore)
     {
         score = newScore;
         UpdateScoreText();
-        Debug.Log("📊 Set Score to: " + newScore);
+        SaveScore();
     }
 
     void Start()
     {
-        score = 0;  // ✅ Bắt đầu từ 0
+        score = 0;
         if (autoStart) running = true;
         UpdateScoreText();
+        SaveScore();
     }
 
     void Update()
@@ -39,19 +37,24 @@ public class ScoreCycle : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        // ✅ CỘNG điểm mỗi giây
         while (timer >= secondsPerPlusPoint)
         {
             timer -= secondsPerPlusPoint;
             score++;
             UpdateScoreText();
+            SaveScore();
         }
     }
 
     void UpdateScoreText()
     {
         if (scoreText != null)
-            scoreText.text = "Score: " + score;  // ✅ Chỉ hiển thị điểm
+            scoreText.text = "Score: " + score;
+    }
+
+    void SaveScore()
+    {
+        PlayerPrefs.SetInt("FinalScore", score);
     }
 
     public void StartScore() => running = true;
@@ -61,9 +64,16 @@ public class ScoreCycle : MonoBehaviour
 
     public void ResetScore()
     {
-        score = 0;  // ✅ Reset về 0
+        score = 0;
         timer = 0f;
         running = true;
         UpdateScoreText();
+        SaveScore();
+    }
+
+    void OnDestroy()
+    {
+        SaveScore();
+        PlayerPrefs.Save();
     }
 }

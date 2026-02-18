@@ -45,34 +45,24 @@ public class GameOverSceneController : MonoBehaviour
             bestScoreText.text = bestScore.ToString();
         
         UpdateContinueButton();
-        
-        // Bắt đầu flow: countdown → score → popup → scoreboard
         StartCoroutine(GameOverFlow());
     }
     
     IEnumerator GameOverFlow()
     {
-        // Ẩn score panel trước
         if (currentScorePanel != null)
             currentScorePanel.SetActive(false);
         
-        // Đợi countdown hoàn thành (không cần tắt thủ công)
         yield return new WaitForSeconds(3f);
         
-        // Hiện điểm NGAY SAU KHI countdown xong
-        Debug.Log("📊 Showing score...");
         if (currentScorePanel != null)
             currentScorePanel.SetActive(true);
         
-        // Chờ 2 giây
         yield return new WaitForSeconds(popupDelay);
         
-        // Ẩn điểm
         if (currentScorePanel != null)
             currentScorePanel.SetActive(false);
         
-        // Hiện popup
-        Debug.Log("✏️ Showing nickname popup...");
         if (LeaderboardManager.Instance != null)
         {
             int finalScore = PlayerPrefs.GetInt("FinalScore", 0);
@@ -86,9 +76,7 @@ public class GameOverSceneController : MonoBehaviour
     void UpdateContinueButton()
     {
         if (continueButton == null)
-        {
             return;
-        }
         
         bool hasRewardedAd = AdsManager.Instance != null 
             && AdsManager.Instance.CanShowRewarded();
@@ -98,9 +86,7 @@ public class GameOverSceneController : MonoBehaviour
             btn = continueButton.GetComponentInChildren<Button>();
         
         if (btn != null)
-        {
             btn.interactable = hasRewardedAd;
-        }
         
         CanvasGroup canvasGroup = continueButton.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
@@ -112,14 +98,10 @@ public class GameOverSceneController : MonoBehaviour
     public void OnContinueButton()
     {
         if (isWatchingAd)
-        {
             return;
-        }
         
         if (AdsManager.Instance == null)
-        {
             return;
-        }
         
         isWatchingAd = true;
         
@@ -129,9 +111,7 @@ public class GameOverSceneController : MonoBehaviour
         );
         
         if (!shown)
-        {
             isWatchingAd = false;
-        }
     }
     
     void OnRewardedAdSuccess()
@@ -140,9 +120,7 @@ public class GameOverSceneController : MonoBehaviour
         
         int currentScore = PlayerPrefs.GetInt("FinalScore", 0);
         PlayerPrefs.SetInt("ContinueScore", currentScore);
-        
         PlayerPrefs.SetInt("IsContinue", 1);
-        
         PlayerPrefs.Save();
         
         SceneManager.LoadScene(gameSceneName);
