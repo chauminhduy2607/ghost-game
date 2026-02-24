@@ -869,7 +869,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -956,10 +956,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1868250086}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0024414062, y: 1055}
-  m_SizeDelta: {x: -0.0048828, y: -206.9678}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 554, y: 733}
+  m_SizeDelta: {x: 1079.9951, y: 102.032196}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &698580978
 MonoBehaviour:
@@ -1506,11 +1506,11 @@ RectTransform:
   - {fileID: 1914298212}
   m_Father: {fileID: 457103219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -433.22, y: 993}
-  m_SizeDelta: {x: 132.8145, y: 187.6475}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 48, y: -86}
+  m_SizeDelta: {x: 132.81451, y: 187.64752}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1090188192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1907,8 +1907,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -582.3828}
-  m_SizeDelta: {x: 0, y: -1778.3828}
+  m_AnchoredPosition: {x: 0, y: -532.42}
+  m_SizeDelta: {x: 0, y: -1878.3002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1274914017
 MonoBehaviour:
@@ -1980,10 +1980,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1868250086}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.2890015, y: 1156.6}
-  m_SizeDelta: {x: -816.2226, y: -206.9678}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 555.2914, y: 834.59985}
+  m_SizeDelta: {x: 263.7774, y: 102.032196}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1412507731
 MonoBehaviour:
@@ -2248,11 +2248,11 @@ RectTransform:
   - {fileID: 1442367301}
   m_Father: {fileID: 457103219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17, y: -1007.4971}
-  m_SizeDelta: {x: 992.6409, y: 265.0062}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -1870.5}
+  m_SizeDelta: {x: 978.87, y: 247.8805}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1488477111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2317,7 +2317,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b498a3f7457344965b194e55be9a3d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingScreenAds
-  adContainer: {fileID: 1488477109}
   adPlaceholder: {fileID: 1442367300}
   adStatusText: {fileID: 0}
   bannerPosition: 4

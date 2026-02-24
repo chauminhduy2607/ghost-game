@@ -43,11 +43,19 @@ public class InfiniteBackground : MonoBehaviour
     {
         if (sprite == null || mainCamera == null) return Vector3.one;
 
-        float worldWidth = mainCamera.orthographicSize * 2f * mainCamera.aspect * widthMultiplier;
-        float spriteNativeWidth = sprite.texture.width / sprite.pixelsPerUnit;
+        float camHeight = mainCamera.orthographicSize * 2f;
+        float camWidth  = camHeight * mainCamera.aspect * widthMultiplier;
 
-        float scaleX = worldWidth / spriteNativeWidth;
-        return new Vector3(scaleX, scaleX, 1f);
+        float spriteNativeWidth  = sprite.texture.width  / sprite.pixelsPerUnit;
+        float spriteNativeHeight = sprite.texture.height / sprite.pixelsPerUnit;
+
+        float scaleX = camWidth  / spriteNativeWidth;
+        float scaleY = camHeight / spriteNativeHeight;
+
+        // Dùng Max để cover toàn màn hình (không bị hở)
+        float scale = Mathf.Max(scaleX, scaleY);
+
+        return new Vector3(scale, scale, 1f);
     }
 
     void CreateInitialBackground()
