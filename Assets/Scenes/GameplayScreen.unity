@@ -9259,7 +9259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostScreenFit
   referenceAspectRatio: 0.462
-  scaleMultiplier: 0.7
+  scaleMultiplier: 0.95
 --- !u!1 &1837158568
 GameObject:
   m_ObjectHideFlags: 0
