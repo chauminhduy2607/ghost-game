@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "799644949171",
+    "project_id": "ghost-game-service",
+    "storage_bucket": "ghost-game-service.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799644949171:android:2baa2ec697b878d4516ec6",
+        "android_client_info": {
+          "package_name": "com.defaultCompany.ghostGame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXgEnrQiYxrJFeQNKAbPhE6Gv7SNV3h78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

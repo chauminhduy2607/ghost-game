@@ -1,0 +1,572 @@
+fileFormatVersion: 2
+guid: 83cc3beb458344fdfa2f288d7b2adf44
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -189062062561622279
+    second: Click if you dare_0
+  - first:
+      213: 1764668837911495705
+    second: Click if you dare_1
+  - first:
+      213: 5577490979402148042
+    second: Click if you dare_2
+  - first:
+      213: 6861765370249771724
+    second: Click if you dare_3
+  - first:
+      213: -8118352142226997152
+    second: Click if you dare_4
+  - first:
+      213: 8946493218265094944
+    second: Click if you dare_5
+  - first:
+      213: 7150437030970232945
+    second: Click if you dare_6
+  - first:
+      213: 3637787306150443126
+    second: Click if you dare_7
+  - first:
+      213: 8134033807201127444
+    second: Click if you dare_8
+  - first:
+      213: -2294158207101351892
+    second: Click if you dare_9
+  - first:
+      213: -8868337655323619256
+    second: Click if you dare_10
+  - first:
+      213: 1237049444307996501
+    second: Click if you dare_11
+  - first:
+      213: 3196991027134742899
+    second: Click if you dare_12
+  - first:
+      213: -2552566859951781924
+    second: Click if you dare_13
+  - first:
+      213: -6886706631304990617
+    second: Click if you dare_14
+  - first:
+      213: 282393470734640165
+    second: Click if you dare_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Click if you dare_0
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 144
+        width: 164
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f603884e01506df0800000000000000
+      internalID: -189062062561622279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_1
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 144
+        width: 155
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9148aed55fc5d7810800000000000000
+      internalID: 1764668837911495705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_2
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 341
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac8e535be7a376d40800000000000000
+      internalID: 5577490979402148042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_3
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 148
+        width: 157
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cca70d1cf33e93f50800000000000000
+      internalID: 6861765370249771724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_4
+      rect:
+        serializedVersion: 2
+        x: 1273
+        y: 341
+        width: 47
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06047015db1d55f80800000000000000
+      internalID: -8118352142226997152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_5
+      rect:
+        serializedVersion: 2
+        x: 1412
+        y: 148
+        width: 159
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02bd1247e24582c70800000000000000
+      internalID: 8946493218265094944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_6
+      rect:
+        serializedVersion: 2
+        x: 2579
+        y: 144
+        width: 150
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17097c358947b3360800000000000000
+      internalID: 7150437030970232945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_7
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 148
+        width: 104
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 678b587f7440c7230800000000000000
+      internalID: 3637787306150443126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_8
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 144
+        width: 154
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41ccd35d6a4e1e070800000000000000
+      internalID: 8134033807201127444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_9
+      rect:
+        serializedVersion: 2
+        x: 1210
+        y: 148
+        width: 105
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c284d2ff3438920e0800000000000000
+      internalID: -2294158207101351892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_10
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 80
+        width: 168
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 840173293e55de480800000000000000
+      internalID: -8868337655323619256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_11
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 144
+        width: 160
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55f82995ae1ea2110800000000000000
+      internalID: 1237049444307996501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_12
+      rect:
+        serializedVersion: 2
+        x: 2191
+        y: 144
+        width: 144
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3714a7a966efd5c20800000000000000
+      internalID: 3196991027134742899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_13
+      rect:
+        serializedVersion: 2
+        x: 2783
+        y: 144
+        width: 146
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd7c32707f5739cd0800000000000000
+      internalID: -2552566859951781924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_14
+      rect:
+        serializedVersion: 2
+        x: 3001
+        y: 148
+        width: 132
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7603db06ec08d60a0800000000000000
+      internalID: -6886706631304990617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Click if you dare_15
+      rect:
+        serializedVersion: 2
+        x: 3173
+        y: 144
+        width: 157
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 524270e8d534be300800000000000000
+      internalID: 282393470734640165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Click if you dare_0: -189062062561622279
+      Click if you dare_1: 1764668837911495705
+      Click if you dare_10: -8868337655323619256
+      Click if you dare_11: 1237049444307996501
+      Click if you dare_12: 3196991027134742899
+      Click if you dare_13: -2552566859951781924
+      Click if you dare_14: -6886706631304990617
+      Click if you dare_15: 282393470734640165
+      Click if you dare_2: 5577490979402148042
+      Click if you dare_3: 6861765370249771724
+      Click if you dare_4: -8118352142226997152
+      Click if you dare_5: 8946493218265094944
+      Click if you dare_6: 7150437030970232945
+      Click if you dare_7: 3637787306150443126
+      Click if you dare_8: 8134033807201127444
+      Click if you dare_9: -2294158207101351892
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
